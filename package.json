@@ -1,0 +1,14 @@
+{
+  "name": "nigengo-kanji",
+  "version": "1.0.0",
+  "private": true,
+  "description": "N5–N2 kanji highlighter with user accounts (Netlify Functions + Neon Postgres)",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node --test tests/backend.test.js",
+    "dev": "netlify dev"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.4"
+  }
+}
