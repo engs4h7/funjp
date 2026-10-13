@@ -1,3 +1,26 @@
+<<<<<<< HEAD
 ﻿[build]
 publish = "public"
 functions = "netlify/functions"
+=======
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Pretty URLs: /api/login -> the single "api" function
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+>>>>>>> f0b4326ec0090f2c68f706bc805adbbc3fa52886
