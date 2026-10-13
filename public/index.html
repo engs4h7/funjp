@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>N5–N2 Kanji Highlighter</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0f172a;--card:#1e293b;--border:#334155;--text:#f1f5f9;--muted:#94a3b8;--n2:#fb923c;--n3:#38bdf8;--n4:#4ade80;--n5:#c084fc;
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{background:var(--bg); color:var(--text); font-family:'Inter','Noto Sans JP',sans-serif;}
+  @media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){--bg:#f8fafc;--card:#ffffff;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;} }
+  :root[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--border:#334155;--text:#f1f5f9;--muted:#94a3b8;}
+  .card{background:var(--card); border:1px solid var(--border); border-radius:1rem;}
+  textarea{background:var(--card); border:1px solid var(--border); color:var(--text);}
+  .out{font-size:1.4rem; line-height:2.4; word-break:break-word; white-space:pre-wrap;}
+  .kj{border-radius:3px; color:var(--n2); font-weight:700;}
+  .kj3{border-radius:3px; color:var(--n3); font-weight:700;}
+  .kj4{border-radius:3px; color:var(--n4); font-weight:700;}
+  .kj5{border-radius:3px; color:var(--n5); font-weight:700;}
+  .word{cursor:pointer; border-bottom:2px dotted color-mix(in srgb, var(--text) 35%, transparent); border-radius:3px; padding:0 1px;}
+  .word:hover, .word:active{background:color-mix(in srgb, var(--text) 10%, transparent);}
+  .wordpop{position:fixed; z-index:60; width:min(400px, calc(100vw - 16px)); max-height:min(90vh, 960px); overflow-y:auto;
+    background:var(--card); border:1px solid var(--border); border-radius:14px; padding:12px; box-shadow:0 14px 36px rgba(0,0,0,.45);}
+  @media (max-width:640px){ .wordpop{left:8px!important; right:8px!important; top:auto!important; bottom:calc(8px + env(safe-area-inset-bottom,0px)); width:auto; max-height:80vh;} }
+  .popbtn{padding:2px 8px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-size:13px; cursor:pointer;}
+  .popbtn.sm{font-size:11px; padding:3px 8px;}
+  .popbtn:hover{border-color:var(--n2);}
+  .lnk{text-decoration:underline; color:var(--n2);}
+  .word.sel{background:color-mix(in srgb, var(--n2) 30%, transparent);}
+  .sent{padding:8px; border-radius:10px; border:1px solid var(--border); background:var(--bg); font-size:12px; line-height:1.6;}
+  .sent .sj{font-weight:600; margin-bottom:4px;}
+  .kvg{width:118px; height:118px; display:block; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text);}
+  .kvg .sp{fill:none; stroke:currentColor; stroke-width:3.4; stroke-linecap:round; stroke-linejoin:round;}
+  .kvg .sn{font-size:7.5px; fill:var(--n2); font-weight:700; font-family:Inter,sans-serif;}
+  .kvg .g{stroke:var(--border); stroke-width:.6; stroke-dasharray:2 2;}
+  .kmeta{flex:1; min-width:0; font-size:12px; line-height:1.5;}
+  .kmeta .kch{font-size:22px; font-weight:700;}
+  .kmeta .kch.n2{color:var(--n2);}
+  .kmeta .kch.n3{color:var(--n3);}
+  .kmeta .kch.n4{color:var(--n4);}
+  .kmeta .kch.n5{color:var(--n5);}
+  .kmeta .muted{color:var(--muted);}
+  .kchips{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;}
+  .kchip{min-width:42px; height:42px; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-size:21px; font-weight:700; cursor:pointer;}
+  .kchip.n2{color:var(--n2);}
+  .kchip.n3{color:var(--n3);}
+  .kchip.n4{color:var(--n4);}
+  .kchip.n5{color:var(--n5);}
+  .kchip.on{border-color:var(--n2); background:color-mix(in srgb, var(--n2) 18%, transparent);}
+  .popbtn.on{border-color:var(--n2); background:color-mix(in srgb, var(--n2) 18%, transparent);}
+  .kvg.big{width:240px; max-width:100%; height:auto; aspect-ratio:1/1; margin:0 auto;}
+  .pk{cursor:pointer; border-bottom:2px dotted currentColor;}
+  .kvg .sp.ghost{stroke:color-mix(in srgb, var(--text) 16%, transparent);}
+  .kctl{display:flex; align-items:center; justify-content:space-between; gap:8px; margin:8px 0 4px;}
+  .kspd{display:flex; align-items:center; gap:6px; font-size:11px; color:var(--muted);}
+  .kspd input{width:90px; accent-color:var(--n2);}
+  .kframes{display:flex; gap:4px; overflow-x:auto; padding:6px 0;}
+  .kframe{flex:0 0 auto; width:58px; height:58px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--text);}
+  .kframe .sp{fill:none; stroke-width:4; stroke-linecap:round; stroke-linejoin:round;}
+  .kframe .sp.done{stroke:currentColor;}
+  .kframe .sp.cur{stroke:var(--n2);}
+  ::-webkit-scrollbar{width:8px;height:8px;} ::-webkit-scrollbar-thumb{background:#475569;border-radius:4px;}
+  .side-grid{display:grid; grid-template-columns:1fr; gap:1.25rem;}
+  .side-grid.no-video .video-col{display:none;}
+  .video-col{position:sticky; top:calc(64px + env(safe-area-inset-top,0px)); z-index:5; align-self:start;}
+  @media (min-width:900px){
+    .side-grid{grid-template-columns:2fr 1fr; align-items:start;}
+    .side-grid.no-video{grid-template-columns:1fr;}
+    .video-col{top:calc(72px + env(safe-area-inset-top,0px));}
+  }
+  #ytWrap iframe{position:absolute; inset:0; width:100%!important; height:100%!important; border-radius:0.5rem; border:0;}
+  .transcript-box{position:relative; overflow-y:auto; overscroll-behavior:contain; padding-right:4px;
+    max-height:calc(100vh - 190px); max-height:calc(100dvh - 190px); min-height:220px;}
+  .side-grid:not(.no-video) .transcript-box{
+    max-height:calc(100vh - 190px - ((100vw - 56px) * .5625)); max-height:calc(100dvh - 190px - ((100vw - 56px) * .5625)); min-height:140px;}
+  @media (min-width:900px){ .side-grid:not(.no-video) .transcript-box{max-height:calc(100vh - 150px); max-height:calc(100dvh - 150px); min-height:360px;} }
+  .t-line{display:flex; gap:10px; padding:8px 6px; border-radius:8px; align-items:flex-start; font-size:1.05rem; line-height:1.9;}
+  .t-time{flex:0 0 auto; font-size:11px; color:var(--muted); font-weight:700; cursor:pointer; padding-top:3px; user-select:none;}
+  .t-time:hover{color:var(--n2);}
+  .t-text{flex:1; word-break:break-word;}
+  .t-line.active{background:color-mix(in srgb, var(--n2) 16%, transparent); box-shadow:0 0 0 1px color-mix(in srgb, var(--n2) 40%, transparent) inset;}
+  .t-line.active .t-time{color:var(--n2);}
+</style>
+</head>
+<body class="min-h-screen">
+<header class="border-b sticky top-0 z-10 backdrop-blur" style="border-color:var(--border); background:color-mix(in srgb, var(--bg) 85%, transparent); padding-top:env(safe-area-inset-top,0px);">
+  <div class="w-full px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-white" style="background:#fb923c;">N2</div>
+      <div>
+        <h1 class="font-bold text-sm sm:text-base">N5–N2 Kanji Highlighter</h1>
+        <p class="text-xs" style="color:var(--muted);">Tap any word for its meaning + audio</p>
+      </div>
+    </div>
+    <button id="themeBtn" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">🌓 Theme</button>
+  </div>
+</header>
+
+<main class="w-full px-4 py-6 space-y-5">
+  <div class="card p-4 space-y-3">
+    <label class="text-xs font-semibold" style="color:var(--muted);">YOUTUBE VIDEO (OPTIONAL)</label>
+    <div class="flex gap-2">
+      <input id="ytUrl" type="text" placeholder="Paste a YouTube video URL…" class="flex-1 rounded-lg p-2 text-sm" style="background:var(--bg); border:1px solid var(--border); color:var(--text);">
+      <button onclick="loadYoutube()" class="px-4 py-2 rounded-lg text-sm font-semibold border" style="border-color:var(--border);">Load</button>
+    </div>
+    <textarea id="input" rows="4" class="w-full rounded-lg p-3 text-sm font-mono" placeholder="Paste the transcript here — with YouTube timestamps or plain text works too…"></textarea>
+    <div class="flex flex-wrap gap-2 items-center justify-between">
+      <div class="flex gap-2">
+        <button onclick="analyze()" class="px-4 py-2 rounded-lg text-white text-sm font-semibold" style="background:#e63946;">Load Transcript</button>
+        <button onclick="clearAll()" class="px-4 py-2 rounded-lg text-sm font-semibold border" style="border-color:var(--border);">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="side-grid no-video" id="mainGrid">
+    <div class="video-col">
+      <div class="card p-3">
+        <div id="ytWrap" class="hidden">
+          <div class="relative w-full" style="padding-top:56.25%;">
+            <div id="ytPlayerDiv" class="absolute inset-0 w-full h-full rounded-lg"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card p-4 space-y-2">
+      <div class="text-xs font-semibold" style="color:var(--muted);">TRANSCRIPT — TAP ANY WORD</div>
+      <div id="output" class="out transcript-box">Paste a transcript above and click Load Transcript.</div>
+    </div>
+  </div>
+</main>
+
+<!-- Authentication Modal -->
+<div id="authModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 hidden">
+  <div class="card p-6 w-full max-w-md space-y-4 bg-slate-900 border border-slate-700 rounded-xl">
+    <h2 class="text-lg font-bold text-white">Unlock Full Access</h2>
+    <p class="text-xs text-slate-400">Your 2-minute free demo has expired. Please sign in or register to continue using all features.</p>
+    <div class="space-y-3">
+      <input id="authEmail" type="email" placeholder="Email address..." class="w-full p-2.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm">
+      <input id="authPassword" type="password" placeholder="Password..." class="w-full p-2.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm">
+      <div id="authError" class="text-xs text-red-400"></div>
+      <div class="flex gap-2 pt-2">
+        <button onclick="handleAuth('login')" class="flex-1 py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold text-sm">Sign In</button>
+        <button onclick="handleAuth('signup')" class="flex-1 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-semibold text-sm">Register</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let isAuthenticated = localStorage.getItem('kanji_user_id') ? true : false;
+
+  function checkDemoTimer() {
+    if (isAuthenticated) return;
+    let startTime = localStorage.getItem('demo_start_time');
+    if (!startTime) {
+      startTime = Date.now();
+      localStorage.setItem('demo_start_time', startTime);
+    }
+    if (Date.now() - parseInt(startTime, 10) >= 2 * 60 * 1000) {
+      document.getElementById('authModal').classList.remove('hidden');
+    } else {
+      setTimeout(checkDemoTimer, 2000);
+    }
+  }
+
+  async function handleAuth(action) {
+    const email = document.getElementById('authEmail').value.trim();
+    const password = document.getElementById('authPassword').value.trim();
+    const errDiv = document.getElementById('authError');
+    errDiv.textContent = '';
+
+    if (!email || !password) {
+      errDiv.textContent = 'Please enter both email and password.';
+      return;
+    }
+
+    try {
+      const res = await fetch('/.netlify/functions/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action, email, password })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        errDiv.textContent = data.error || 'Authentication failed.';
+        return;
+      }
+      localStorage.setItem('kanji_user_id', data.user.id);
+      isAuthenticated = true;
+      document.getElementById('authModal').classList.add('hidden');
+    } catch (err) {
+      errDiv.textContent = 'Connection error. Please try again.';
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    if (!isAuthenticated) checkDemoTimer();
+  });
+</script>
+</body>
+</html>
