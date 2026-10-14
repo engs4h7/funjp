@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>funjp - Demo & Auth</title>
+  <title>funjp - App</title>
   <style>
     :root {
       --primary: #4f46e5;
@@ -23,32 +23,44 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       min-height: 100vh;
     }
 
-    .container {
-      text-align: center;
-      max-width: 600px;
-      padding: 2rem;
+    header {
+      width: 100%;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-sizing: border-box;
+      border-bottom: 1px solid #334155;
     }
 
-    /* Timer Widget */
-    .timer-card {
-      background: var(--card-bg);
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 1.5rem 2rem;
-      margin-top: 1.5rem;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-    }
-
-    .timer-display {
-      font-size: 3rem;
+    .logo {
       font-weight: 700;
+      font-size: 1.25rem;
       color: #38bdf8;
-      font-family: monospace;
-      margin: 0.5rem 0;
+    }
+
+    .main-content {
+      text-align: center;
+      max-width: 700px;
+      padding: 3rem 1rem;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid #334155;
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: #334155;
     }
 
     /* Modal Overlay */
@@ -165,14 +177,18 @@
 </head>
 <body>
 
-  <div class="container">
-    <h1>Welcome to funjp</h1>
-    <p style="color: var(--text-muted);">Explore the app. You have a 2-minute live demo session.</p>
+  <header>
+    <div class="logo">funjp</div>
+    <button id="openAuthBtn" class="btn-secondary">Log In / Sign Up</button>
+  </header>
 
-    <div class="timer-card">
-      <div>Demo Time Remaining</div>
-      <div id="timerDisplay" class="timer-display">02:00</div>
-      <div id="statusText" style="font-size: 0.875rem; color: var(--text-muted);">Demo session active</div>
+  <div class="main-content">
+    <h1>Welcome to funjp</h1>
+    <p style="color: var(--text-muted); font-size: 1.1rem;">Your application content is fully accessible here!</p>
+    
+    <div style="background: var(--card-bg); border: 1px solid #334155; padding: 2rem; border-radius: 12px; margin-top: 2rem;">
+      <h3>App Dashboard Area</h3>
+      <p style="color: var(--text-muted);">Users can browse, view lessons, or interact with features here without being blocked by a timer.</p>
     </div>
   </div>
 
@@ -180,8 +196,8 @@
   <div id="authModal" class="modal-overlay">
     <div class="modal">
       <div class="modal-header">
-        <h2 id="modalTitle">Demo Expired - Log In</h2>
-        <p style="color: var(--text-muted); font-size: 0.875rem;">Please log in or register to continue using funjp.</p>
+        <h2 id="modalTitle">Welcome Back</h2>
+        <p style="color: var(--text-muted); font-size: 0.875rem;">Log in or create an account to save your progress.</p>
       </div>
 
       <form id="authForm">
@@ -204,17 +220,17 @@
         <span id="toggleQuestion">Don't have an account?</span> 
         <a id="toggleAuthMode">Sign Up</a>
       </div>
+
+      <button id="closeModalBtn" class="btn-secondary" style="width: 100%; margin-top: 1rem;">Cancel</button>
     </div>
   </div>
 
   <script>
-    // State Variables
     let isRegistering = false;
-    let timerInterval = null;
-    let duration = 120; // 2 minutes in seconds
 
-    const timerDisplay = document.getElementById('timerDisplay');
     const authModal = document.getElementById('authModal');
+    const openAuthBtn = document.getElementById('openAuthBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
     const authForm = document.getElementById('authForm');
     const modalTitle = document.getElementById('modalTitle');
     const submitBtn = document.getElementById('submitBtn');
@@ -222,30 +238,15 @@
     const toggleQuestion = document.getElementById('toggleQuestion');
     const authMessage = document.getElementById('authMessage');
 
-    // Start 2-Minute Demo Timer
-    function startDemoTimer() {
-      let timeRemaining = duration;
-
-      timerInterval = setInterval(() => {
-        const minutes = Math.floor(timeRemaining / 60);
-        const seconds = timeRemaining % 60;
-
-        timerDisplay.textContent = 
-          `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
-        if (timeRemaining <= 0) {
-          clearInterval(timerInterval);
-          document.getElementById('statusText').textContent = "Demo session finished.";
-          showAuthModal();
-        }
-
-        timeRemaining--;
-      }, 1000);
-    }
-
-    function showAuthModal() {
+    // Open Modal
+    openAuthBtn.addEventListener('click', () => {
       authModal.classList.add('active');
-    }
+    });
+
+    // Close Modal
+    closeModalBtn.addEventListener('click', () => {
+      authModal.classList.remove('active');
+    });
 
     // Toggle between Login and Signup modes
     toggleAuthMode.addEventListener('click', () => {
@@ -296,7 +297,7 @@
 
           setTimeout(() => {
             authModal.classList.remove('active');
-            location.reload(); // Reset demo/session upon login
+            location.reload();
           }, 1500);
         } else {
           authMessage.className = "message error";
@@ -309,11 +310,6 @@
         submitBtn.disabled = false;
         submitBtn.textContent = isRegistering ? "Sign Up" : "Log In";
       }
-    });
-
-    // Start timer on page load
-    window.addEventListener('DOMContentLoaded', () => {
-      startDemoTimer();
     });
   </script>
 </body>
