@@ -1,17 +1,4 @@
 {
-<<<<<<< HEAD
-  "name": "funjp",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs"
-=======
   "name": "nigengo-kanji",
   "version": "1.0.0",
   "private": true,
@@ -24,5 +11,4 @@
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4"
   }
->>>>>>> f0b4326ec0090f2c68f706bc805adbbc3fa52886
 }
