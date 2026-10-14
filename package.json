@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "funjp app with auth and neon db",
   "main": "index.js",
+  "scripts": {
+    "test": "node --test"
+  },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.0",
     "bcryptjs": "^2.4.3",

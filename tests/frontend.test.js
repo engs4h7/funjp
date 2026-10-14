@@ -27,6 +27,15 @@ test('frontend contains one complete document with unique element IDs', () => {
   }
 });
 
+test('frontend offers sign-in and a timed registration prompt', () => {
+  assert.match(html, /id="authBar"/);
+  assert.match(html, /id="authBtn"/);
+  assert.match(html, /id="authForm"/);
+  assert.match(html, /120000/);
+  assert.match(html, /showAuthDialog\('register', true\)/);
+  assert.match(html, /fetch\('\/api\/progress'/);
+});
+
 test('frontend inline JavaScript parses without syntax errors', () => {
   const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)]
     .map(match => match[1]).filter(source => source.trim());
