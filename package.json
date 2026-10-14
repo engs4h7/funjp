@@ -5,7 +5,7 @@
   "description": "N5–N2 kanji highlighter with user accounts (Netlify Functions + Neon Postgres)",
   "engines": { "node": ">=18" },
   "scripts": {
-    "test": "node --test tests/backend.test.js",
+    "test": "node --test tests/*.test.js",
     "dev": "netlify dev"
   },
   "dependencies": {
