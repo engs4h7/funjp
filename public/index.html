@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="en" class="dark">
 <head>
 <meta charset="UTF-8">
@@ -159,140 +160,249 @@
           <span class="kj4" style="padding:2px 10px; background:color-mix(in srgb, var(--n4) 25%, transparent); box-shadow:0 0 0 1px color-mix(in srgb, var(--n4) 55%, transparent) inset;">N4 kanji</span>
           <span class="kj5" style="padding:2px 10px; background:color-mix(in srgb, var(--n5) 25%, transparent); box-shadow:0 0 0 1px color-mix(in srgb, var(--n5) 55%, transparent) inset;">N5 kanji</span>
           <span class="text-xs" style="color:var(--muted);">orange = N2 · blue = N3 · green = N4 · purple = N5 · tap any word for meaning + audio</span>
+=======
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>funjp - Demo & Auth</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 600px;
+      padding: 2rem;
+    }
+
+    /* Timer Widget */
+    .timer-card {
+      background: var(--card-bg);
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      margin-top: 1.5rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    }
+
+    .timer-display {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #38bdf8;
+      font-mono: monospace;
+      margin: 0.5rem 0;
+    }
+
+    /* Modal Overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Modal Box */
+    .modal {
+      background: var(--card-bg);
+      border: 1px solid #334155;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 400px;
+      padding: 2rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 0.375rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: var(--text);
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+
+    .form-group input:focus {
+      outline: 2px solid var(--primary);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      margin-top: 0.5rem;
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .toggle-text {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .toggle-text a {
+      color: #38bdf8;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .message {
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      text-align: center;
+    }
+
+    .message.error { color: #f87171; }
+    .message.success { color: #4ade80; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Welcome to funjp</h1>
+    <p style="color: var(--text-muted);">Explore the app. You have a 2-minute live demo session.</p>
+
+    <div class="timer-card">
+      <div>Demo Time Remaining</div>
+      <div id="timerDisplay" class="timer-display">02:00</div>
+      <div id="statusText" style="font-size: 0.875rem; color: var(--text-muted);">Demo session active</div>
+    </div>
+  </div>
+
+  <!-- Auth Modal -->
+  <div id="authModal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">Demo Expired - Log In</h2>
+        <p style="color: var(--text-muted); font-size: 0.875rem;">Please log in or register to continue using funjp.</p>
+      </div>
+
+      <form id="authForm">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" required placeholder="you@example.com" />
         </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required placeholder="••••••••" />
+>>>>>>> 74b549e (Update frontend with demo timer and login modal)
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn">Log In</button>
+      </form>
+
+      <div id="authMessage" class="message"></div>
+
+      <div class="toggle-text">
+        <span id="toggleQuestion">Don't have an account?</span> 
+        <a id="toggleAuthMode">Sign Up</a>
       </div>
-      <div id="output" class="out transcript-box">Paste a transcript above and click Load Transcript.</div>
     </div>
   </div>
 
-  <div class="card p-4 space-y-3">
-    <div class="flex items-center justify-between flex-wrap gap-2">
-      <h2 class="font-bold text-sm">Your N2 Coverage</h2>
-      <button onclick="resetCoverage()" id="resetBtn" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">↺ Reset coverage</button>
-    </div>
-    <div class="flex items-center gap-3">
-      <div class="flex-1 h-2 rounded-full overflow-hidden" style="background:var(--border);">
-        <div id="covBar" style="width:0%; background:var(--n2);" class="h-full transition-all duration-300"></div>
-      </div>
-      <div class="text-sm font-bold whitespace-nowrap" id="covText" style="color:var(--n2);">0 / 399</div>
-    </div>
-    <p class="text-[11px]" style="color:var(--muted);">Auto-marked when a kanji shows up in text you analyze. Tap any kanji below to mark/unmark it yourself. Saved in this browser. Kanji that are also in a lower-level list (N3, N4, N5) are counted under the lower level.</p>
-    <div id="masterGrid" class="flex flex-wrap gap-1 max-h-56 overflow-y-auto p-1"></div>
-  </div>
+  <script>
+    // State Variables
+    let isRegistering = false;
+    let timerInterval = null;
+    let duration = 120; // 2 minutes in seconds
 
-  <div class="card p-4 space-y-3">
-    <div class="flex items-center justify-between flex-wrap gap-2">
-      <h2 class="font-bold text-sm">Your N3 Coverage</h2>
-      <button onclick="resetCoverage('n3')" id="resetBtn3" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">↺ Reset coverage</button>
-    </div>
-    <div class="flex items-center gap-3">
-      <div class="flex-1 h-2 rounded-full overflow-hidden" style="background:var(--border);">
-        <div id="covBar3" style="width:0%; background:var(--n3);" class="h-full transition-all duration-300"></div>
-      </div>
-      <div class="text-sm font-bold whitespace-nowrap" id="covText3" style="color:var(--n3);">0 / 367</div>
-    </div>
-    <p class="text-[11px]" style="color:var(--muted);">Same idea for N3: auto-marked when a kanji shows up in text you analyze, or tap one to mark/unmark it. Saved separately from N2.</p>
-    <div id="masterGrid3" class="flex flex-wrap gap-1 max-h-56 overflow-y-auto p-1"></div>
-  </div>
+    const timerDisplay = document.getElementById('timerDisplay');
+    const authModal = document.getElementById('authModal');
+    const authForm = document.getElementById('authForm');
+    const modalTitle = document.getElementById('modalTitle');
+    const submitBtn = document.getElementById('submitBtn');
+    const toggleAuthMode = document.getElementById('toggleAuthMode');
+    const toggleQuestion = document.getElementById('toggleQuestion');
+    const authMessage = document.getElementById('authMessage');
 
-  <div class="card p-4 space-y-3">
-    <div class="flex items-center justify-between flex-wrap gap-2">
-      <h2 class="font-bold text-sm">Your N4 Coverage</h2>
-      <button onclick="resetCoverage('n4')" id="resetBtn4" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">↺ Reset coverage</button>
-    </div>
-    <div class="flex items-center gap-3">
-      <div class="flex-1 h-2 rounded-full overflow-hidden" style="background:var(--border);">
-        <div id="covBar4" style="width:0%; background:var(--n4);" class="h-full transition-all duration-300"></div>
-      </div>
-      <div class="text-sm font-bold whitespace-nowrap" id="covText4" style="color:var(--n4);">0 / 166</div>
-    </div>
-    <p class="text-[11px]" style="color:var(--muted);">Same idea for N4: auto-marked when a kanji shows up in text you analyze, or tap one to mark/unmark it. Saved separately from N2.</p>
-    <div id="masterGrid4" class="flex flex-wrap gap-1 max-h-56 overflow-y-auto p-1"></div>
-  </div>
+    // Start 2-Minute Demo Timer
+    function startDemoTimer() {
+      let timeRemaining = duration;
 
-  <div class="card p-4 space-y-3">
-    <div class="flex items-center justify-between flex-wrap gap-2">
-      <h2 class="font-bold text-sm">Your N5 Coverage</h2>
-      <button onclick="resetCoverage('n5')" id="resetBtn5" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">↺ Reset coverage</button>
-    </div>
-    <div class="flex items-center gap-3">
-      <div class="flex-1 h-2 rounded-full overflow-hidden" style="background:var(--border);">
-        <div id="covBar5" style="width:0%; background:var(--n5);" class="h-full transition-all duration-300"></div>
-      </div>
-      <div class="text-sm font-bold whitespace-nowrap" id="covText5" style="color:var(--n5);">0 / 79</div>
-    </div>
-    <p class="text-[11px]" style="color:var(--muted);">Same idea for N5: auto-marked when a kanji shows up in text you analyze, or tap one to mark/unmark it. Saved separately from N2.</p>
-    <div id="masterGrid5" class="flex flex-wrap gap-1 max-h-56 overflow-y-auto p-1"></div>
-  </div>
+      timerInterval = setInterval(() => {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
 
-  <div id="summaryWrap" class="card p-4 hidden space-y-4">
-    <div class="flex items-center justify-between flex-wrap gap-2">
-      <h2 class="font-bold text-sm">Summary</h2>
-      <div class="flex flex-wrap gap-2">
-        <button onclick="copyList('n2')" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">📋 Copy N2 list</button>
-        <button onclick="copyList('n3')" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">📋 Copy N3 list</button>
-        <button onclick="copyList('n4')" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">📋 Copy N4 list</button>
-        <button onclick="copyList('n5')" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">📋 Copy N5 list</button>
-        <button onclick="saveList('n2')" id="saveBtn" class="text-xs px-3 py-1.5 rounded-lg border hidden" style="border-color:var(--border);">💾 N2 .txt</button>
-        <button onclick="saveList('n3')" id="saveBtn3" class="text-xs px-3 py-1.5 rounded-lg border hidden" style="border-color:var(--border);">💾 N3 .txt</button>
-        <button onclick="saveList('n4')" id="saveBtn4" class="text-xs px-3 py-1.5 rounded-lg border hidden" style="border-color:var(--border);">💾 N4 .txt</button>
-        <button onclick="saveList('n5')" id="saveBtn5" class="text-xs px-3 py-1.5 rounded-lg border hidden" style="border-color:var(--border);">💾 N5 .txt</button>
-      </div>
-    </div>
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
-      <div class="p-3 rounded-lg border" style="border-color:var(--border);">
-        <div class="text-[10px]" style="color:var(--muted);">N2 occurrences</div>
-        <div class="text-xl font-bold" style="color:var(--n2);" id="countTotal">0</div>
-      </div>
-      <div class="p-3 rounded-lg border" style="border-color:var(--border);">
-        <div class="text-[10px]" style="color:var(--muted);">Unique N2 kanji</div>
-        <div class="text-xl font-bold" style="color:var(--n2);" id="countUnique">0</div>
-      </div>
-      <div class="p-3 rounded-lg border" style="border-color:var(--border);">
-        <div class="text-[10px]" style="color:var(--muted);">N3 occurrences</div>
-        <div class="text-xl font-bold" style="color:var(--n3);" id="countTotal3">0</div>
-      </div>
-      <div class="p-3 rounded-lg border" style="border-color:var(--border);">
-        <div class="text-[10px]" style="color:var(--muted);">Unique N3 kanji</div>
-        <div class="text-xl font-bold" style="color:var(--n3);" id="countUnique3">0</div>
-      </div>
-      <div class="p-3 rounded-lg border" style="border-color:var(--border);">
-        <div class="text-[10px]" style="color:var(--muted);">N4 occurrences</div>
-        <div class="text-xl font-bold" style="color:var(--n4);" id="countTotal4">0</div>
-      </div>
-      <div class="p-3 rounded-lg border" style="border-color:var(--border);">
-        <div class="text-[10px]" style="color:var(--muted);">Unique N4 kanji</div>
-        <div class="text-xl font-bold" style="color:var(--n4);" id="countUnique4">0</div>
-      </div>
-      <div class="p-3 rounded-lg border" style="border-color:var(--border);">
-        <div class="text-[10px]" style="color:var(--muted);">N5 occurrences</div>
-        <div class="text-xl font-bold" style="color:var(--n5);" id="countTotal5">0</div>
-      </div>
-      <div class="p-3 rounded-lg border" style="border-color:var(--border);">
-        <div class="text-[10px]" style="color:var(--muted);">Unique N5 kanji</div>
-        <div class="text-xl font-bold" style="color:var(--n5);" id="countUnique5">0</div>
-      </div>
-    </div>
-    <div>
-      <div class="text-xs font-semibold mb-1" style="color:var(--muted);">UNIQUE N2 KANJI FOUND</div>
-      <div id="byLevel" class="flex flex-wrap gap-1"></div>
-    </div>
-    <div>
-      <div class="text-xs font-semibold mb-1" style="color:var(--muted);">UNIQUE N3 KANJI FOUND</div>
-      <div id="byLevel3" class="flex flex-wrap gap-1"></div>
-    </div>
-    <div>
-      <div class="text-xs font-semibold mb-1" style="color:var(--muted);">UNIQUE N4 KANJI FOUND</div>
-      <div id="byLevel4" class="flex flex-wrap gap-1"></div>
-    </div>
-    <div>
-      <div class="text-xs font-semibold mb-1" style="color:var(--muted);">UNIQUE N5 KANJI FOUND</div>
-      <div id="byLevel5" class="flex flex-wrap gap-1"></div>
-    </div>
-  </div>
+        timerDisplay.textContent = 
+          `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-</main>
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          document.getElementById('statusText').textContent = "Demo session finished.";
+          showAuthModal();
+        }
 
+<<<<<<< HEAD
 <!-- Floating word popup (near the tapped word on desktop, bottom sheet on phones) -->
 <div id="wordPop" class="wordpop hidden" role="dialog" aria-label="Word meaning">
   <div class="flex items-start justify-between gap-2">
@@ -415,1141 +525,88 @@ function loadYoutube(){
       events: {
         onReady: () => { startSyncLoop(); },
         onError: () => { toast('This video could not be loaded (embedding may be disabled by the uploader).'); }
+=======
+        timeRemaining--;
+      }, 1000);
+    }
+
+    function showAuthModal() {
+      authModal.classList.add('active');
+    }
+
+    // Toggle between Login and Signup modes
+    toggleAuthMode.addEventListener('click', () => {
+      isRegistering = !isRegistering;
+      authMessage.textContent = '';
+      
+      if (isRegistering) {
+        modalTitle.textContent = "Create an Account";
+        submitBtn.textContent = "Sign Up";
+        toggleQuestion.textContent = "Already have an account?";
+        toggleAuthMode.textContent = "Log In";
+      } else {
+        modalTitle.textContent = "Welcome Back";
+        submitBtn.textContent = "Log In";
+        toggleQuestion.textContent = "Don't have an account?";
+        toggleAuthMode.textContent = "Sign Up";
+>>>>>>> 74b549e (Update frontend with demo timer and login modal)
       }
     });
-  });
-}
 
-function seekTo(seconds){
-  _userScrollUntil = 0; // resume auto-scroll when the user jumps to a line
-  if (ytPlayer && typeof ytPlayer.seekTo === 'function'){
-    ytPlayer.seekTo(seconds, true);
-    if (typeof ytPlayer.playVideo === 'function') ytPlayer.playVideo();
-  }
-}
+    // Handle Form Submission -> Netlify Function
+    authForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      authMessage.textContent = '';
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const action = isRegistering ? 'register' : 'login';
 
-function startSyncLoop(){
-  if (syncInterval) clearInterval(syncInterval);
-  syncInterval = setInterval(() => {
-    if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
-    const entries = window._transcriptEntries;
-    if (!entries || !entries.length) return;
-    const t = ytPlayer.getCurrentTime();
-    let idx = -1;
-    for (let i = 0; i < entries.length; i++){
-      if (entries[i].time <= t) idx = i; else break;
-    }
-    if (idx !== _lastActiveLine && idx >= 0){
-      const prev = document.querySelector('.t-line.active');
-      if (prev) prev.classList.remove('active');
-      const cur = document.querySelector(`.t-line[data-idx="${idx}"]`);
-      if (cur){
-        cur.classList.add('active');
-        if (Date.now() >= _userScrollUntil){
-          const box = document.getElementById('output');
-          const top = cur.offsetTop - (box.clientHeight / 2) + (cur.offsetHeight / 2);
-          box.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });   // never moves the page
+      try {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Connecting...";
+
+        const response = await fetch('/.netlify/functions/auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action, email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          authMessage.className = "message success";
+          authMessage.textContent = data.message || "Success!";
+          
+          if (data.token) {
+            localStorage.setItem('funjp_token', data.token);
+          }
+
+          setTimeout(() => {
+            authModal.classList.remove('active');
+            location.reload(); // Reset demo/session upon login
+          }, 1500);
+        } else {
+          authMessage.className = "message error";
+          authMessage.textContent = data.error || "Authentication failed.";
         }
+      } catch (err) {
+        authMessage.className = "message error";
+        authMessage.textContent = "Failed to connect to server.";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = isRegistering ? "Sign Up" : "Log In";
       }
-      _lastActiveLine = idx;
-    }
-  }, 300);
-}
-
-(function(){
-  const box = document.getElementById('output');
-  const pause = () => { _userScrollUntil = Date.now() + 4000; };
-  box.addEventListener('wheel', pause, { passive: true });
-  box.addEventListener('touchmove', pause, { passive: true });
-})();
-
-function formatTime(sec){
-  sec = Math.floor(sec);
-  const h = Math.floor(sec / 3600);
-  const m = Math.floor((sec % 3600) / 60);
-  const s = sec % 60;
-  const mm = h > 0 ? String(m).padStart(2,'0') : m;
-  const ss = String(s).padStart(2,'0');
-  return h > 0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
-}
-
-function parseTimeToSeconds(str){
-  const parts = str.split(':').map(Number);
-  if (parts.some(isNaN)) return null;
-  if (parts.length === 2) return parts[0]*60 + parts[1];
-  if (parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
-  return null;
-}
-
-// Supports three pasted formats:
-//  1) Bracketed inline timestamps, e.g. "[00:00:02] text" — common output from
-//     auto-caption/ASR exporters. Captions here often break mid-word, so
-//     continuation lines (no bracket) are concatenated with NO added space,
-//     which is correct for Japanese.
-//  2) YouTube's native "copy transcript" output — alternating lines of a bare
-//     timestamp, then the caption text (this is what you get from the
-//     transcript panel's copy button).
-//  3) Inline "0:01 text" per line (no brackets).
-// Returns null (falls back to plain-text mode) if nothing timestamp-like is found.
-function parseTranscript(raw){
-  const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-  const bracketRe = /^\[((?:\d{1,2}:)?\d{1,2}:\d{2})\]\s*(.*)$/;
-  const tsLineRe = /^(?:\d{1,2}:)?\d{1,2}:\d{2}$/;
-  const inlineRe = /^((?:\d{1,2}:)?\d{1,2}:\d{2})\s+(.+)$/;
-
-  const bracketCount = lines.filter(l => bracketRe.test(l)).length;
-  if (bracketCount >= 2){
-    const entries = [];
-    let current = null;
-    for (const line of lines){
-      const m = line.match(bracketRe);
-      if (m){
-        if (current) entries.push(current);
-        current = { time: parseTimeToSeconds(m[1]), text: m[2] || '' };
-      } else if (current){
-        current.text += line; // no space: captions often split mid-word
-      }
-    }
-    if (current) entries.push(current);
-    const cleaned = entries.filter(e => e.text && e.text.trim().length > 0);
-    if (cleaned.length) return cleaned;
-  }
-
-  const tsLineCount = lines.filter(l => tsLineRe.test(l)).length;
-  if (tsLineCount >= 2){
-    const entries = [];
-    let pendingTime = null;
-    for (const line of lines){
-      if (tsLineRe.test(line)){
-        pendingTime = parseTimeToSeconds(line);
-      } else if (pendingTime != null){
-        entries.push({ time: pendingTime, text: line });
-        pendingTime = null;
-      }
-    }
-    if (entries.length) return entries;
-  }
-
-  const inlineEntries = [];
-  for (const line of lines){
-    const m = line.match(inlineRe);
-    if (m) inlineEntries.push({ time: parseTimeToSeconds(m[1]), text: m[2] });
-  }
-  return inlineEntries.length >= 2 ? inlineEntries : null;
-}
-
-// --- Coverage tracking (persisted per-browser via localStorage) ---
-const MEANINGS = {"腕": "arm", "湾": "bay/gulf", "和": "harmony/peace", "論": "theory/argument", "録": "record", "老": "old/elderly", "労": "labor/toil", "路": "road/path", "連": "link/connect", "練": "practice/train", "恋": "romantic love", "列": "row/line", "歴": "pass through/experience", "齢": "age (years)", "零": "zero", "礼": "gratitude/courtesy", "冷": "cold", "例": "example", "令": "command/order", "類": "kind/type", "涙": "tears", "輪": "ring/wheel", "緑": "green", "領": "territory/dominion", "量": "quantity/amount", "良": "good", "療": "cure/heal", "涼": "cool/refreshing", "両": "both/pair", "了": "complete/finish", "粒": "grain/particle", "留": "stay/detain", "流": "flow/stream", "略": "abbreviate/omit", "率": "rate/ratio", "律": "law/rhythm", "陸": "land/continent", "裏": "back/reverse side", "利": "profit/benefit", "卵": "egg", "乱": "disorder/riot", "落": "fall/drop", "絡": "entangle/coil", "頼": "rely/request", "翌": "the following (day)", "浴": "bathe", "欲": "desire/want", "陽": "sunshine/positive", "踊": "dance", "要": "need/important", "葉": "leaf", "溶": "melt/dissolve", "様": "manner/Mr.-Mrs.", "容": "contain/form", "幼": "infant/young", "預": "deposit/entrust", "与": "give/bestow", "余": "surplus/remainder", "予": "beforehand", "郵": "mail/post", "遊": "play/wander", "由": "reason/cause", "勇": "courage/brave", "優": "excel/superior/gentle", "輸": "transport", "油": "oil", "約": "promise/approximately", "役": "role/duty", "戻": "return/go back", "毛": "hair/fur", "面": "face/surface", "綿": "cotton", "鳴": "cry (animal)/sound", "迷": "lost/astray", "命": "life/destiny", "娘": "daughter/girl", "無": "nothing/without", "夢": "dream", "務": "duty/task", "眠": "sleep", "未": "not yet", "満": "full/fulfill", "末": "end/tip", "枚": "counter for flat objects", "埋": "bury", "磨": "polish/grind", "防": "prevent/defend", "貿": "trade", "棒": "stick/rod", "望": "hope/desire", "暴": "violent/expose", "忙": "busy", "忘": "forget", "帽": "hat/cap", "坊": "boy/priest", "亡": "deceased/lose", "豊": "abundant", "訪": "visit", "法": "law/method", "放": "release/let go", "抱": "hold/embrace", "宝": "treasure", "報": "report/news", "包": "wrap", "暮": "live/make a living/dusk", "募": "recruit/raise", "補": "supplement/compensate", "捕": "catch/capture", "保": "protect/maintain", "返": "return (something)", "辺": "vicinity/side", "編": "knit/compile", "片": "fragment/one side", "変": "change/strange", "壁": "wall", "米": "rice/America", "閉": "close", "並": "line up/ordinary", "平": "flat/peace", "兵": "soldier", "粉": "powder/flour", "仏": "Buddha/France", "沸": "boil", "払": "pay/sweep away", "複": "duplicate/multiple", "腹": "belly/stomach", "福": "good fortune", "幅": "width", "復": "return/restore", "副": "sub-/vice-", "封": "seal", "部": "section/department", "舞": "dance", "武": "military/martial", "負": "lose/bear (burden)", "膚": "skin", "符": "sign/mark", "浮": "float", "普": "universal/general", "怖": "fear/afraid", "府": "prefecture/government", "布": "cloth/spread", "富": "wealth/abundance", "婦": "woman/wife", "夫": "husband", "付": "attach/affix", "貧": "poor", "秒": "second (time)", "評": "criticism/evaluate", "表": "surface/table/express", "氷": "ice", "標": "mark/sign", "筆": "writing brush/pen", "必": "certainly/must", "匹": "counter for animals", "鼻": "nose", "美": "beauty", "備": "prepare/equip", "飛": "fly", "非": "wrong/non-", "費": "expense/spend", "被": "suffer/receive (passive)", "皮": "skin/leather", "疲": "tired", "比": "compare/ratio", "批": "criticize", "悲": "sad", "彼": "he/that", "否": "no/deny", "番": "number/turn", "晩": "evening", "販": "sell", "般": "general/sort", "犯": "commit (crime)/violate", "版": "edition/printing block", "板": "board/plank", "反": "opposite/anti-", "判": "judge/stamp", "抜": "pull out/extract", "髪": "hair (head)", "畑": "field (farm)", "肌": "skin (body)", "箱": "box", "麦": "wheat/barley", "爆": "explode", "薄": "thin/weak", "泊": "stay overnight", "倍": "times/double", "配": "distribute", "背": "back (body)/height", "杯": "cup/counter for cups", "敗": "defeat/failure", "拝": "worship/humbly do", "馬": "horse", "破": "break/tear", "波": "wave", "農": "agriculture", "脳": "brain", "能": "ability/Noh theater", "濃": "thick/dense", "悩": "worry/trouble", "燃": "burn", "念": "thought/sense", "熱": "heat/fever", "猫": "cat", "認": "recognize/approve", "任": "duty/entrust", "乳": "milk/breast", "難": "difficult/disaster", "軟": "soft", "内": "inside", "鈍": "dull/slow", "曇": "cloudy", "届": "reach/deliver", "突": "thrust/sudden", "独": "alone/single", "毒": "poison", "得": "gain/profit", "銅": "copper", "童": "child", "導": "guide/lead", "逃": "escape/flee", "到": "arrive", "筒": "tube/cylinder", "等": "equal/etc.", "当": "hit/appropriate", "灯": "light/lamp", "湯": "hot water", "盗": "steal", "投": "throw", "島": "island", "塔": "tower", "凍": "freeze", "党": "political party", "倒": "fall over/overthrow", "怒": "anger", "努": "endeavor", "途": "way/route", "登": "climb", "渡": "cross over/hand over", "徒": "on foot/follower", "塗": "paint/coat", "殿": "palace/lord (honorific)", "伝": "transmit/legend", "点": "point/dot", "展": "exhibit/unfold", "鉄": "iron", "適": "suitable", "的": "target/-like", "滴": "drip/drop", "泥": "mud", "程": "extent/degree", "庭": "garden/yard", "底": "bottom", "定": "decide/fixed", "停": "stop", "痛": "pain", "追": "chase/pursue", "賃": "fare/wage", "珍": "rare/strange", "沈": "sink", "直": "straight/fix", "頂": "summit/receive (humble)", "超": "exceed/super-", "調": "investigate/tune", "張": "stretch/expand", "庁": "government office", "兆": "sign/trillion", "貯": "store/save", "著": "remarkable/write", "駐": "reside/stationed", "虫": "insect", "柱": "pillar", "宙": "space/midair", "仲": "relationship/go-between", "竹": "bamboo", "畜": "livestock", "築": "build/construct", "遅": "late/slow", "置": "place/put", "恥": "shame", "値": "value/price", "談": "talk/discuss", "段": "step/grade", "暖": "warm", "断": "cut off/decide", "団": "group/organization", "炭": "charcoal/carbon", "探": "search", "担": "carry/bear (responsibility)", "単": "simple/single", "谷": "valley", "達": "reach/attain", "濯": "wash/rinse", "宅": "home/residence", "第": "ordinal prefix", "退": "retreat/withdraw", "袋": "bag", "替": "exchange/replace", "帯": "belt/zone", "対": "pair/versus", "打": "hit/strike", "他": "other", "損": "loss/damage", "尊": "respect/noble", "孫": "grandchild", "存": "exist", "卒": "graduate", "続": "continue", "速": "fast/speed", "測": "measure", "束": "bundle/tie", "息": "breath/rest", "則": "rule/law", "側": "side", "造": "make/create", "贈": "give (present)", "蔵": "storehouse/hide", "臓": "internal organ", "憎": "hate", "増": "increase", "像": "image/statue", "装": "equip/costume", "草": "grass", "総": "general/total", "窓": "window", "相": "mutual/aspect", "争": "dispute/fight", "燥": "dry", "操": "operate/manipulate", "掃": "sweep", "捜": "search", "想": "think/imagine", "層": "layer/stratum", "双": "pair/both", "組": "group/組む", "祖": "ancestor", "全": "all/whole", "然": "as it is/thus", "善": "good/virtue", "選": "choose", "船": "ship", "線": "line", "浅": "shallow", "泉": "spring (water)", "戦": "war/battle", "専": "exclusive/specialize", "占": "occupy/divine", "絶": "sever/absolute", "雪": "snow", "節": "season/joint/economize", "設": "establish", "折": "fold/break", "接": "contact/connect", "責": "responsibility/blame", "績": "achievement", "積": "accumulate/volume", "石": "stone", "昔": "long ago", "席": "seat", "税": "tax", "静": "quiet/still", "製": "manufacture", "精": "refined essence/spirit", "清": "clear/pure", "晴": "clear weather", "星": "star", "整": "arrange/put in order", "政": "politics/government", "成": "become/accomplish", "性": "nature/gender", "姓": "surname", "勢": "force/trend", "制": "system/control", "数": "number", "吹": "blow", "震": "shake/tremble", "針": "needle", "辛": "spicy/hard (bitter)", "身": "body/oneself", "臣": "retainer/vassal", "神": "god/divine", "申": "state/say (humble)", "深": "deep", "寝": "sleep", "信": "trust/believe", "伸": "stretch/extend", "触": "touch", "職": "occupation", "植": "plant", "蒸": "steam", "畳": "tatami mat/fold", "状": "condition/letter", "条": "article/strip", "情": "emotion", "常": "usual/normal", "城": "castle", "賞": "prize/praise", "象": "elephant/sign", "紹": "introduce", "笑": "laugh/smile", "章": "chapter/badge", "省": "omit/ministry/reflect", "照": "shine/illuminate", "焼": "burn/bake", "消": "extinguish/erase", "昇": "rise/ascend", "招": "invite", "承": "consent/acknowledge", "床": "floor/bed", "将": "general/leader/future", "商": "trade/commerce", "召": "call/summon", "勝": "win", "除": "remove/except", "助": "help", "諸": "various", "署": "office/signature", "緒": "beginning/thread", "初": "first", "処": "deal with/place", "順": "order/sequence", "純": "pure", "準": "standard/prepare", "述": "state", "術": "technique/art", "祝": "celebrate", "宿": "lodging", "柔": "soft/flexible", "舟": "boat", "拾": "pick up", "修": "cultivate/study", "州": "state/province", "周": "circumference/around", "収": "put away/income", "授": "grant/teach", "受": "receive", "酒": "alcohol", "種": "seed/kind", "守": "protect/obey", "取": "take", "若": "young/if", "捨": "discard", "実": "fruit/reality", "湿": "damp/humid", "失": "lose", "識": "knowledge/recognize", "式": "ceremony/formula", "辞": "word/resign", "示": "show/indicate", "治": "govern/heal", "次": "next", "寺": "temple", "児": "child/infant", "似": "resemble", "歯": "tooth", "資": "capital/resources", "誌": "magazine/record", "詞": "word/part of speech", "脂": "fat/grease", "糸": "thread", "枝": "branch", "支": "support/branch", "指": "finger/point", "志": "aspiration/will", "師": "teacher/master", "史": "history", "司": "control/administer", "刺": "stab/sting", "伺": "visit (humble)/ask", "残": "remain", "賛": "praise/agree", "算": "calculate", "散": "scatter", "参": "participate/visit (humble)", "皿": "plate", "雑": "miscellaneous", "殺": "kill", "札": "note/ticket/charm", "察": "guess/observe", "刷": "print", "冊": "counter for books", "昨": "yesterday/previous", "咲": "bloom", "坂": "slope", "財": "wealth/property", "罪": "crime/sin", "材": "material", "在": "exist/present", "際": "occasion/edge", "細": "thin/detailed", "祭": "festival", "済": "finish/済む", "歳": "years old", "採": "pick/adopt", "才": "talent", "妻": "wife", "最": "most", "再": "again", "座": "seat/sit", "砂": "sand", "査": "investigate/inspect", "差": "difference", "混": "mix", "根": "root", "婚": "marriage", "困": "trouble", "込": "crowded/included", "骨": "bone", "腰": "hip/waist", "告": "tell/announce", "刻": "carve/time (moment)", "号": "number/name (suffix)", "香": "fragrance", "降": "descend/fall (rain)", "鉱": "mineral/ore", "郊": "suburbs", "講": "lecture/study", "荒": "rough/wild", "航": "navigate/sail", "肯": "agree/consent", "耕": "cultivate (land)", "紅": "crimson/red", "硬": "hard/stiff", "港": "harbor/port", "構": "construct/pose", "更": "further/change", "康": "health/well-being", "幸": "happiness", "向": "face toward/direction", "厚": "thick", "効": "effect", "公": "public", "候": "climate/season/candidate", "交": "exchange/交わる", "誤": "error/mistake", "御": "honorific prefix", "互": "mutual", "雇": "employ/hire", "湖": "lake", "枯": "wither", "故": "reason/deceased", "戸": "door", "庫": "storehouse", "固": "hard/solid", "呼": "call", "個": "individual item", "限": "limit", "現": "present/appear", "減": "decrease", "原": "origin/field/plain", "険": "steep/dangerous", "軒": "counter for houses/eaves", "賢": "wise", "肩": "shoulder", "権": "right/authority", "検": "inspect/examine", "券": "ticket/certificate", "健": "healthy", "件": "matter/case", "血": "blood", "結": "tie/conclude", "決": "decide", "欠": "lack/absent", "劇": "drama", "迎": "welcome", "芸": "art/skill", "警": "alert/warn/police", "経": "pass through/economy", "景": "scenery/view", "敬": "respect", "恵": "blessing/favor", "形": "shape", "型": "mold/type", "傾": "incline/lean", "係": "relation/clerk", "軍": "military", "群": "group/herd", "訓": "instruction/teaching", "君": "you (familiar)/lord", "靴": "shoes", "掘": "dig", "隅": "corner", "偶": "chance/even number", "具": "tool/concrete", "苦": "suffering/bitter", "禁": "prohibit", "均": "equal/even", "勤": "work/serve", "玉": "ball/jewel", "極": "extreme/pole", "曲": "bend/music piece", "局": "bureau/situation", "胸": "chest", "狭": "narrow", "況": "condition/situation", "橋": "bridge", "挟": "insert between/pinch", "恐": "fear", "境": "boundary/environment", "叫": "shout", "協": "cooperate", "共": "together", "競": "compete", "供": "offer/supply", "漁": "fishing", "許": "permit", "巨": "huge", "居": "exist/stay", "旧": "old/former", "給": "supply/salary", "級": "class/grade", "球": "ball/sphere", "泣": "cry (weep)", "求": "seek", "救": "rescue", "吸": "inhale", "久": "long time", "逆": "reverse/opposite", "客": "guest/customer", "詰": "stuff/pack", "喫": "consume (as in tea)", "議": "discuss", "疑": "doubt", "技": "skill/technique", "記": "record/write", "規": "rule/standard", "季": "season", "祈": "pray", "機": "machine/opportunity", "期": "period/term", "机": "desk", "希": "hope/rare", "寄": "approach/donate", "基": "foundation/basis", "器": "vessel/container", "喜": "joy", "危": "danger", "願": "wish/request", "岩": "rock", "岸": "shore/coast", "含": "contain/include", "丸": "circle/round", "関": "relate/barrier", "観": "view/observe", "簡": "simple", "管": "tube/manage", "看": "watch over/nurse", "甘": "sweet", "環": "ring/surround", "汗": "sweat", "換": "exchange/replace", "慣": "be used to", "感": "feeling", "干": "dry", "官": "government official", "完": "complete", "巻": "roll/volume", "刊": "publish", "乾": "dry", "活": "lively/activity", "割": "divide/ratio", "額": "amount/forehead", "革": "leather/reform", "較": "compare", "角": "corner/angle", "覚": "remember/feel", "確": "certain", "格": "status/style", "拡": "expand", "各": "each", "害": "harm", "貝": "shellfish", "階": "floor/story", "絵": "picture", "皆": "everyone", "灰": "ash", "械": "machine (apparatus)", "改": "reform/change", "快": "pleasant/comfortable", "解": "solve/understand", "介": "mediate/introduce", "過": "pass/excess", "貨": "goods/currency", "課": "lesson/section (office)", "菓": "confectionery", "荷": "cargo/burden", "河": "river", "果": "fruit/result", "科": "department/science", "可": "possible/permit", "加": "add", "価": "price/value", "仮": "temporary/tentative", "化": "change/-ify", "温": "warm", "億": "hundred million", "黄": "yellow", "王": "king", "欧": "Europe", "横": "horizontal/side", "押": "push", "応": "respond/support", "奥": "interior/deep inside", "央": "center", "汚": "dirty", "塩": "salt", "煙": "smoke", "演": "perform", "延": "extend/postpone", "園": "garden/park", "越": "cross over/exceed", "液": "liquid", "鋭": "sharp", "泳": "swim", "永": "eternal", "栄": "glory/flourish", "営": "operate/manage", "雲": "cloud", "羽": "feather/wing", "宇": "space/universe", "因": "cause", "印": "seal/mark", "育": "raise/educate", "域": "region/area", "違": "differ/wrong", "衣": "clothing", "胃": "stomach", "移": "move/shift", "異": "different/unusual", "易": "easy/change", "委": "entrust", "囲": "surround", "偉": "great/mighty", "依": "rely/depend", "位": "rank/position", "案": "plan/proposal", "圧": "pressure", "愛": "love"};
-const VOCAB = {"人生": "life", "人間": "human being", "人": "person", "祖先": "ancestor", "親戚": "relative", "夫婦": "married couple", "長男": "eldest son", "主人": "husband; proprietor", "双子": "twins", "迷子": "lost child", "他人": "stranger; others", "敵": "enemy", "味方": "ally", "筆者": "author (of a text)", "寿命": "lifespan", "将来": "the future", "才能": "talent", "能力": "ability", "長所": "strong point", "個性": "individuality", "遺伝": "heredity", "動作": "movement; action", "真似": "imitation", "睡眠": "sleep", "食欲": "appetite", "外食": "eating out", "家事": "housework", "出産": "childbirth", "介護": "nursing care", "共働き": "dual income (both spouses working)", "出勤": "going to work", "出世": "success in one's career", "地位": "status; position", "受験": "taking an exam", "専攻": "academic major", "支度": "preparation", "全身": "whole body", "しみ": "blemish; spot", "服装": "attire", "礼": "thanks; gratitude", "お世辞": "flattery", "言い訳": "excuse", "話題": "topic", "秘密": "secret", "尊敬": "respect", "謙遜": "modesty", "期待": "expectation", "苦労": "hardship", "意思": "will; intention", "感情": "emotion", "材料": "ingredients; material", "石": "stone", "紐": "string; cord", "鍵": "key", "名簿": "name list; roster", "表": "table; chart", "針": "needle", "栓": "cork; stopper", "湯気": "steam", "日当たり": "sunlight exposure", "空": "empty", "斜め": "diagonal; slanted", "履歴": "personal history; resume", "娯楽": "entertainment", "司会": "emcee; host", "歓迎": "welcome", "窓口": "teller window; counter", "手続き": "procedure", "徒歩": "on foot", "駐車": "parking", "違反": "violation", "平日": "weekday", "日付": "date", "日中": "daytime", "日程": "schedule (of days)", "日帰り": "day trip", "順序": "order; sequence", "時期": "time; period", "現在": "present; now", "臨時": "temporary; special", "費用": "cost; expense", "相場": "market price", "割引き": "discount", "おまけ": "extra; freebie", "無料": "free of charge", "現金": "cash", "合計": "total", "収入": "income", "支出": "expenditure", "予算": "budget", "利益": "profit", "赤字": "deficit; being in the red", "経費": "expenses", "感謝": "gratitude", "弁償": "compensation (for damage)", "請求": "request; claim", "景気": "economic conditions", "募金": "fundraising", "募集": "recruitment", "価値": "value", "好む": "to prefer; to like", "嫌う": "to dislike", "願う": "to wish; to hope", "甘える": "to act spoiled; to presume upon another's kindness", "可愛がる": "to dote on; to be fond of", "気づく": "to notice", "疑う": "to suspect; to doubt", "苦しむ": "to suffer", "悲しむ": "to grieve; to feel sad", "がっかりする": "to be disappointed", "励ます": "to encourage", "頷く": "to nod", "張り切る": "to be full of enthusiasm", "調子に乗る": "to get carried away", "怒鳴る": "to shout angrily", "暴れる": "to rampage; to act violently", "しゃがむ": "to crouch down", "どく": "to get out of the way", "どける": "to move (something) out of the way", "被る": "to wear (on the head); to cover oneself with", "被せる": "to cover (something) with", "かじる": "to bite into; to gnaw", "打つ": "to hit; to shoot", "漕ぐ": "to pedal; to row", "敷く": "to spread out; to lay down", "注ぐ": "to pour", "配る": "to distribute", "放る": "to throw; to toss", "掘る": "to dig", "蒔く": "to sow (seeds)", "測る": "to measure", "占う": "to tell fortunes", "引っ張る": "to pull", "突く": "to poke; to jab", "突き当たる": "to come to the end of (a road)", "立ち止まる": "to stop walking", "近寄る": "to approach", "横切る": "to cross", "転ぶ": "to fall over", "つまずく": "to trip", "轢く": "to run over (with a vehicle)", "溺れる": "to drown", "痛む": "to hurt; to ache", "かかる": "to catch (a disease); to take (time/cost)", "酔う": "to get drunk; to feel sick (motion)", "吐く": "to exhale; to vomit", "診る": "to examine (medically)", "見舞う": "to visit (someone ill)", "勤める": "to be employed at", "稼ぐ": "to earn", "支払う": "to pay", "受け取る": "to receive", "払い込む": "to pay in", "払い戻す": "to refund", "引き出す": "to withdraw", "儲かる": "to make a profit (intransitive)", "儲ける": "to earn a profit", "落ち込む": "to decline; to feel depressed", "売れる": "to sell well", "売り切れる": "to sell out", "くっつく": "to stick together", "くっつける": "to stick (things) together", "固まる": "to harden; to solidify", "固める": "to harden; to solidify (something)", "縮む": "to shrink", "縮まる": "to shorten; to get closer", "縮める": "to shorten (something)", "沈む": "to sink", "沈める": "to sink (something)", "下がる": "to go down; to hang down", "下げる": "to lower", "転がる": "to roll", "転がす": "to roll (something)", "傾く": "to tilt; to lean", "傾ける": "to tilt (something)", "裏返す": "to turn over (face-down/up)", "散らかる": "to be scattered; to be messy", "散らかす": "to scatter; to make a mess", "散らばる": "to be scattered about", "刻む": "to chop finely; to carve", "挟まる": "to get caught/stuck between", "挟む": "to insert between; to catch between", "潰れる": "to be crushed", "潰す": "to crush", "へこむ": "to get dented", "解ける": "to come undone", "解く": "to untie; to unwrap", "枯れる": "to wither", "枯らす": "to wither (something)", "傷む": "to spoil; to get damaged", "湿る": "to become damp", "凍る": "to freeze", "震える": "to tremble; to shiver", "輝く": "to shine; to sparkle", "溢れる": "to overflow", "余る": "to remain; to be left over", "目立つ": "to stand out", "見下ろす": "to look down at", "戦う": "to fight", "敗れる": "to be defeated", "逃げる": "to run away", "逃す": "to let escape; to miss", "戻る": "to return", "戻す": "to put back", "はまる": "to fit into; to be set with", "はめる": "to fit; to fasten", "扱う": "to handle", "関わる": "to be involved with", "目指す": "to aim for", "発つ": "to depart", "迎える": "to welcome; to greet", "持てる": "to be popular", "例える": "to compare (metaphorically)", "努める": "to strive; to make an effort", "勤まる": "to be able to fill (a post)", "務める": "to serve as (a role)", "取り消す": "to cancel", "終える": "to finish", "呼びかける": "to call out to", "呼び出す": "to summon; to call out", "ありがたい": "grateful", "申し訳ない": "sorry; inexcusable", "めでたい": "happy; auspicious", "幸いな": "fortunate", "恋しい": "dear; longed for", "懐かしい": "nostalgic", "幼い": "very young; childish", "心細い": "helpless; uneasy", "かわいそうな": "pitiful; poor", "気の毒な": "pitiable; unfortunate", "貧しい": "poor", "惜しい": "regrettable; a pity", "仕方ない": "it can't be helped", "やむを得ない": "unavoidable", "面倒": "troublesome", "しつこい": "persistent; pushy", "くどい": "tedious; wordy", "煙い": "smoky", "邪魔な": "in the way", "うるさい": "noisy; annoying", "恐ろしい": "frightening", "慌ただしい": "hectic; busy", "そそっかしい": "careless; scatterbrained", "思いがけない": "unexpected", "何気ない": "casual; unintentional", "とんでもない": "outrageous; unthinkable", "くだらない": "worthless; trivial", "バカバカしい": "absurd; ridiculous", "でたらめな": "random; nonsensical", "だらしない": "sloppy; untidy", "図々しい": "shameless; brazen", "ずるい": "sly; unfair", "憎らしい": "hateful; annoying", "憎い": "hateful", "険しい": "steep; harsh", "辛い": "painful; hard", "きつい": "tight; harsh", "緩い": "loose", "鈍い": "dull", "鋭い": "sharp", "荒い": "rough; wild", "強引な": "forceful; pushy", "勝手な": "selfish; arbitrary", "強気な": "assertive; bullish", "頑固な": "stubborn", "過剰な": "excessive", "重大な": "serious; grave", "深刻な": "serious; grave", "気楽な": "carefree", "安易な": "easy-going; facile", "運": "luck", "勘": "intuition", "感覚": "sense; sensation", "神経": "nerve", "記憶": "memory", "様子": "condition; appearance", "雰囲気": "atmosphere", "魅力": "charm; appeal", "機嫌": "mood", "関心": "interest", "意欲": "motivation; enthusiasm", "全力": "all one's strength", "本気": "seriousness; earnestness", "意識": "consciousness", "感激": "deep emotion; being moved", "同情": "sympathy", "同意": "agreement; consent", "同感": "same feeling; agreement", "対立": "confrontation; opposition", "主張": "assertion; claim", "要求": "demand", "得": "profit; gain", "損": "loss", "勝負": "match; contest", "勢い": "momentum; force", "爆発": "explosion", "災害": "disaster", "天候": "weather", "乾燥": "dryness; drying", "観測": "observation", "遭難": "being in distress; disaster", "発生": "occurrence", "登場": "appearance (on stage)", "回復": "recovery", "援助": "assistance", "保険": "insurance", "追加": "addition", "応用": "application (practical use)", "回答": "answer; response", "結論": "conclusion", "案": "proposal; idea", "集中": "concentration", "区別": "distinction", "差別": "discrimination", "中間": "middle", "逆": "opposite; reverse", "よそ": "elsewhere; other places", "他": "other", "境": "border; boundary", "半ば": "halfway; middle", "普段": "usually; ordinarily", "日常": "everyday; daily life", "一般": "general", "常識": "common sense", "ことわざ": "proverb", "権利": "right (entitlement)", "義務": "duty; obligation", "きっかけ": "trigger; opportunity", "行動": "action; behavior", "使用": "use", "提出": "submission", "期限": "deadline; time limit", "延期": "postponement", "延長": "extension", "短縮": "shortening", "映像": "image; footage", "撮影": "filming; photography", "背景": "background", "独立": "independence", "候補": "candidate", "支持": "support", "投票": "voting", "当選": "being elected", "抽選": "lottery drawing", "配布": "distribution", "失格": "disqualification", "余暇": "leisure time", "行事": "event; function", "理想": "ideal", "現実": "reality", "体験": "experience", "空想": "fantasy; imagination", "実物": "the real thing", "実現": "realization (of a dream/plan)", "実施": "implementation", "許可": "permission", "全体": "the whole", "部分": "part", "統一": "unification", "拡大": "enlargement", "縮小": "reduction", "集合": "gathering", "方向": "direction", "間隔": "interval; gap", "脇": "side; armpit", "通過": "passing through", "移動": "movement", "停止": "stoppage", "低下": "decline; fall", "超過": "excess", "立ち上がる": "to stand up", "飛び上がる": "to jump up", "浮かび上がる": "to float/rise to the surface", "舞い上がる": "to fly up; to swirl up", "燃え上がる": "to burst into flame", "盛り上がる": "to swell up; to get excited", "湧き上がる": "to well up", "晴れ上がる": "to clear up completely", "震え上がる": "to shudder; to tremble", "縮み上がる": "to shrivel up; to cower", "冷え上がる": "to become very cold", "出来上がる": "to be completed", "持ち上げる": "to lift up", "見上げる": "to look up at", "積み上げる": "to pile up", "打ち上げる": "to launch", "立ち上げる": "to start up (a system/business)", "切り上げる": "to round up; to wrap up early", "繰り上げる": "to move up (a date/time)", "磨き上げる": "to polish thoroughly", "鍛え上げる": "to train thoroughly", "書き上げる": "to finish writing", "育て上げる": "to raise (a child) to adulthood", "読み上げる": "to read aloud", "数え上げる": "to count up; to enumerate", "投げ出す": "to fling out; to give up", "持ち出す": "to take out", "追い出す": "to drive out", "放り出す": "to throw out; to abandon", "貸し出す": "to lend out", "聞き出す": "to elicit; to draw out (info)", "連れ出す": "to take (someone) out", "引っ張り出す": "to pull out", "逃げ出す": "to run away; to flee", "飛び出す": "to jump out", "見つけ出す": "to find; to discover", "探し出す": "to search out", "書き出す": "to write out; to begin writing", "飛び込む": "to jump into", "駆け込む": "to rush into", "割り込む": "to cut in", "差し込む": "to shine into; to insert", "染み込む": "to soak into", "引っ込む": "to withdraw into", "詰め込む": "to cram; to pack in", "飲み込む": "to swallow", "運び込む": "to carry in", "打ち込む": "to type in; to devote oneself to", "注ぎ込む": "to pour into", "引き込む": "to drag into", "書き込む": "to write in", "巻き込む": "to get caught up in", "追い込む": "to drive into (a corner)", "呼び込む": "to invite in; to bring about", "座り込む": "to sit down (and stay)", "寝込む": "to fall ill in bed", "話し込む": "to talk at length", "黙り込む": "to fall silent", "泊まり込む": "to stay overnight (for work)", "住み込む": "to live in (at one's workplace)", "煮込む": "to stew", "売り込む": "to promote; to sell hard", "頼み込む": "to plead; to beg", "教え込む": "to drill; to instill", "話し合う": "to talk together; to discuss", "言い合う": "to argue; to say to each other", "語り合う": "to talk together (deeply)", "見つめ合う": "to gaze at each other", "向かい合う": "to face each other", "助け合う": "to help each other", "分け合う": "to share", "出し合う": "to chip in together", "申し合わせる": "to agree mutually", "誘い合わせる": "to invite each other along", "隣り合わせる": "to sit next to each other", "組み合わせる": "to combine", "詰め合わせる": "to pack an assortment together", "重ね合わせる": "to overlay; to combine", "乗り合わせる": "to happen to ride together", "持ち合わせる": "to happen to have on hand", "問い合わせる": "to inquire", "照らし合わせる": "to check against; to compare", "聞き直す": "to ask again", "やり直す": "to redo", "かけ直す": "to call back", "出直す": "to come back again; to start over", "持ち直す": "to regrip; to recover", "考え直す": "to reconsider", "思い直す": "to change one's mind", "アンテナ": "antenna", "イヤホン": "earphones", "サイレン": "siren", "コード": "cord", "モニター": "monitor", "メーター": "meter (gauge)", "ペア": "pair", "リズム": "rhythm", "アクセント": "accent (pronunciation)", "アルファベット": "the alphabet", "アドレス": "address", "メモ": "memo; note", "マーク": "mark", "イラスト": "illustration", "サイン": "signature", "スター": "star (celebrity)", "アンコール": "encore", "モデル": "model", "サンプル": "sample", "スタイル": "style; figure", "ウエスト": "waist", "カロリー": "calorie", "オーバー": "over; exceeding", "コントロール": "control", "カーブ": "curve", "コース": "course", "レース": "race", "リード": "lead", "トップ": "top; first place", "ゴール": "goal; finish line", "パス": "pass", "ベスト": "best", "レギュラー": "regular (member)", "コーチ": "coach", "キャプテン": "captain", "サークル": "club; circle", "キャンパス": "campus", "オリエンテーション": "orientation", "カリキュラム": "curriculum", "プログラム": "program", "レッスン": "lesson", "レクリエーション": "recreation", "レジャー": "leisure", "ガイド": "guide", "シーズン": "season", "ダイヤ": "train schedule", "ウィークデー": "weekday", "サービス": "service", "アルコール": "alcohol", "デコレーション": "decoration", "最も": "most", "ほぼ": "almost; nearly", "相当": "considerably", "割に": "relatively", "多少": "somewhat", "少々": "a little", "全て": "everything; all", "何もかも": "everything", "たっぷり": "plenty", "できるだけ": "as much as possible", "次第に": "gradually", "徐々に": "gradually", "さらに": "furthermore; even more", "一層": "even more", "一段と": "even more", "より": "more (than)", "結局": "in the end", "ようやく": "finally", "再び": "again", "たちまち": "instantly", "今度": "this time; next time", "今後": "from now on", "後に": "later", "間もなく": "soon", "そのうちに": "before long", "やがて": "eventually", "いずれ": "eventually", "先ほど": "a while ago", "とっくに": "long ago; already", "すでに": "already", "事前に": "in advance", "当日": "the day itself", "当時": "at that time", "一時": "for a time", "重体": "critical condition", "直ちに": "immediately", "早速": "at once", "いきなり": "suddenly", "常に": "always", "絶えず": "constantly", "しばしば": "often", "度々": "frequently", "しょっちゅう": "constantly", "たまに": "occasionally", "めったに": "rarely", "にっこり": "with a smile", "にやりと": "with a smirk", "どきりと": "with a start", "はらはら": "fluttering down", "かんかん": "furious", "びっしょり": "soaking wet", "うろうろ": "wandering aimlessly", "のろのろ": "slowly; sluggishly", "ふらふら": "dizzy; unsteady", "ぶらぶら": "dangling; strolling", "従って": "therefore", "だが": "however", "ところが": "however (unexpectedly)", "しかも": "moreover", "すると": "then; thereupon", "なぜなら": "because", "だって": "but; because", "要するに": "in short", "すなわち": "that is to say", "あるいは": "or perhaps", "さて": "well, now", "では": "well then", "ところで": "by the way", "それでは": "well then", "そういえば": "now that you mention it", "ただ": "only; however", "食料": "food (provisions)", "粒": "grain; drop", "くず": "scraps; waste", "栽培": "cultivation", "収穫": "harvest", "産地": "production area", "土地": "land", "倉庫": "warehouse", "所有": "ownership", "収集": "collection", "滞在": "stay", "便": "flight/service (transportation)", "設備": "equipment; facilities", "設計": "design", "制作": "production; making", "製造": "manufacturing", "建築": "construction; architecture", "人工": "artificial", "圧力": "pressure", "刺激": "stimulus", "摩擦": "friction", "立場": "standpoint", "役割": "role", "分担": "sharing (a task)", "担当": "being in charge", "交代": "alternation; changeover", "代理": "proxy; agent", "審判": "referee; judgment", "監督": "director; supervisor", "予測": "prediction", "余儀ない": "unavoidable", "判断": "judgment", "評価": "evaluation", "指示": "instruction", "無視": "ignoring", "無断": "without permission", "承知": "understanding; consent", "納得": "understanding; being convinced", "疑問": "doubt; question", "推測": "guess; inference", "肯定": "affirmation", "参考": "reference", "程度": "degree; level", "評判": "reputation", "批評": "critique", "推薦": "recommendation", "信用": "trust; credit", "信頼": "reliance; trust", "尊重": "respect (for opinion)", "作業": "work; operation", "工夫": "ingenuity", "消化": "digestion", "吸収": "absorption", "設置": "installation", "設定": "setting (a value)", "調節": "adjustment", "調整": "adjustment; coordination", "解放": "release; liberation", "総合": "synthesis; overall", "連続": "continuation; succession", "持続": "persistence; duration", "中断": "interruption", "安定": "stability", "混乱": "confusion", "上昇": "rise; ascent", "達成": "achievement", "事情": "circumstances", "事態": "situation (serious)", "障害": "obstacle; disability", "福祉": "welfare", "社会": "society", "都会": "city", "世論": "public opinion", "民族": "ethnic group", "増大": "increase", "増量": "increase in volume", "増税": "tax increase", "増員": "staff increase", "減点": "point deduction", "減退": "decline", "減量": "weight/volume reduction", "開発": "development", "開店": "opening (a shop)", "開業": "opening a business", "開催": "holding (an event)", "閉鎖": "closure", "密閉": "sealing airtight", "改善": "improvement", "改良": "improvement (of a product)", "改革": "reform", "改正": "revision (of rules/law)", "改定": "revision (of rates)", "改修": "renovation", "一致": "agreement; match", "一方": "one side", "一定": "fixed; constant", "一人前": "full-fledged adult", "一流": "first-rate", "映る": "to be reflected", "映す": "to reflect; to project", "浸かる": "to be soaked/submerged", "漬ける": "to soak; to pickle", "浮かぶ": "to float", "浮かべる": "to float (something)", "浮く": "to float", "潜る": "to dive; to submerge", "跳ねる": "to leap; to jump", "背負う": "to carry on one's back", "追う": "to chase", "追いかける": "to chase after", "追いつく": "to catch up with", "追い越す": "to overtake", "振り向く": "to turn around (to look)", "捕る": "to catch", "取り上げる": "to pick up; to take away", "取り入れる": "to bring in; to adopt", "削る": "to sharpen; to cut down", "縛る": "to tie up", "絞る": "to wring out", "回る": "to turn; to rotate", "回す": "to turn (something)", "区切る": "to divide; to punctuate", "組む": "to cross; to fold", "組み立てる": "to assemble", "加わる": "to be added; to join", "加える": "to add", "仕上がる": "to be finished", "仕上げる": "to finish (something)", "通りかかる": "to happen to pass by", "飛び回る": "to fly around", "巡る": "to go around", "補う": "to make up for; to supplement", "防ぐ": "to prevent", "救う": "to save; to rescue", "除く": "to remove; to exclude", "省く": "to omit", "誤る": "to make a mistake", "奪う": "to steal; to rob", "しまう": "to put away", "怠ける": "to be lazy", "失う": "to lose", "攻める": "to attack", "睨む": "to glare at", "責める": "to blame", "裏切る": "to betray", "頼る": "to rely on", "遭う": "to encounter (misfortune)", "招く": "to invite", "引っかかる": "to get caught on", "引っかける": "to hook; to catch on", "ひっくり返る": "to be turned upside down", "ひっくり返す": "to turn over (something)", "ずれる": "to shift out of place", "ずらす": "to shift (something)", "崩れる": "to collapse", "崩す": "to demolish; to break down", "荒れる": "to become rough/stormy", "荒らす": "to ransack; to devastate", "認める": "to acknowledge", "見直す": "to review; to look at again", "見慣れる": "to become used to seeing", "求める": "to seek", "漏れる": "to leak", "漏らす": "to let leak; to spill", "なる": "to bear fruit", "焦げる": "to get burnt", "反する": "to go against", "膨れる": "to swell up", "膨らむ": "to swell; to expand", "膨らます": "to inflate; to puff out", "尖る": "to become pointed", "当てはまる": "to apply to; to fit", "就く": "to take up (a position)", "受け持つ": "to be in charge of", "従う": "to obey; to follow", "つぶやく": "to murmur", "述べる": "to state", "目覚める": "to wake up", "限る": "to limit", "偏る": "to be biased; to lean to one side", "薄まる": "to become diluted", "薄める": "to dilute", "薄れる": "to fade; to thin out", "透き通る": "to be transparent", "静まる": "to become quiet", "鎮める": "to calm; to quell", "優れる": "to excel", "落ち着く": "to calm down", "長引く": "to drag on", "衰える": "to decline; to weaken", "備わる": "to be equipped with", "備える": "to prepare; to equip", "蓄える": "to save up; to store", "整う": "to be arranged; ready", "整える": "to arrange; to prepare", "覆う": "to cover", "干す": "to dry; to air out", "照らす": "to illuminate", "染まる": "to be dyed", "染める": "to dye", "ダブる": "to overlap; to double up", "憧れる": "to admire; to yearn for", "羨む": "to envy", "諦める": "to give up", "呆れる": "to be amazed/exasperated", "恐れる": "to fear", "恨む": "to resent", "慰める": "to comfort", "インテリア": "interior (decor)", "コーナー": "corner (section)", "カウンター": "counter", "スペース": "space", "オープン": "open (opening)", "センター": "center", "カルチャー": "culture", "ブーム": "boom (trend)", "インフォメーション": "information (desk)", "キャッチ": "catch", "メディア": "media", "コメント": "comment", "コラム": "column", "エピソード": "episode; anecdote", "アリバイ": "alibi", "シリーズ": "series", "ポイント": "point", "キー": "key", "マスター": "mastering", "ビジネス": "business", "キャリア": "career", "ベテラン": "veteran (experienced)", "フリー": "freelance; free", "エコノミー": "economy (class)", "キャッシュ": "cash", "インフレ": "inflation", "デモ": "demonstration (protest)", "メーカー": "manufacturer", "システム": "system", "ケース": "case", "パターン": "pattern", "プラン": "plan", "トラブル": "trouble", "エラー": "error", "クレーム": "complaint", "キャンセル": "cancellation", "ストップ": "stop", "カット": "cut", "カバー": "cover", "リハビリ": "rehabilitation", "プレッシャー": "pressure", "カウンセリング": "counseling", "キャラクター": "character (personality)", "ユニークな": "unique", "ルーズな": "loose; lax", "ロマンチックな": "romantic", "センス": "sense (of style)", "エコロジー": "ecology", "ダム": "dam", "コンクリート": "concrete", "単純な": "simple", "純粋な": "pure", "透明な": "transparent", "爽やかな": "refreshing", "素直な": "obedient; honest", "率直な": "frank", "誠実な": "sincere", "謙虚な": "humble", "賢い": "clever", "慎重な": "cautious", "穏やかな": "calm; mild", "真剣な": "serious", "正式な": "formal; official", "主な": "main", "主要な": "principal; major", "貴重な": "precious; valuable", "偉大な": "great", "偉い": "great; admirable", "独特な": "unique; distinctive", "特殊な": "special; special-purpose", "奇妙な": "strange", "妙な": "odd", "怪しい": "suspicious", "異常な": "abnormal", "高度な": "advanced", "新たな": "new", "合理的な": "rational; efficient", "器用な": "skillful; dexterous", "手軽な": "easy; simple", "手ごろな": "reasonable (price)", "高価な": "expensive", "贅沢な": "luxurious", "豪華な": "gorgeous; lavish", "高級な": "high-class", "上等な": "fine quality", "上品な": "elegant", "適度な": "moderate", "快適な": "comfortable", "心地よい": "pleasant", "順調な": "smooth; favorable", "活発な": "lively; active", "的確な": "accurate; precise", "確実な": "certain", "明らかな": "clear; obvious", "曖昧な": "ambiguous", "具体的な": "concrete; specific", "抽象的な": "abstract", "等しい": "equal", "平等な": "equal (fair)", "公平な": "fair; impartial", "人物": "person; character", "者": "person (humble)", "各自": "each person", "気分": "feeling; mood", "気配": "sign; indication", "生きがい": "purpose in life", "行儀": "manners", "品": "refinement; grace", "姿": "figure; appearance", "姿勢": "posture; stance", "見かけ": "appearance", "ふり": "pretense", "苦情": "complaint", "口実": "pretext; excuse", "動機": "motive", "皮肉": "irony; sarcasm", "意義": "significance", "主義": "principle; -ism", "精神": "spirit; mind", "年代": "era; decade", "世代": "generation", "基礎": "foundation; basics", "基準": "standard; criterion", "標準": "standard (level)", "典型": "typical example", "方言": "dialect", "分布": "distribution (spread)", "発展": "development", "文明": "civilization", "普及": "diffusion; spread", "制限": "restriction", "限度": "limit", "限界": "limit", "検討": "consideration; examination", "選択": "choice; selection", "考慮": "consideration", "重視": "emphasis; importance", "見当": "estimate; guess", "訂正": "correction", "修正": "revision", "反抗": "rebellion; defiance", "抵抗": "resistance", "災難": "misfortune; disaster", "汚染": "pollution", "害": "harm", "伝染": "contagion", "対策": "countermeasure", "処置": "treatment; measure", "処分": "disposal", "処理": "processing", "輪": "ring; circle", "でこぼこ": "bumpy; uneven", "跡": "mark; trace", "手間": "time and effort", "能率": "efficiency", "性能": "performance (of a machine)", "操作": "operation", "発揮": "exhibiting (ability)", "頂点": "apex; peak", "周辺": "surrounding area", "現場": "the scene; site", "状況": "situation", "組織": "organization", "制度": "system; institution", "構成": "composition; structure", "形式": "format; form", "傾向": "tendency", "方針": "policy; course", "徹底": "thoroughness", "分析": "analysis", "維持": "maintenance", "管理": "management", "行方": "whereabouts", "端": "edge", "場": "place; occasion", "分野": "field (of study)", "需要": "demand", "供給": "supply", "物資": "goods; supplies", "用途": "use; application", "関連": "relation; connection", "消耗": "consumption; wear", "欠陥": "defect", "予備": "spare; reserve", "付属": "attachment; affiliated", "手当て": "first aid; treatment", "元": "original place", "面": "mask", "説": "theory", "差": "difference", "間": "interval; time span", "分": "one's share", "筋": "plot; storyline", "余裕": "room to spare", "負担": "burden; cost", "保証": "guarantee; warranty", "催促": "demand; pressing", "成立": "establishment (of a state/agreement)", "矛盾": "contradiction", "存在": "existence", "編む": "to knit", "縫う": "to sew", "指す": "to point at", "示す": "to show; to indicate", "すすぐ": "to rinse", "触る": "to touch", "触れる": "to touch (lightly)", "抱く": "to harbor (a feeling)", "抱える": "to hold in one's arms", "担ぐ": "to carry on one's shoulder", "剥がす": "to peel off", "描く": "to depict; to draw", "砕ける": "to break into pieces", "砕く": "to crush", "塞がる": "to be blocked; occupied", "塞ぐ": "to block; to close up", "避ける": "to avoid", "それる": "to deviate", "そらす": "to divert (a topic/gaze)", "見つめる": "to gaze at", "眺める": "to gaze at; to view", "見合わせる": "to look at each other", "見送る": "to see off", "訪れる": "to visit; to arrive", "引き返す": "to turn back", "去る": "to leave; to pass", "すする": "to slurp", "味わう": "to savor", "匂う": "to smell", "飢える": "to starve", "問う": "to ask; to question", "語る": "to narrate; to tell", "誓う": "to vow", "支える": "to support", "費やす": "to spend (time/money)", "用いる": "to use", "改まる": "to be corrected; to improve", "改める": "to correct; to reform", "収まる": "to fit; to be contained", "収める": "to put away; to achieve", "沿う": "to run along", "添える": "to add; to attach", "兼ねる": "to serve dual purpose", "適する": "to be suited to", "相当する": "to correspond to", "伴う": "to be accompanied by", "響く": "to resound; to echo", "次ぐ": "to rank next to", "略す": "to abbreviate", "迫る": "to approach; to draw near", "狙う": "to aim at", "犯す": "to commit (a crime)", "侵す": "to invade; to violate", "冒す": "to brave; to risk", "脅す": "to threaten", "脅かす": "to startle; to threaten", "逆らう": "to go against", "妨げる": "to hinder", "打ち消す": "to deny; to negate", "応じる": "to respond to", "承る": "to humbly receive", "頂戴する": "to humbly receive", "学ぶ": "to learn; to study", "塗る": "to spread; to paint", "負う": "to carry (on one's back); to bear", "果たす": "to fulfill", "引き受ける": "to undertake", "増す": "to increase", "欠ける": "to chip; to be missing", "欠かす": "to do without", "澄む": "to become clear", "濁る": "to become muddy", "濁す": "to make vague; to muddy", "生じる": "to arise", "及ぶ": "to reach; to extend to", "及ぼす": "to exert (an effect)", "至る": "to lead to; to reach", "達する": "to reach", "実る": "to bear fruit; to ripen", "暮れる": "to get dark", "劣る": "to be inferior", "異なる": "to differ", "乱れる": "to be disturbed; disordered", "乱す": "to disturb; to disrupt", "緩む": "to loosen", "緩める": "to loosen (something)", "錆びる": "to rust", "接する": "to border; to touch", "属する": "to belong to", "占める": "to occupy; to account for", "くたびれる": "to get exhausted", "恵まれる": "to be blessed with", "湧く": "to gush; to spring up", "微笑む": "to smile", "ふざける": "to joke around", "悔やむ": "to regret", "ためらう": "to hesitate", "敬う": "to respect", "さっぱり": "refreshed", "すっきり": "refreshed; clear-headed", "実に": "truly", "思いきり": "to one's heart's content", "なんとなく": "somehow", "なんだか": "somehow; for some reason", "どうにか": "somehow (manage to)", "どうにも": "in no way (with negative)", "なんとか": "somehow or other", "なんとも": "nothing in particular", "わざと": "on purpose", "わざわざ": "going out of one's way", "せっかく": "with much trouble; only to", "あいにく": "unfortunately", "案の定": "as expected", "いよいよ": "finally; at last", "さすが": "as expected (of)", "とにかく": "anyway", "ともかく": "in any case", "せめて": "at least", "せいぜい": "at most", "どうせ": "anyway; in any case", "ぎっしり": "tightly packed", "ずらりと": "in a row", "あっさり": "lightly; simply", "しんと": "silently", "ちゃんと": "properly", "続々と": "one after another", "どっと": "all at once", "ばったりと": "suddenly (collapsing/meeting)", "さっさと": "quickly; promptly", "さっと": "swiftly", "すっと": "smoothly; swiftly", "せっせと": "diligently", "ざっと": "roughly", "こっそり": "secretly", "生き生きと": "vividly; vibrantly", "ぼんやりと": "vaguely; dimly", "ふと": "suddenly; on a whim", "じかに": "directly", "一度に": "all at once", "一斉に": "all at once; simultaneously", "共に": "together with", "相互に": "mutually", "一人一人": "each and every person", "いちいち": "one by one; every little thing", "ぼろぼろ": "crumbling; worn out", "どうか": "please", "できれば": "if possible", "大して": "not particularly (with negative)", "おそらく": "probably", "むしろ": "rather", "果たして": "really; indeed", "かえって": "on the contrary", "必ずしも": "not necessarily", "単に": "merely", "未だに": "still (not yet)", "ついでに": "while at it", "とりあえず": "for now", "万が一": "in the unlikely event", "偶然": "by chance", "たまたま": "by chance", "実際に": "actually", "同様": "the same; similar", "元々": "originally", "本来": "originally; by nature", "ある": "a certain (one)", "あらゆる": "every; all kinds of", "大した": "significant (with negative: nothing much)", "いわゆる": "so-called"};
-const HAS_SEGMENTER = typeof Intl !== 'undefined' && typeof Intl.Segmenter === 'function';
-const segmenter = HAS_SEGMENTER ? new Intl.Segmenter('ja', { granularity: 'word' }) : null;
-const N2_LIST = [...N2_SET];
-const N3_LIST = [...N3_SET];
-const N4_LIST = [...N4_SET];
-const N5_LIST = [...N5_SET];
-const LVL_OF = new Map();   // kanji -> 'n2' | 'n3' | 'n4' | 'n5'
-[['n5', N5_SET], ['n4', N4_SET], ['n3', N3_SET], ['n2', N2_SET]].forEach(([lv, set]) => set.forEach(c => LVL_OF.set(c, lv)));
-// counter field names + CSS class per level (N2 keeps its original un-numbered names)
-const LV_FIELDS = {
-  n2: { total: 'total',  uniq: 'uniq',  cls: 'kj'  },
-  n3: { total: 'total3', uniq: 'uniq3', cls: 'kj3' },
-  n4: { total: 'total4', uniq: 'uniq4', cls: 'kj4' },
-  n5: { total: 'total5', uniq: 'uniq5', cls: 'kj5' }
-};
-const lvlClass = k => { const lv = LVL_OF.get(k); return lv ? ' ' + lv : ''; };
-
-
-// =====================================================================
-//  Word lookup: smart compounding + dictionary + translation + stroke order
-//  Free sources used (all browser-callable, no API keys):
-//   - kanjiapi.dev  (JMdict words + kanji info)
-//   - KanjiVG via jsDelivr / GitHub raw (stroke order SVGs, CC BY-SA)
-//   - Google Translate (unofficial gtx endpoint) and MyMemory as fallbacks
-// =====================================================================
-const JP_RE = /[\u4e00-\u9fffぁ-んァ-ヶー]/;
-const $ = id => document.getElementById(id);
-const _cache = { dict: new Map(), kanji: new Map(), svg: new Map(), tr: new Map() };
-
-async function fetchWithTimeout(url, timeoutMs){
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), timeoutMs || 7000);
-  try {
-    const res = await fetch(url, { signal: ctrl.signal });
-    if (!res.ok){ const err = new Error('HTTP ' + res.status); err.status = res.status; throw err; }
-    return res;
-  } finally { clearTimeout(t); }
-}
-async function fetchJSON(url){ return (await fetchWithTimeout(url)).json(); }
-async function fetchText(url){ return (await fetchWithTimeout(url)).text(); }
-
-function lookupWord(word){
-  if (VOCAB[word]) return { text: VOCAB[word], source: 'vocab' };
-  const parts = [];
-  for (const ch of word){
-    if (isKanji(ch) && MEANINGS[ch]) parts.push(`${ch}=${MEANINGS[ch]}`);
-  }
-  if (parts.length) return { text: parts.join('; '), source: 'kanji' };
-  return { text: '(no meaning found)', source: 'none' };
-}
-
-// ---- Dictionary (JMdict via kanjiapi.dev) ----
-async function dictLookup(word){
-  if (_cache.dict.has(word)) return _cache.dict.get(word);
-  let result = null, definitive = true;
-  try {
-    const data = await fetchJSON('https://kanjiapi.dev/v1/words/' + encodeURIComponent(word));
-    if (Array.isArray(data)){
-      const exact = data.filter(e => (e.variants || []).some(v => v.written === word || v.pronounced === word)).slice(0, 3);
-      if (exact.length){
-        const v = (exact[0].variants || []).find(v => v.written === word) || (exact[0].variants || [])[0] || {};
-        const senses = [];
-        exact.forEach(e => (e.meanings || []).forEach(m => {
-          if (m.glosses && m.glosses.length) senses.push(m.glosses.slice(0, 3).join(', '));
-        }));
-        if (senses.length) result = { reading: v.pronounced || '', senses: senses.slice(0, 5) };
-      }
-    }
-  } catch (e) {
-    if (e && e.status === 404) result = null; else definitive = false; // network/CORS problem: don't cache
-  }
-  if (definitive) _cache.dict.set(word, result);
-  return result;
-}
-
-// ---- Translation (Google gtx -> MyMemory) ----
-async function translateAny(text){
-  if (_cache.tr.has(text)) return _cache.tr.get(text);
-  let out = '', src = '';
-  try {
-    const data = await fetchJSON('https://translate.googleapis.com/translate_a/single?client=gtx&sl=ja&tl=en&dt=t&q=' + encodeURIComponent(text));
-    out = (data[0] || []).map(s => s[0]).join('').trim();
-    src = 'Google Translate';
-  } catch (e) { /* fall through */ }
-  if (!out){
-    try {
-      const data = await fetchJSON('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=ja|en');
-      const t = (data && data.responseData && data.responseData.translatedText || '').trim();
-      if (t && !/MYMEMORY WARNING/i.test(t)){ out = t; src = 'MyMemory'; }
-    } catch (e) { /* give up */ }
-  }
-  const res = out ? { text: out, source: src } : null;
-  if (res) _cache.tr.set(text, res);
-  return res;
-}
-
-// ---- Kanji info + stroke order (KanjiVG) ----
-async function kanjiInfo(ch){
-  if (_cache.kanji.has(ch)) return _cache.kanji.get(ch);
-  try {
-    const d = await fetchJSON('https://kanjiapi.dev/v1/kanji/' + encodeURIComponent(ch));
-    const info = { strokes: d.stroke_count, meanings: (d.meanings || []).slice(0, 4), on: (d.on_readings || []).slice(0, 3), kun: (d.kun_readings || []).slice(0, 3) };
-    _cache.kanji.set(ch, info);
-    return info;
-  } catch (e) { return null; }
-}
-
-function parseKanjiVG(text){
-  const paths = [];
-  const pre = /<path\s+id="kvg:[0-9a-f]+-s\d+"[^>]*?\sd="([^"]+)"/g;
-  let m;
-  while ((m = pre.exec(text))) paths.push(m[1]);
-  const nums = [];
-  const nre = /<text[^>]*transform="matrix\(1 0 0 1 ([\d.\-]+) ([\d.\-]+)\)"[^>]*>(\d+)<\/text>/g;
-  while ((m = nre.exec(text))) nums.push({ x: parseFloat(m[1]), y: parseFloat(m[2]), n: m[3] });
-  return { paths, nums };
-}
-
-async function kanjiSvg(ch){
-  if (_cache.svg.has(ch)) return _cache.svg.get(ch);
-  const hex = ch.codePointAt(0).toString(16).padStart(5, '0');
-  const urls = [
-    `https://cdn.jsdelivr.net/gh/KanjiVG/kanjivg@master/kanji/${hex}.svg`,
-    `https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/${hex}.svg`
-  ];
-  for (const u of urls){
-    try {
-      const parsed = parseKanjiVG(await fetchText(u));
-      if (parsed.paths.length){ _cache.svg.set(ch, parsed); return parsed; }
-    } catch (e) { /* try next source */ }
-  }
-  return null;
-}
-
-// ---- Segment helpers ----
-function segsOf(lineId){ return (window._lineSegs && window._lineSegs[lineId]) || []; }
-function isJpSeg(s){ return !!s && JP_RE.test(s.text); }
-function selText(sel){ return segsOf(sel.lineId).slice(sel.start, sel.end + 1).map(s => s.text).join(''); }
-function sentenceOf(lineId, idx){
-  const segs = segsOf(lineId);
-  const isEnd = t => /[。！？!?\n]/.test(t);
-  let a = idx, b = idx;
-  while (a > 0 && !isEnd(segs[a - 1].text)) a--;
-  while (b < segs.length - 1 && !isEnd(segs[b].text)) b++;
-  return segs.slice(a, b + 1).map(s => s.text).join('').trim();
-}
-
-// Try merging the clicked word with neighbours; keep the LONGEST combination
-// that is a real dictionary word (so 衛星設備-type compounds aren't split apart).
-async function resolveCompound(sel){
-  const segs = segsOf(sel.lineId);
-  const cands = [];
-  for (let a = Math.max(0, sel.start - 2); a <= sel.start; a++){
-    for (let b = sel.end; b <= Math.min(segs.length - 1, sel.end + 2); b++){
-      if (a === sel.start && b === sel.end) continue;
-      let ok = true, text = '';
-      for (let k = a; k <= b; k++){
-        if (!isJpSeg(segs[k])){ ok = false; break; }
-        text += segs[k].text;
-      }
-      if (ok && text.length <= 8 && /[\u4e00-\u9fff]/.test(text)) cands.push({ a, b, text });
-    }
-  }
-  cands.sort((x, y) => y.text.length - x.text.length);
-  const top = cands.slice(0, 8);
-  const results = await Promise.all(top.map(c => dictLookup(c.text)));
-  for (let i = 0; i < top.length; i++){
-    if (results[i]) return { lineId: sel.lineId, start: top[i].a, end: top[i].b };
-  }
-  return sel;
-}
-
-// ---- Popup ----
-let _lastSpokenWord = '';
-let _popSeq = 0;       // invalidates a whole click
-let _renderSeq = 0;    // invalidates one render of the popup
-let _sel = null;       // current selection {lineId,start,end}
-let _origSel = null;   // the single segment originally tapped
-let _lastPt = { x: 0, y: 0 };
-
-function positionWordPop(){
-  const pop = $('wordPop');
-  if (window.innerWidth <= 640){ pop.style.left = ''; pop.style.top = ''; return; } // CSS bottom sheet on phones
-  const margin = 10, pw = pop.offsetWidth, ph = pop.offsetHeight;
-  let x = Math.min(Math.max(margin, _lastPt.x - pw / 2), window.innerWidth - pw - margin);
-  let top = _lastPt.y + 18;                                  // prefer just below the tap point
-  if (top + ph > window.innerHeight - margin) top = _lastPt.y - ph - 14; // else above
-  top = Math.max(margin, Math.min(top, window.innerHeight - ph - margin));
-  pop.style.left = x + 'px';
-  pop.style.top = top + 'px';
-}
-
-function highlightSel(sel){
-  document.querySelectorAll('.word.sel').forEach(e => e.classList.remove('sel'));
-  document.querySelectorAll(`.word[data-line="${sel.lineId}"]`).forEach(e => {
-    const i = parseInt(e.dataset.i, 10);
-    if (i >= sel.start && i <= sel.end) e.classList.add('sel');
-  });
-}
-
-function showMeaning(evt, el){
-  if (evt && evt.stopPropagation) evt.stopPropagation();
-  const lineId = el.dataset.line, i = parseInt(el.dataset.i, 10);
-  _lastPt = { x: evt.clientX || window.innerWidth / 2, y: evt.clientY || window.innerHeight / 2 };
-  const mySeq = ++_popSeq;
-  _origSel = { lineId, start: i, end: i };
-  _sel = { ..._origSel };
-  openPopFor(_sel);
-  speakJapanese(selText(_sel));
-  resolveCompound(_sel).then(newSel => {
-    if (mySeq !== _popSeq) return;
-    if (newSel.start !== _sel.start || newSel.end !== _sel.end){
-      _sel = newSel;
-      openPopFor(_sel);
-      speakJapanese(selText(_sel));
-    }
-  });
-}
-
-function openPopFor(sel){
-  const rid = ++_renderSeq;
-  const word = selText(sel);
-  _lastSpokenWord = word;
-  $('popWord').innerHTML = [...word].map(ch => isKanji(ch) ? `<span class="pk" onclick="selectKanji('${ch}')" title="Show stroke order">${esc(ch)}</span>` : esc(ch)).join('');
-  $('popReading').textContent = '';
-  const local = lookupWord(word);
-  $('popMeaning').textContent = local.text;
-  $('popSource').textContent = local.source === 'vocab' ? 'From your N2 vocab list — checking dictionary…'
-    : local.source === 'kanji' ? 'Per-kanji hints — looking up the full word…' : 'Looking up…';
-  $('popSentence').innerHTML = '';
-  $('popKanji').innerHTML = '';
-  highlightSel(sel);
-  $('wordPop').classList.remove('hidden');
-  positionWordPop();
-
-  dictLookup(word).then(async d => {
-    if (rid !== _renderSeq) return;
-    if (d){
-      $('popReading').textContent = (d.reading && d.reading !== word) ? d.reading : '';
-      $('popMeaning').innerHTML = d.senses.map((s, k) =>
-        `<div>${d.senses.length > 1 ? `<span style="color:var(--muted)">${k + 1}.</span> ` : ''}${esc(s)}</div>`).join('');
-      $('popSource').textContent = 'Dictionary (JMdict)';
-    } else {
-      const tr = await translateAny(word);
-      if (rid !== _renderSeq) return;
-      if (tr){
-        $('popMeaning').textContent = tr.text;
-        $('popSource').textContent = 'Translated by ' + tr.source + ' (not an exact dictionary word — use ◀ ▶ to adjust)';
-      } else if (local.source === 'none'){
-        $('popMeaning').textContent = '(no meaning found — try ◀ ▶ to extend, or open in Jisho)';
-        $('popSource').textContent = '';
-      } else {
-        $('popSource').textContent = 'Offline hints only (live lookup unavailable from this host)';
-      }
-    }
-    positionWordPop();
-  });
-
-  renderKanjiCards(word, rid);
-}
-
-// ---- Kanji details: chips + stroke-order animation + ONE link to WriteJapanese ----
-// The animation is drawn from KanjiVG stroke data (CC BY-SA 3.0).
-let _kList = [];
-let _kSel = '';
-let _animTimers = [];
-function clearAnimTimers(){ _animTimers.forEach(clearTimeout); _animTimers = []; }
-
-function renderKanjiCards(word, rid){
-  _kList = [...new Set([...word].filter(isKanji))].slice(0, 8);
-  const box = $('popKanji');
-  if (!_kList.length){ clearAnimTimers(); box.innerHTML = ''; return; }
-  if (!_kList.includes(_kSel)) _kSel = _kList[0];
-  drawKanjiSection();
-}
-
-function selectKanji(k){
-  if (!k) return;
-  _kSel = k;
-  drawKanjiSection();
-}
-
-function drawKanjiSection(){
-  clearAnimTimers();
-  const box = $('popKanji');
-  const chips = _kList.map(k =>
-    `<button class="kchip${k === _kSel ? ' on' : ''}${lvlClass(k)}" onclick="selectKanji('${k}')" title="Show details for ${k}">${k}</button>`).join('');
-  box.innerHTML =
-    `<div class="text-[10px] mt-3" style="color:var(--muted); letter-spacing:.06em;">STROKE ORDER — TAP A KANJI</div>` +
-    `<div class="kchips">${chips}</div>` +
-    `<div id="kCard" class="mt-2"></div><div id="kInfo" class="kmeta mt-2"></div>`;
-  fillKanjiCard();
-}
-
-function strokeAnimCardHTML(data){
-  const g = `<line class="g" x1="54.5" y1="2" x2="54.5" y2="107"/><line class="g" x1="2" y1="54.5" x2="107" y2="54.5"/>`;
-  const ghost = data.paths.map(d => `<path class="sp ghost" d="${d}"/>`).join('');
-  const live = data.paths.map(d => `<path class="sp live" d="${d}"/>`).join('');
-  const nums = data.nums.map(n => `<text class="sn" x="${n.x}" y="${n.y}">${n.n}</text>`).join('');
-  const main = `<svg class="kvg big" id="kvgMain" viewBox="0 0 109 109" xmlns="http://www.w3.org/2000/svg">${g}${ghost}${live}${nums}</svg>`;
-  const controls = `<div class="kctl"><button class="popbtn sm" onclick="playKanjiAnim()">▶ Play</button>` +
-    `<label class="kspd">Slow <input id="kSpeed" type="range" min="1" max="5" value="3" onchange="playKanjiAnim()"> Fast</label></div>`;
-  const frames = data.paths.map((_, i) => {
-    let inner = '';
-    for (let j = 0; j <= i; j++) inner += `<path class="sp ${j === i ? 'cur' : 'done'}" d="${data.paths[j]}"/>`;
-    return `<svg class="kframe" viewBox="0 0 109 109" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
-  }).join('');
-  return main + controls +
-    `<div class="text-[10px]" style="color:var(--muted);">${data.paths.length} strokes — step by step</div>` +
-    `<div class="kframes">${frames}</div>` +
-    `<div class="text-[9px]" style="color:var(--muted);">Stroke data: KanjiVG © Ulrich Apel, CC BY-SA 3.0</div>`;
-}
-
-function playKanjiAnim(){
-  clearAnimTimers();
-  const svg = $('kvgMain');
-  if (!svg) return;
-  const paths = [...svg.querySelectorAll('.sp.live')];
-  const nums = [...svg.querySelectorAll('.sn')];
-  const speed = parseInt(($('kSpeed') || {}).value || '3', 10);
-  const dur = [1100, 800, 550, 380, 250][Math.min(Math.max(speed, 1), 5) - 1];
-  nums.forEach(n => { n.style.opacity = '0'; });
-  paths.forEach(p => {
-    const L = p.getTotalLength();
-    p.style.transition = 'none';
-    p.style.strokeDasharray = L;
-    p.style.strokeDashoffset = L;
-  });
-  if (svg.getBoundingClientRect) svg.getBoundingClientRect(); // force reflow before animating
-  paths.forEach((p, i) => {
-    _animTimers.push(setTimeout(() => {
-      p.style.transition = `stroke-dashoffset ${dur}ms linear`;
-      p.style.strokeDashoffset = 0;
-      if (nums[i]) nums[i].style.opacity = '1';
-    }, 200 + i * (dur + 120)));
-  });
-}
-
-function fillKanjiCard(){
-  const k = _kSel, rid = _renderSeq;
-  const card = $('kCard'), infoBox = $('kInfo');
-  if (!card || !k) return;
-
-  card.innerHTML = '<div class="text-[10px]" style="color:var(--muted)">loading…</div>';
-  kanjiSvg(k).then(svg => {
-    if (rid !== _renderSeq || k !== _kSel) return;
-    if (svg){
-      card.innerHTML = strokeAnimCardHTML(svg);
-      playKanjiAnim();
-    } else {
-      card.innerHTML = `<div class="text-[11px]" style="color:var(--muted)">Couldn't load the stroke data from this host.</div>`;
-    }
-    positionWordPop();
-  });
-
-  infoBox.innerHTML = `<div class="kch${lvlClass(k)}">${k}</div><div class="muted">loading…</div>`;
-  kanjiInfo(k).then(info => {
-    if (rid !== _renderSeq || k !== _kSel) return;
-    infoBox.innerHTML = `<div class="kch${lvlClass(k)}">${k}</div>` + (info
-      ? `<div>${info.strokes} strokes — ${esc(info.meanings.join(', '))}</div>` +
-        `<div class="muted">音 ${esc(info.on.join('・') || '—')} &nbsp; 訓 ${esc(info.kun.join('・') || '—')}</div>`
-      : `<div class="muted">(details unavailable)</div>`) +
-      `<div style="margin-top:6px;"><a class="lnk text-[12px]" href="${wjUrl(k)}" target="_blank" rel="noopener">Stroke order on WriteJapanese ↗</a></div>`;
-    positionWordPop();
-  });
-}
-
-// Link target for the kanji details: WriteJapanese's page, landing on its stroke-order section
-function wjUrl(k){ return 'https://www.writejapanese.com/kanji/' + encodeURIComponent(k) + '#stroke-order'; }
-
-function extendSel(dir){
-  if (!_sel) return;
-  const segs = segsOf(_sel.lineId);
-  let { start, end } = _sel;
-  if (dir < 0){
-    if (start - 1 >= 0 && isJpSeg(segs[start - 1])) start--; else { toast('Nothing to add on the left'); return; }
-  } else {
-    if (end + 1 < segs.length && isJpSeg(segs[end + 1])) end++; else { toast('Nothing to add on the right'); return; }
-  }
-  _popSeq++; // stop any pending auto-compound from overriding this manual choice
-  _sel = { lineId: _sel.lineId, start, end };
-  openPopFor(_sel);
-  speakJapanese(selText(_sel));
-}
-
-function resetSel(){
-  if (!_origSel) return;
-  _popSeq++;
-  _sel = { ..._origSel };
-  openPopFor(_sel);
-  speakJapanese(selText(_sel));
-}
-
-function translateSentenceClick(){
-  if (!_sel) return;
-  const sent = sentenceOf(_sel.lineId, _sel.start);
-  const box = $('popSentence');
-  box.innerHTML = `<div class="sent"><div class="sj">${esc(sent)}</div><div class="se" style="color:var(--muted)">Translating…</div></div>`;
-  const rid = _renderSeq;
-  translateAny(sent).then(tr => {
-    if (rid !== _renderSeq) return;
-    const se = box.querySelector('.se');
-    if (!se) return;
-    se.style.color = 'var(--text)';
-    se.textContent = tr ? `${tr.text}  (${tr.source})` : 'Translation unavailable from this host — use the Google Translate link below.';
-    positionWordPop();
-  });
-}
-
-function closeWordPop(){
-  _popSeq++; _renderSeq++;
-  clearAnimTimers();
-  $('wordPop').classList.add('hidden');
-  document.querySelectorAll('.word.sel').forEach(e => e.classList.remove('sel'));
-}
-
-function replayPopAudio(){
-  if (_lastSpokenWord) speakJapanese(_lastSpokenWord);
-}
-
-// Close the popup on any click/tap outside it, or Escape
-document.addEventListener('click', (e) => {
-  const pop = $('wordPop');
-  if (pop.classList.contains('hidden')) return;
-  if (e.target.closest('#wordPop') || e.target.closest('.word')) return;
-  closeWordPop();
-});
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeWordPop(); });
-
-
-// --- Speech (same robust approach used in the SRS app: unlock on first tap,
-// detect an actual Japanese voice, surface errors instead of failing silently) ---
-let _japaneseVoice = null;
-let _speechUnlocked = false;
-function setupSpeech(){
-  if (!('speechSynthesis' in window)) return;
-  const pickVoice = () => {
-    const voices = window.speechSynthesis.getVoices() || [];
-    _japaneseVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('ja')) || null;
-  };
-  pickVoice();
-  if ('onvoiceschanged' in window.speechSynthesis) window.speechSynthesis.onvoiceschanged = pickVoice;
-
-  const unlock = () => {
-    if (_speechUnlocked) return;
-    _speechUnlocked = true;
-    try{
-      const primer = new SpeechSynthesisUtterance(' ');
-      primer.volume = 0;
-      window.speechSynthesis.speak(primer);
-    }catch(e){ /* ignore */ }
-    document.removeEventListener('touchend', unlock);
-    document.removeEventListener('click', unlock);
-  };
-  document.addEventListener('touchend', unlock, { once: true });
-  document.addEventListener('click', unlock, { once: true });
-}
-function speakJapanese(text){
-  if (!('speechSynthesis' in window) || !text) return;
-  if (!_japaneseVoice){
-    const voices = window.speechSynthesis.getVoices() || [];
-    _japaneseVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('ja')) || null;
-  }
-  const synth = window.speechSynthesis;
-  if (synth.speaking || synth.pending) synth.cancel();
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = 'ja-JP';
-  if (_japaneseVoice) utt.voice = _japaneseVoice;
-  utt.onerror = (ev) => {
-    const code = ev && ev.error ? ev.error : 'unknown';
-    if (code === 'interrupted' || code === 'canceled') return;
-    toast(`Audio error: ${code}${code==='language-unavailable' ? ' — no Japanese voice on this device.' : ''}`);
-  };
-  try{ synth.speak(utt); }catch(e){ /* ignore */ }
-}
-// ---- Coverage tracking: one independent tracker per level, saved in this browser ----
-const COV = {
-  n2: { name: 'N2', key: 'n2_kanji_coverage_v1', list: N2_LIST, set: new Set(), bar: 'covBar',  text: 'covText',  grid: 'masterGrid',  btn: 'resetBtn',  cls: 'kj',  color: 'var(--n2)', armed: false, timer: null },
-  n3: { name: 'N3', key: 'n3_kanji_coverage_v1', list: N3_LIST, set: new Set(), bar: 'covBar3', text: 'covText3', grid: 'masterGrid3', btn: 'resetBtn3', cls: 'kj3', color: 'var(--n3)', armed: false, timer: null },
-  n4: { name: 'N4', key: 'n4_kanji_coverage_v1', list: N4_LIST, set: new Set(), bar: 'covBar4', text: 'covText4', grid: 'masterGrid4', btn: 'resetBtn4', cls: 'kj4', color: 'var(--n4)', armed: false, timer: null },
-  n5: { name: 'N5', key: 'n5_kanji_coverage_v1', list: N5_LIST, set: new Set(), bar: 'covBar5', text: 'covText5', grid: 'masterGrid5', btn: 'resetBtn5', cls: 'kj5', color: 'var(--n5)', armed: false, timer: null }
-};
-const MIGRATE_KEY = 'levels_migrated_v2';
-
-function loadCoverage(){
-  for (const lvl of Object.keys(COV)){
-    try{
-      const raw = localStorage.getItem(COV[lvl].key);
-      if (raw) COV[lvl].set = new Set(JSON.parse(raw));
-    }catch(e){ COV[lvl].set = new Set(); }
-  }
-  // One-time: progress saved under an earlier set of lists is re-homed so a kanji is always
-  // tracked under the lowest level whose list contains it (nothing is lost, only moved).
-  try{
-    if (!localStorage.getItem(MIGRATE_KEY)){
-      for (const lvl of Object.keys(COV)){
-        for (const ch of [...COV[lvl].set]){
-          const home = LVL_OF.get(ch);
-          if (home && home !== lvl){ COV[home].set.add(ch); COV[lvl].set.delete(ch); }
-        }
-      }
-      Object.keys(COV).forEach(l => saveCoverage(l));
-      localStorage.setItem(MIGRATE_KEY, '1');
-    }
-  }catch(e){ /* storage unavailable */ }
-}
-function saveCoverage(lvl){
-  lvl = lvl || 'n2';
-  try{ localStorage.setItem(COV[lvl].key, JSON.stringify([...COV[lvl].set])); }
-  catch(e){ toast('Could not save progress locally.'); }
-  onCoverageChanged();   // account sync (no-op unless signed in)
-}
-function toggleCovered(ch, lvl){
-  lvl = lvl || 'n2';
-  const set = COV[lvl].set;
-  if (set.has(ch)) set.delete(ch); else set.add(ch);
-  saveCoverage(lvl);
-  renderMasterGrid(lvl);
-  updateCoverageBar(lvl);
-}
-function markCoveredFromText(foundSet, lvl){
-  lvl = lvl || 'n2';
-  const set = COV[lvl].set;
-  let changed = false;
-  for (const ch of foundSet || []){ if (!set.has(ch)){ set.add(ch); changed = true; } }
-  if (changed){ saveCoverage(lvl); renderMasterGrid(lvl); updateCoverageBar(lvl); }
-}
-function resetCoverage(lvl){
-  lvl = lvl || 'n2';
-  const c = COV[lvl];
-  const btn = document.getElementById(c.btn);
-  if (!c.armed){
-    c.armed = true;
-    btn.textContent = 'Tap again to confirm';
-    btn.style.borderColor = '#f87171';
-    btn.style.color = '#f87171';
-    clearTimeout(c.timer);
-    c.timer = setTimeout(() => {
-      c.armed = false;
-      btn.textContent = '↺ Reset coverage';
-      btn.style.borderColor = 'var(--border)';
-      btn.style.color = '';
-    }, 4000);
-    return;
-  }
-  // Second tap within the window - actually reset (this level only)
-  clearTimeout(c.timer);
-  c.armed = false;
-  btn.textContent = '↺ Reset coverage';
-  btn.style.borderColor = 'var(--border)';
-  btn.style.color = '';
-  c.set = new Set();
-  saveCoverage(lvl);
-  renderMasterGrid(lvl);
-  updateCoverageBar(lvl);
-  toast(`${c.name} coverage reset.`);
-}
-function updateCoverageBar(lvl){
-  lvl = lvl || 'n2';
-  const c = COV[lvl];
-  let n = 0;
-  for (const ch of c.list) if (c.set.has(ch)) n++;   // only count kanji that belong to this level
-  const pct = c.list.length ? Math.round((n / c.list.length) * 100) : 0;
-  document.getElementById(c.bar).style.width = pct + '%';
-  document.getElementById(c.text).textContent = `${n} / ${c.list.length}`;
-}
-function renderMasterGrid(lvl){
-  lvl = lvl || 'n2';
-  const c = COV[lvl];
-  const grid = document.getElementById(c.grid);
-  grid.innerHTML = c.list.map(ch => {
-    const on = c.set.has(ch);
-    const style = on
-      ? `background:${c.color}; color:#0f172a; box-shadow:none;`
-      : 'background:transparent; color:var(--muted); box-shadow:0 0 0 1px var(--border) inset;';
-    return `<span class="${c.cls}" style="padding:2px 7px; cursor:pointer; font-weight:${on ? 700 : 400}; ${style}" onclick="toggleCovered('${ch}','${lvl}')" title="${on ? 'Covered — tap to unmark' : 'Not yet — tap to mark covered'}">${ch}</span>`;
-  }).join('');
-}
-function initCoverage(){
-  loadCoverage();
-  for (const lvl of Object.keys(COV)){ renderMasterGrid(lvl); updateCoverageBar(lvl); }
-}
-
-const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-// Builds clickable, N2/N3-highlighted HTML for a chunk of Japanese text.
-// `counter` is mutated in place ({total, uniq}) so callers can aggregate
-// stats across multiple chunks (e.g. one call per transcript line).
-function buildHighlightedHtml(str, counter, lineId){
-  lineId = lineId || 'p';
-  for (const f of Object.values(LV_FIELDS)){ counter[f.total] = counter[f.total] || 0; counter[f.uniq] = counter[f.uniq] || new Set(); }
-  const segsList = [];
-  function highlightChars(s){
-    let out = '';
-    for (const ch of s){
-      if (ch === '\n'){ out += '<br>'; continue; }
-      const lv = isKanji(ch) ? LVL_OF.get(ch) : null;
-      if (lv){
-        const f = LV_FIELDS[lv];
-        counter[f.total]++; counter[f.uniq].add(ch);
-        out += `<span class="${f.cls}" style="padding:0;">${esc(ch)}</span>`;
-      } else {
-        out += esc(ch);
-      }
-    }
-    return out;
-  }
-
-  let html = '';
-  if (HAS_SEGMENTER){
-    for (const seg of segmenter.segment(str)){
-      const s = seg.segment;
-      const idx = segsList.length;
-      segsList.push({ text: s });
-      if (seg.isWordLike && JP_RE.test(s)){
-        html += `<span class="word" data-line="${lineId}" data-i="${idx}" title="Tap for meaning" onclick="showMeaning(event, this)">${highlightChars(s)}</span>`;
-      } else {
-        html += highlightChars(s);
-      }
-    }
-  } else {
-    // No Intl.Segmenter: every character is its own segment; the compound
-    // resolver then re-joins neighbours using the dictionary on click.
-    for (const ch of str){
-      const idx = segsList.length;
-      segsList.push({ text: ch });
-      if (ch === '\n'){ html += '<br>'; continue; }
-      if (JP_RE.test(ch)){
-        const lv = isKanji(ch) ? LVL_OF.get(ch) : null;
-        if (lv){ const f = LV_FIELDS[lv]; counter[f.total]++; counter[f.uniq].add(ch); }
-        html += `<span class="${lv ? LV_FIELDS[lv].cls + ' word' : 'word'}" data-line="${lineId}" data-i="${idx}" title="Tap for meaning" onclick="showMeaning(event, this)">${esc(ch)}</span>`;
-      } else {
-        html += esc(ch);
-      }
-    }
-  }
-  window._lineSegs = window._lineSegs || {};
-  window._lineSegs[lineId] = segsList;
-  return html;
-}
-
-function analyze(){
-  const raw = document.getElementById('input').value;
-  const out = document.getElementById('output');
-
-  if (!raw.trim()){
-    out.textContent = 'Paste a transcript above and click Load Transcript.';
-    document.getElementById('summaryWrap').classList.add('hidden');
-    window._transcriptEntries = null;
-    _lastActiveLine = -1;
-    return;
-  }
-
-  const counter = { total: 0, uniq: new Set(), total3: 0, uniq3: new Set(), total4: 0, uniq4: new Set(), total5: 0, uniq5: new Set() };
-  window._lineSegs = {};
-  closeWordPop();
-  const parsed = parseTranscript(raw);
-
-  if (parsed){
-    window._transcriptEntries = parsed;
-    _lastActiveLine = -1;
-    out.innerHTML = '';
-    parsed.forEach((entry, idx) => {
-      const div = document.createElement('div');
-      div.className = 't-line';
-      div.dataset.idx = idx;
-      const timeSpan = document.createElement('span');
-      timeSpan.className = 't-time';
-      timeSpan.textContent = formatTime(entry.time);
-      timeSpan.title = 'Jump video to this point';
-      timeSpan.onclick = () => seekTo(entry.time);
-      const textSpan = document.createElement('span');
-      textSpan.className = 't-text';
-      textSpan.innerHTML = buildHighlightedHtml(entry.text, counter, 'L' + idx);
-      div.appendChild(timeSpan);
-      div.appendChild(textSpan);
-      out.appendChild(div);
     });
-    toast(`Synced transcript loaded — ${parsed.length} timed lines. It'll auto-scroll once the video is playing.`);
-  } else {
-    window._transcriptEntries = null;
-    _lastActiveLine = -1;
-    out.innerHTML = buildHighlightedHtml(raw, counter, 'p');
-  }
 
-  window._lvlLists = {};
-  for (const lvl of ['n2', 'n3', 'n4', 'n5']){
-    const f = LV_FIELDS[lvl], sfx = lvl === 'n2' ? '' : lvl.slice(1);
-    const uniq = [...counter[f.uniq]];
-    document.getElementById('countTotal' + sfx).textContent = counter[f.total];
-    document.getElementById('countUnique' + sfx).textContent = uniq.length;
-    document.getElementById('byLevel' + sfx).innerHTML = uniq.map(c => `<span class="${f.cls}" style="padding:2px 8px;">${c}</span>`).join('')
-      || `<span class="text-xs" style="color:var(--muted);">No ${lvl.toUpperCase()} kanji found in this text.</span>`;
-    window._lvlLists[lvl] = uniq;
-    markCoveredFromText(counter[f.uniq], lvl);
-  }
-  document.getElementById('summaryWrap').classList.remove('hidden');
-}
-
-function clearAll(){
-  document.getElementById('input').value = '';
-  document.getElementById('output').textContent = 'Paste a transcript above and click Load Transcript.';
-  document.getElementById('summaryWrap').classList.add('hidden');
-  window._transcriptEntries = null;
-  _lastActiveLine = -1;
-}
-
-async function copyList(lvl){
-  lvl = lvl || 'n2';
-  const list = ((window._lvlLists || {})[lvl] || []).join('');
-  try{ await navigator.clipboard.writeText(list); toast(`Copied ${lvl.toUpperCase()} kanji to clipboard`); }
-  catch(e){ toast('Copy failed — select the list manually'); }
-}
-
-let _downloads = null;
-async function initDownloads(){
-  try{
-    if (window.claude && window.claude.use){
-      _downloads = await window.claude.use('downloads');
-      if (_downloads){ ['saveBtn', 'saveBtn3', 'saveBtn4', 'saveBtn5'].forEach(id => document.getElementById(id).classList.remove('hidden')); }
-    }
-  }catch(e){ /* not available in this context */ }
-}
-async function saveList(lvl){
-  if (!_downloads) return;
-  lvl = lvl || 'n2';
-  const list = ((window._lvlLists || {})[lvl] || []).join('\n');
-  try{ await _downloads.save({filename: lvl + '-kanji-found.txt', data: list}); }
-  catch(e){ toast('Save was not completed'); }
-}
-initDownloads();
-
-function toast(msg){
-  const t = document.createElement('div');
-  t.textContent = msg;
-  t.style.cssText = 'position:fixed;bottom:16px;right:16px;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:10px;font-size:12px;z-index:50;box-shadow:0 4px 12px rgba(0,0,0,.3)';
-  document.body.appendChild(t);
-  setTimeout(()=>t.remove(), 2200);
-}
-
-document.getElementById('themeBtn').addEventListener('click', ()=>{
-  const r = document.documentElement;
-  const cur = r.getAttribute('data-theme');
-  r.setAttribute('data-theme', cur === 'light' ? 'dark' : 'light');
-});
-
-// =====================================================================
-//  Accounts + cloud sync (Netlify Function + Neon Postgres).
-//  Progress is always kept in this browser first; when signed in it is also saved to the account.
-//  If the /api endpoints don't exist (opened from a file, a preview, ...) the account UI hides itself
-//  and the app behaves exactly as before (local only).
-// =====================================================================
-const AUTH = {
-  available: false, user: null, signup: { open: true, requiresCode: false },
-  version: 0, mode: 'signin', busy: false,
-  pushing: false, again: false, applying: false, timer: null, retry: null, lastPull: 0
-};
-const OWNER_KEY = 'kanji_owner_v1';   // which account the copy in this browser belongs to
-const DIRTY_KEY = 'kanji_dirty_v1';   // '1' = changes here that the account doesn't have yet
-const SYNC_APP = 'kanji';
-
-function lsGet(k){ try { return localStorage.getItem(k); } catch (e) { return null; } }
-function lsSet(k, v){ try { localStorage.setItem(k, v); } catch (e) { /* storage unavailable */ } }
-function lsRemove(k){ try { localStorage.removeItem(k); } catch (e) { /* storage unavailable */ } }
-
-async function apiCall(path, method, body){
-  const res = await fetch('/api/' + path, {
-    method: method || 'GET',
-    headers: body !== undefined ? { 'Content-Type': 'application/json' } : {},
-    body: body !== undefined ? JSON.stringify(body) : undefined,
-    credentials: 'same-origin',
-    keepalive: method === 'PUT'
-  });
-  const ct = (res.headers && res.headers.get && res.headers.get('content-type')) || '';
-  if (!/json/i.test(ct)){ const e = new Error('API not available here'); e.noApi = true; throw e; }
-  let data = null;
-  try { data = await res.json(); } catch (e) { data = null; }
-  return { status: res.status, ok: res.ok, data: data || {} };
-}
-
-// ---- progress snapshots ----
-function emptySnap(){ const o = { v: 1 }; for (const l of Object.keys(COV)) o[l] = []; return o; }
-function snapshotProgress(){ const o = { v: 1 }; for (const l of Object.keys(COV)) o[l] = [...COV[l].set]; return o; }
-function unionSnap(a, b){
-  const o = { v: 1 };
-  for (const l of Object.keys(COV)) o[l] = [...new Set([...((a && a[l]) || []), ...((b && b[l]) || [])])];
-  return o;
-}
-function sameSnap(a, b){
-  for (const l of Object.keys(COV)){
-    const x = new Set((a && a[l]) || []), y = new Set((b && b[l]) || []);
-    if (x.size !== y.size) return false;
-    for (const c of x) if (!y.has(c)) return false;
-  }
-  return true;
-}
-function hasAny(snap){ return Object.keys(COV).some(l => ((snap && snap[l]) || []).length > 0); }
-function applySnap(snap){
-  AUTH.applying = true;   // loading data is not a "change" that needs saving
-  try {
-    for (const l of Object.keys(COV)){
-      COV[l].set = new Set((snap && snap[l]) || []);
-      saveCoverage(l); renderMasterGrid(l); updateCoverageBar(l);
-    }
-  } finally { AUTH.applying = false; }
-}
-
-// ---- change tracking / saving ----
-function isDirty(){ return lsGet(DIRTY_KEY) === '1'; }
-function markClean(){ lsSet(DIRTY_KEY, '0'); }
-function onCoverageChanged(){
-  if (AUTH.applying) return;
-  lsSet(DIRTY_KEY, '1');
-  if (AUTH.user) schedulePush();
-}
-function schedulePush(){ clearTimeout(AUTH.timer); AUTH.timer = setTimeout(() => { pushProgress(); }, 1200); }
-function scheduleRetry(){
-  clearTimeout(AUTH.retry);
-  AUTH.retry = setTimeout(() => { if (AUTH.user && isDirty()) pushProgress(); }, 15000);
-}
-
-function setAuthStatus(text, warn){
-  const el = document.getElementById('authStatus');
-  if (!el) return;
-  el.textContent = text || '';
-  el.style.color = warn ? '#fbbf24' : 'var(--muted)';
-}
-
-function renderAuthBar(){
-  const bar = document.getElementById('authBar');
-  if (!AUTH.available){ bar.classList.add('hidden'); bar.classList.remove('flex'); return; }
-  bar.classList.remove('hidden'); bar.classList.add('flex');
-  document.getElementById('authUserName').textContent = AUTH.user ? AUTH.user.username : '';
-  document.getElementById('authBtn').textContent = AUTH.user ? 'Sign out' : 'Sign in';
-  if (!AUTH.user) setAuthStatus('');
-}
-
-function handleSessionExpired(){
-  AUTH.user = null;
-  clearTimeout(AUTH.timer); clearTimeout(AUTH.retry);
-  renderAuthBar();
-  toast('Your session expired — please sign in again. Your progress is kept on this device.');
-}
-
-async function pullProgress(){
-  setAuthStatus('Syncing…');
-  const r = await apiCall('progress?app=' + SYNC_APP);
-  if (r.status === 401){ handleSessionExpired(); return; }
-  if (!r.ok) throw new Error('load failed (' + r.status + ')');
-  const remote = r.data.data || null;
-  AUTH.version = r.data.version || 0;
-  AUTH.lastPull = Date.now();
-  const uid = String(AUTH.user.id);
-  const owner = lsGet(OWNER_KEY);
-  const local = snapshotProgress();
-  let merged, adopted = false;
-  if (owner === uid){
-    // our own cached copy: the account is the source of truth unless this device has unsaved changes
-    merged = (isDirty() && remote) ? unionSnap(local, remote) : (remote || local);
-  } else if (!owner){
-    // progress made before signing in: add it to the account
-    merged = remote ? unionSnap(local, remote) : local;
-    adopted = hasAny(local);
-  } else {
-    // this browser last belonged to a DIFFERENT account: never mix their data
-    merged = remote || emptySnap();
-    markClean();
-  }
-  lsSet(OWNER_KEY, uid);
-  applySnap(merged);
-  if (adopted) toast('Your progress from this device was added to your account.');
-  const needsSave = remote ? !sameSnap(merged, remote) : hasAny(merged);
-  if (needsSave){ lsSet(DIRTY_KEY, '1'); await pushProgress(); }
-  else { markClean(); setAuthStatus('Saved ✓'); }
-}
-
-async function pushProgress(attempt){
-  attempt = attempt || 0;
-  if (!AUTH.user) return;
-  if (AUTH.pushing){ AUTH.again = true; return; }
-  AUTH.pushing = true;
-  clearTimeout(AUTH.timer); clearTimeout(AUTH.retry);
-  setAuthStatus('Saving…');
-  try {
-    const sent = snapshotProgress();
-    const r = await apiCall('progress', 'PUT', { app: SYNC_APP, data: sent, baseVersion: AUTH.version });
-    if (r.status === 401){ handleSessionExpired(); return; }
-    if (r.status === 409 && attempt < 3){
-      // saved from another device in the meantime: merge (never drop covered kanji) and try again
-      AUTH.version = r.data.version || 0;
-      applySnap(unionSnap(snapshotProgress(), r.data.data));
-      AUTH.pushing = false;
-      return await pushProgress(attempt + 1);
-    }
-    if (!r.ok) throw new Error('save failed (' + r.status + ')');
-    AUTH.version = r.data.version;
-    if (sameSnap(sent, snapshotProgress())){ markClean(); setAuthStatus('Saved ✓'); }
-    else schedulePush();   // more changes arrived while saving
-  } catch (e) {
-    setAuthStatus('Offline — will retry', true);
-    scheduleRetry();
-  } finally {
-    AUTH.pushing = false;
-    if (AUTH.again){ AUTH.again = false; schedulePush(); }
-  }
-}
-
-// ---- sign in / sign up / sign out ----
-function authButtonClick(){ if (AUTH.user) signOut(); else openAuthModal('signin'); }
-
-function setAuthMode(mode){
-  AUTH.mode = (mode === 'signup' && AUTH.signup.open) ? 'signup' : 'signin';
-  const su = AUTH.mode === 'signup';
-  document.getElementById('authTitle').textContent = su ? 'Create your account' : 'Sign in';
-  document.getElementById('authSubmit').textContent = su ? 'Create account' : 'Sign in';
-  document.getElementById('tabSignin').className = 'popbtn sm' + (su ? '' : ' on');
-  document.getElementById('tabSignup').className = 'popbtn sm' + (su ? ' on' : '');
-  document.getElementById('authPass').autocomplete = su ? 'new-password' : 'current-password';
-  const code = document.getElementById('authCodeWrap');
-  if (su && AUTH.signup.requiresCode) code.classList.remove('hidden'); else code.classList.add('hidden');
-  const signupTab = document.getElementById('tabSignup');
-  if (AUTH.signup.open) signupTab.classList.remove('hidden'); else signupTab.classList.add('hidden');
-  document.getElementById('authNote').textContent = su
-    ? 'There is no email on file, so a forgotten password can’t be reset automatically — keep it somewhere safe.'
-    : (AUTH.signup.open ? '' : 'New accounts are closed on this site.');
-  document.getElementById('authErr').textContent = '';
-}
-
-function openAuthModal(mode){
-  setAuthMode(mode || 'signin');
-  document.getElementById('authModal').classList.remove('hidden');
-  setTimeout(() => { const u = document.getElementById('authUser'); if (u && u.focus) u.focus(); }, 30);
-}
-function closeAuthModal(){ document.getElementById('authModal').classList.add('hidden'); }
-
-async function submitAuth(ev){
-  if (ev && ev.preventDefault) ev.preventDefault();
-  if (AUTH.busy) return;
-  const username = document.getElementById('authUser').value.trim();
-  const password = document.getElementById('authPass').value;
-  const code = document.getElementById('authCode').value.trim();
-  const err = document.getElementById('authErr');
-  const btn = document.getElementById('authSubmit');
-  err.textContent = '';
-  if (!username || !password){ err.textContent = 'Please enter a username and password.'; return; }
-  AUTH.busy = true; btn.disabled = true;
-  try {
-    const su = AUTH.mode === 'signup';
-    const r = await apiCall(su ? 'signup' : 'login', 'POST', su ? { username, password, code } : { username, password });
-    if (!r.ok || !r.data.user){ err.textContent = r.data.message || 'Something went wrong. Please try again.'; return; }
-    AUTH.user = r.data.user;
-    AUTH.version = 0;
-    document.getElementById('authPass').value = '';
-    closeAuthModal();
-    renderAuthBar();
-    try { await pullProgress(); }
-    catch (e) { setAuthStatus('Offline — using the copy on this device', true); }
-  } catch (e) {
-    err.textContent = e && e.noApi ? 'Accounts aren’t available on this host.' : 'Network problem — please try again.';
-  } finally {
-    AUTH.busy = false; btn.disabled = false;
-  }
-}
-
-async function signOut(){
-  if (!AUTH.user) return;
-  clearTimeout(AUTH.timer);
-  if (isDirty()){
-    // never let this device forget the account while it holds changes the account doesn't have
-    await pushProgress();
-    if (isDirty()){
-      setAuthStatus('Offline — couldn’t save yet', true);
-      toast('Couldn’t save your latest progress yet, so you’re still signed in. Try again when you’re online.');
-      return;
-    }
-  }
-  try { await apiCall('logout', 'POST', {}); } catch (e) { /* the cookie expires on its own */ }
-  AUTH.user = null; AUTH.version = 0;
-  applySnap(emptySnap());           // clear this browser's copy so the next person starts fresh
-  lsRemove(OWNER_KEY); lsRemove(DIRTY_KEY);
-  renderAuthBar();
-  toast('Signed out. Your progress stays safe in your account.');
-}
-
-async function initAuth(){
-  try {
-    const r = await apiCall('me');
-    AUTH.available = r.ok;
-    if (r.ok){ AUTH.signup = r.data.signup || AUTH.signup; AUTH.user = r.data.user || null; }
-  } catch (e) { AUTH.available = false; }
-  renderAuthBar();
-  if (AUTH.user){
-    try { await pullProgress(); }
-    catch (e) { setAuthStatus('Offline — using the copy on this device', true); }
-  }
-}
-
-if (window.addEventListener) window.addEventListener('online', () => { if (AUTH.user && isDirty()) pushProgress(); });
-document.addEventListener('visibilitychange', () => {
-  if (!AUTH.user) return;
-  if (document.visibilityState === 'hidden'){ if (isDirty()) pushProgress(); }
-  else if (!isDirty() && !AUTH.pushing && Date.now() - AUTH.lastPull > 30000){ pullProgress().catch(() => {}); }   // pick up changes made on another device
-});
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAuthModal(); });
-
-// Init coverage UI on load
-initCoverage();
-setupSpeech();
-initAuth();
-</script>
+    // Start timer on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      startDemoTimer();
+    });
+  </script>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 74b549e (Update frontend with demo timer and login modal)
