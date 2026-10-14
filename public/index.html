@@ -1,316 +1,737 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>funjp - App</title>
-  <style>
-    :root {
-      --primary: #4f46e5;
-      --primary-hover: #4338ca;
-      --bg: #0f172a;
-      --card-bg: #1e293b;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>funjp - N5–N2 Kanji Highlighter & App</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0f172a;--card:#1e293b;--border:#334155;--text:#f1f5f9;--muted:#94a3b8;--n2:#fb923c;--n3:#38bdf8;--n4:#4ade80;--n5:#c084fc;--primary:#4f46e5;
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{background:var(--bg); color:var(--text); font-family:'Inter','Noto Sans JP',sans-serif;}
+  @media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){--bg:#f8fafc;--card:#ffffff;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;} }
+  :root[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--border:#334155;--text:#f1f5f9;--muted:#94a3b8;}
+  .card{background:var(--card); border:1px solid var(--border); border-radius:1rem;}
+  textarea{background:var(--card); border:1px solid var(--border); color:var(--text);}
+  .out{font-size:1.4rem; line-height:2.4; word-break:break-word; white-space:pre-wrap;}
+  .kj{border-radius:3px; color:var(--n2); font-weight:700;}
+  .kj3{border-radius:3px; color:var(--n3); font-weight:700;}
+  .kj4{border-radius:3px; color:var(--n4); font-weight:700;}
+  .kj5{border-radius:3px; color:var(--n5); font-weight:700;}
+  .word{cursor:pointer; border-bottom:2px dotted color-mix(in srgb, var(--text) 35%, transparent); border-radius:3px; padding:0 1px;}
+  .word:hover, .word:active{background:color-mix(in srgb, var(--text) 10%, transparent);}
+  .wordpop{position:fixed; z-index:60; width:min(400px, calc(100vw - 16px)); max-height:min(90vh, 960px); overflow-y:auto;
+    background:var(--card); border:1px solid var(--border); border-radius:14px; padding:12px; box-shadow:0 14px 36px rgba(0,0,0,.45);}
+  @media (max-width:640px){ .wordpop{left:8px!important; right:8px!important; top:auto!important; bottom:calc(8px + env(safe-area-inset-bottom,0px)); width:auto; max-height:80vh;} }
+  .popbtn{padding:2px 8px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-size:13px; cursor:pointer;}
+  .popbtn.sm{font-size:11px; padding:3px 8px;}
+  .popbtn:hover{border-color:var(--n2);}
+  .lnk{text-decoration:underline; color:var(--n2);}
+  .word.sel{background:color-mix(in srgb, var(--n2) 30%, transparent);}
+  .sent{padding:8px; border-radius:10px; border:1px solid var(--border); background:var(--bg); font-size:12px; line-height:1.6;}
+  .sent .sj{font-weight:600; margin-bottom:4px;}
+  .kvg{width:118px; height:118px; display:block; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text);}
+  .kvg .sp{fill:none; stroke:currentColor; stroke-width:3.4; stroke-linecap:round; stroke-linejoin:round;}
+  .kvg .sn{font-size:7.5px; fill:var(--n2); font-weight:700; font-family:Inter,sans-serif;}
+  .kvg .g{stroke:var(--border); stroke-width:.6; stroke-dasharray:2 2;}
+  .kmeta{flex:1; min-width:0; font-size:12px; line-height:1.5;}
+  .kmeta .kch{font-size:22px; font-weight:700;}
+  .kmeta .kch.n2{color:var(--n2);}
+  .kmeta .kch.n3{color:var(--n3);}
+  .kmeta .kch.n4{color:var(--n4);}
+  .kmeta .kch.n5{color:var(--n5);}
+  .kmeta .muted{color:var(--muted);}
+  .kchips{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;}
+  .kchip{min-width:42px; height:42px; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-size:21px; font-weight:700; cursor:pointer;}
+  .kchip.n2{color:var(--n2);}
+  .kchip.n3{color:var(--n3);}
+  .kchip.n4{color:var(--n4);}
+  .kchip.n5{color:var(--n5);}
+  .kchip.on{border-color:var(--n2); background:color-mix(in srgb, var(--n2) 18%, transparent);}
+  .popbtn.on{border-color:var(--n2); background:color-mix(in srgb, var(--n2) 18%, transparent);}
+  .kvg.big{width:240px; max-width:100%; height:auto; aspect-ratio:1/1; margin:0 auto;}
+  .pk{cursor:pointer; border-bottom:2px dotted currentColor;}
+  .kvg .sp.ghost{stroke:color-mix(in srgb, var(--text) 16%, transparent);}
+  .kctl{display:flex; align-items:center; justify-content:space-between; gap:8px; margin:8px 0 4px;}
+  .kspd{display:flex; align-items:center; gap:6px; font-size:11px; color:var(--muted);}
+  .kspd input{width:90px; accent-color:var(--n2);}
+  .kframes{display:flex; gap:4px; overflow-x:auto; padding:6px 0;}
+  .kframe{flex:0 0 auto; width:58px; height:58px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--text);}
+  .kframe .sp{fill:none; stroke-width:4; stroke-linecap:round; stroke-linejoin:round;}
+  .kframe .sp.done{stroke:currentColor;}
+  .kframe .sp.cur{stroke:var(--n2);}
+  ::-webkit-scrollbar{width:8px;height:8px;} ::-webkit-scrollbar-thumb{background:#475569;border-radius:4px;}
+  .side-grid{display:grid; grid-template-columns:1fr; gap:1.25rem;}
+  .side-grid.no-video .video-col{display:none;}
+  .video-col{position:sticky; top:calc(64px + env(safe-area-inset-top,0px)); z-index:5; align-self:start;}
+  @media (min-width:900px){
+    .side-grid{grid-template-columns:2fr 1fr; align-items:start;}
+    .side-grid.no-video{grid-template-columns:1fr;}
+    .video-col{top:calc(72px + env(safe-area-inset-top,0px));}
+  }
+  #ytWrap iframe{position:absolute; inset:0; width:100%!important; height:100%!important; border-radius:0.5rem; border:0;}
+  .transcript-box{position:relative; overflow-y:auto; overscroll-behavior:contain; padding-right:4px;
+    max-height:calc(100vh - 190px); max-height:calc(100dvh - 190px); min-height:220px;}
+  .side-grid:not(.no-video) .transcript-box{
+    max-height:calc(100vh - 190px - ((100vw - 56px) * .5625)); max-height:calc(100dvh - 190px - ((100vw - 56px) * .5625)); min-height:140px;}
+  @media (min-width:900px){ .side-grid:not(.no-video) .transcript-box{max-height:calc(100vh - 150px); max-height:calc(100dvh - 150px); min-height:360px;} }
+  .t-line{display:flex; gap:10px; padding:8px 6px; border-radius:8px; align-items:flex-start; font-size:1.05rem; line-height:1.9;}
+  .t-time{flex:0 0 auto; font-size:11px; color:var(--muted); font-weight:700; cursor:pointer; padding-top:3px; user-select:none;}
+  .t-time:hover{color:var(--n2);}
+  .t-text{flex:1; word-break:break-word;}
+  .t-line.active{background:color-mix(in srgb, var(--n2) 16%, transparent); box-shadow:0 0 0 1px color-mix(in srgb, var(--n2) 40%, transparent) inset;}
+  .t-line.active .t-time{color:var(--n2);}
 
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    header {
-      width: 100%;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-sizing: border-box;
-      border-bottom: 1px solid #334155;
-    }
-
-    .logo {
-      font-weight: 700;
-      font-size: 1.25rem;
-      color: #38bdf8;
-    }
-
-    .main-content {
-      text-align: center;
-      max-width: 700px;
-      padding: 3rem 1rem;
-    }
-
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid #334155;
-      color: var(--text);
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.2s;
-    }
-
-    .btn-secondary:hover {
-      background: #334155;
-    }
-
-    /* Modal Overlay */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    /* Modal Box */
-    .modal {
-      background: var(--card-bg);
-      border: 1px solid #334155;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 400px;
-      padding: 2rem;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    }
-
-    .modal-header {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .modal-header h2 {
-      margin: 0;
-      font-size: 1.5rem;
-    }
-
-    .form-group {
-      margin-bottom: 1rem;
-      text-align: left;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      margin-bottom: 0.375rem;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 0.75rem;
-      border-radius: 8px;
-      border: 1px solid #334155;
-      background: #0f172a;
-      color: var(--text);
-      box-sizing: border-box;
-      font-size: 1rem;
-    }
-
-    .form-group input:focus {
-      outline: 2px solid var(--primary);
-    }
-
-    .btn {
-      width: 100%;
-      padding: 0.75rem;
-      border-radius: 8px;
-      border: none;
-      background: var(--primary);
-      color: white;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.2s ease;
-      margin-top: 0.5rem;
-    }
-
-    .btn:hover {
-      background: var(--primary-hover);
-    }
-
-    .toggle-text {
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 0.875rem;
-      color: var(--text-muted);
-    }
-
-    .toggle-text a {
-      color: #38bdf8;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .message {
-      margin-top: 1rem;
-      font-size: 0.875rem;
-      text-align: center;
-    }
-
-    .message.error { color: #f87171; }
-    .message.success { color: #4ade80; }
-  </style>
+  /* Modal Overlay */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .modal-overlay.active { display: flex; }
+</style>
 </head>
-<body>
+<body class="min-h-screen">
+<header class="border-b sticky top-0 z-10 backdrop-blur" style="border-color:var(--border); background:color-mix(in srgb, var(--bg) 85%, transparent); padding-top:env(safe-area-inset-top,0px);">
+  <div class="w-full px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-white" style="background:#fb923c;">N2</div>
+      <div>
+        <h1 class="font-bold text-sm sm:text-base">funjp - N5–N2 Kanji Highlighter</h1>
+        <p class="text-xs" style="color:var(--muted);">Tap any word for its meaning + audio</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button id="openAuthBtn" class="text-xs px-3 py-1.5 rounded-lg border font-semibold" style="border-color:var(--border); color:var(--n2);">🔑 Log In</button>
+      <button id="themeBtn" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">🌓 Theme</button>
+    </div>
+  </div>
+</header>
 
-  <header>
-    <div class="logo">funjp</div>
-    <button id="openAuthBtn" class="btn-secondary">Log In / Sign Up</button>
-  </header>
+<main class="w-full px-4 py-6 space-y-5">
 
-  <div class="main-content">
-    <h1>Welcome to funjp</h1>
-    <p style="color: var(--text-muted); font-size: 1.1rem;">Your application content is fully accessible here!</p>
-    
-    <div style="background: var(--card-bg); border: 1px solid #334155; padding: 2rem; border-radius: 12px; margin-top: 2rem;">
-      <h3>App Dashboard Area</h3>
-      <p style="color: var(--text-muted);">Users can browse, view lessons, or interact with features here without being blocked by a timer.</p>
+  <!-- Demo Timer Banner -->
+  <div class="card p-3 flex items-center justify-between flex-wrap gap-3">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold" style="background:color-mix(in srgb, var(--n3) 20%, transparent); color:var(--n3);">⏱️</div>
+      <div>
+        <div id="statusText" class="text-xs font-semibold">Demo Session Active</div>
+        <div class="text-[11px]" style="color:var(--muted);">Log in to save your coverage progress and unlock full access.</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <div id="timerDisplay" class="text-lg font-bold font-mono" style="color:var(--n3);">02:00</div>
     </div>
   </div>
 
-  <!-- Auth Modal -->
-  <div id="authModal" class="modal-overlay">
-    <div class="modal">
-      <div class="modal-header">
-        <h2 id="modalTitle">Welcome Back</h2>
-        <p style="color: var(--text-muted); font-size: 0.875rem;">Log in or create an account to save your progress.</p>
+  <div class="card p-4 space-y-3">
+    <label class="text-xs font-semibold" style="color:var(--muted);">YOUTUBE VIDEO (OPTIONAL)</label>
+    <div class="flex gap-2">
+      <input id="ytUrl" type="text" placeholder="Paste a YouTube video URL…" class="flex-1 rounded-lg p-2 text-sm" style="background:var(--bg); border:1px solid var(--border); color:var(--text);">
+      <button onclick="loadYoutube()" class="px-4 py-2 rounded-lg text-sm font-semibold border" style="border-color:var(--border);">Load</button>
+    </div>
+    <textarea id="input" rows="4" class="w-full rounded-lg p-3 text-sm font-mono" placeholder="Paste the transcript here — with YouTube timestamps (e.g. copied straight from 'Show transcript') or plain text works too…"></textarea>
+    <div class="flex flex-wrap gap-2 items-center justify-between">
+      <div class="flex gap-2">
+        <button onclick="analyze()" class="px-4 py-2 rounded-lg text-white text-sm font-semibold" style="background:#e63946;">Load Transcript</button>
+        <button onclick="clearAll()" class="px-4 py-2 rounded-lg text-sm font-semibold border" style="border-color:var(--border);">Clear</button>
       </div>
-
-      <form id="authForm">
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" required placeholder="you@example.com" />
-        </div>
-
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" required placeholder="••••••••" />
-        </div>
-
-        <button type="submit" id="submitBtn" class="btn">Log In</button>
-      </form>
-
-      <div id="authMessage" class="message"></div>
-
-      <div class="toggle-text">
-        <span id="toggleQuestion">Don't have an account?</span> 
-        <a id="toggleAuthMode">Sign Up</a>
-      </div>
-
-      <button id="closeModalBtn" class="btn-secondary" style="width: 100%; margin-top: 1rem;">Cancel</button>
+      <p class="text-[11px]" style="color:var(--muted);">N5: 79 · N4: 166 · N3: 367 · N2: 399 kanji loaded — with timestamps, the text auto-scrolls and highlights as the video plays</p>
     </div>
   </div>
 
-  <script>
-    let isRegistering = false;
+  <div class="side-grid no-video" id="mainGrid">
+    <div class="video-col">
+      <div class="card p-3">
+        <div id="ytWrap" class="hidden">
+          <div class="relative w-full" style="padding-top:56.25%;">
+            <div id="ytPlayerDiv" class="absolute inset-0 w-full h-full rounded-lg"></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    const authModal = document.getElementById('authModal');
-    const openAuthBtn = document.getElementById('openAuthBtn');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const authForm = document.getElementById('authForm');
-    const modalTitle = document.getElementById('modalTitle');
-    const submitBtn = document.getElementById('submitBtn');
-    const toggleAuthMode = document.getElementById('toggleAuthMode');
-    const toggleQuestion = document.getElementById('toggleQuestion');
-    const authMessage = document.getElementById('authMessage');
+    <div class="card p-4 space-y-2">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div class="text-xs font-semibold" style="color:var(--muted);">TRANSCRIPT — TAP ANY WORD</div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="kj" style="padding:2px 10px; background:color-mix(in srgb, var(--n2) 25%, transparent); box-shadow:0 0 0 1px color-mix(in srgb, var(--n2) 55%, transparent) inset;">N2 kanji</span>
+          <span class="kj3" style="padding:2px 10px; background:color-mix(in srgb, var(--n3) 25%, transparent); box-shadow:0 0 0 1px color-mix(in srgb, var(--n3) 55%, transparent) inset;">N3 kanji</span>
+          <span class="kj4" style="padding:2px 10px; background:color-mix(in srgb, var(--n4) 25%, transparent); box-shadow:0 0 0 1px color-mix(in srgb, var(--n4) 55%, transparent) inset;">N4 kanji</span>
+          <span class="kj5" style="padding:2px 10px; background:color-mix(in srgb, var(--n5) 25%, transparent); box-shadow:0 0 0 1px color-mix(in srgb, var(--n5) 55%, transparent) inset;">N5 kanji</span>
+        </div>
+      </div>
+      <div id="output" class="out transcript-box">Paste a transcript above and click Load Transcript.[cite: 2]</div>
+    </div>
+  </div>
 
-    // Open Modal
-    openAuthBtn.addEventListener('click', () => {
+  <!-- Coverage & Summary Cards (N2, N3, N4, N5) -->
+  <div class="card p-4 space-y-3">
+    <div class="flex items-center justify-between flex-wrap gap-2">
+      <h2 class="font-bold text-sm">Your N2 Coverage</h2>
+      <button onclick="resetCoverage()" id="resetBtn" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">↺ Reset coverage</button>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="flex-1 h-2 rounded-full overflow-hidden" style="background:var(--border);">
+        <div id="covBar" style="width:0%; background:var(--n2);" class="h-full transition-all duration-300"></div>
+      </div>
+      <div class="text-sm font-bold whitespace-nowrap" id="covText" style="color:var(--n2);">0 / 399</div>
+    </div>
+    <div id="masterGrid" class="flex flex-wrap gap-1 max-h-56 overflow-y-auto p-1"></div>
+  </div>
+
+  <div class="card p-4 space-y-3">
+    <div class="flex items-center justify-between flex-wrap gap-2">
+      <h2 class="font-bold text-sm">Your N3 Coverage</h2>
+      <button onclick="resetCoverage('n3')" id="resetBtn3" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">↺ Reset coverage</button>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="flex-1 h-2 rounded-full overflow-hidden" style="background:var(--border);">
+        <div id="covBar3" style="width:0%; background:var(--n3);" class="h-full transition-all duration-300"></div>
+      </div>
+      <div class="text-sm font-bold whitespace-nowrap" id="covText3" style="color:var(--n3);">0 / 367</div>
+    </div>
+    <div id="masterGrid3" class="flex flex-wrap gap-1 max-h-56 overflow-y-auto p-1"></div>
+  </div>
+
+  <div class="card p-4 space-y-3">
+    <div class="flex items-center justify-between flex-wrap gap-2">
+      <h2 class="font-bold text-sm">Your N4 Coverage</h2>
+      <button onclick="resetCoverage('n4')" id="resetBtn4" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">↺ Reset coverage</button>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="flex-1 h-2 rounded-full overflow-hidden" style="background:var(--border);">
+        <div id="covBar4" style="width:0%; background:var(--n4);" class="h-full transition-all duration-300"></div>
+      </div>
+      <div class="text-sm font-bold whitespace-nowrap" id="covText4" style="color:var(--n4);">0 / 166</div>
+    </div>
+    <div id="masterGrid4" class="flex flex-wrap gap-1 max-h-56 overflow-y-auto p-1"></div>
+  </div>
+
+  <div class="card p-4 space-y-3">
+    <div class="flex items-center justify-between flex-wrap gap-2">
+      <h2 class="font-bold text-sm">Your N5 Coverage</h2>
+      <button onclick="resetCoverage('n5')" id="resetBtn5" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">↺ Reset coverage</button>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="flex-1 h-2 rounded-full overflow-hidden" style="background:var(--border);">
+        <div id="covBar5" style="width:0%; background:var(--n5);" class="h-full transition-all duration-300"></div>
+      </div>
+      <div class="text-sm font-bold whitespace-nowrap" id="covText5" style="color:var(--n5);">0 / 79</div>
+    </div>
+    <div id="masterGrid5" class="flex flex-wrap gap-1 max-h-56 overflow-y-auto p-1"></div>
+  </div>
+
+  <div id="summaryWrap" class="card p-4 hidden space-y-4">
+    <div class="flex items-center justify-between flex-wrap gap-2">
+      <h2 class="font-bold text-sm">Summary</h2>
+      <div class="flex flex-wrap gap-2">
+        <button onclick="copyList('n2')" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">📋 Copy N2 list</button>
+        <button onclick="copyList('n3')" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">📋 Copy N3 list</button>
+        <button onclick="copyList('n4')" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">📋 Copy N4 list</button>
+        <button onclick="copyList('n5')" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">📋 Copy N5 list</button>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+      <div class="p-3 rounded-lg border" style="border-color:var(--border);">
+        <div class="text-[10px]" style="color:var(--muted);">N2 occurrences</div>
+        <div class="text-xl font-bold" style="color:var(--n2);" id="countTotal">0</div>
+      </div>
+      <div class="p-3 rounded-lg border" style="border-color:var(--border);">
+        <div class="text-[10px]" style="color:var(--muted);">Unique N2 kanji</div>
+        <div class="text-xl font-bold" style="color:var(--n2);" id="countUnique">0</div>
+      </div>
+      <div class="p-3 rounded-lg border" style="border-color:var(--border);">
+        <div class="text-[10px]" style="color:var(--muted);">N3 occurrences</div>
+        <div class="text-xl font-bold" style="color:var(--n3);" id="countTotal3">0</div>
+      </div>
+      <div class="p-3 rounded-lg border" style="border-color:var(--border);">
+        <div class="text-[10px]" style="color:var(--muted);">Unique N3 kanji</div>
+        <div class="text-xl font-bold" style="color:var(--n3);" id="countUnique3">0</div>
+      </div>
+      <div class="p-3 rounded-lg border" style="border-color:var(--border);">
+        <div class="text-[10px]" style="color:var(--muted);">N4 occurrences</div>
+        <div class="text-xl font-bold" style="color:var(--n4);" id="countTotal4">0</div>
+      </div>
+      <div class="p-3 rounded-lg border" style="border-color:var(--border);">
+        <div class="text-[10px]" style="color:var(--muted);">Unique N4 kanji</div>
+        <div class="text-xl font-bold" style="color:var(--n4);" id="countUnique4">0</div>
+      </div>
+      <div class="p-3 rounded-lg border" style="border-color:var(--border);">
+        <div class="text-[10px]" style="color:var(--muted);">N5 occurrences</div>
+        <div class="text-xl font-bold" style="color:var(--n5);" id="countTotal5">0</div>
+      </div>
+      <div class="p-3 rounded-lg border" style="border-color:var(--border);">
+        <div class="text-[10px]" style="color:var(--muted);">Unique N5 kanji</div>
+        <div class="text-xl font-bold" style="color:var(--n5);" id="countUnique5">0</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Floating word popup -->
+<div id="wordPop" class="wordpop hidden" role="dialog" aria-label="Word meaning">
+  <div class="flex items-start justify-between gap-2">
+    <div class="min-w-0">
+      <div class="flex items-baseline gap-2 flex-wrap">
+        <div id="popWord" class="text-2xl font-bold" style="color:var(--n2); word-break:break-all;">語</div>
+        <div id="popReading" class="text-sm" style="color:var(--muted);"></div>
+      </div>
+    </div>
+    <div class="flex items-center gap-1 shrink-0">
+      <button onclick="replayPopAudio()" class="popbtn" title="Play pronunciation">🔊</button>
+      <button onclick="closeWordPop()" class="popbtn" title="Close">✕</button>
+    </div>
+  </div>
+  <div id="popMeaning" class="text-sm font-semibold mt-2">…</div>
+  <div id="popSource" class="text-[10px] mt-1" style="color:var(--muted);"></div>
+  <div class="flex flex-wrap gap-1 mt-2">
+    <button class="popbtn sm" onclick="extendSel(-1)">◀ + word</button>
+    <button class="popbtn sm" onclick="extendSel(1)">word + ▶</button>
+    <button class="popbtn sm" onclick="resetSel()">↺ reset</button>
+    <button class="popbtn sm" onclick="translateSentenceClick()">🌐 Translate sentence</button>
+  </div>
+  <div id="popSentence" class="mt-2"></div>
+  <div id="popKanji"></div>
+</div>
+
+<!-- Auth Modal (Login / Signup) -->
+<div id="authModal" class="modal-overlay">
+  <div class="card p-6 w-full max-w-md shadow-2xl relative">
+    <div class="flex items-center justify-between mb-4">
+      <h2 id="modalTitle" class="font-bold text-lg">Welcome Back</h2>
+      <button onclick="closeAuthModal()" class="popbtn">✕</button>
+    </div>
+    <p class="text-xs mb-4" style="color:var(--muted);">Log in or create an account to connect to your database and save progress.</p>
+
+    <form id="authForm" class="space-y-3">
+      <div>
+        <label class="block text-xs mb-1" style="color:var(--muted);">Email Address</label>
+        <input type="email" id="email" required placeholder="you@example.com" class="w-full rounded-lg p-2.5 text-sm" style="background:var(--bg); border:1px solid var(--border); color:var(--text);">
+      </div>
+      <div>
+        <label class="block text-xs mb-1" style="color:var(--muted);">Password</label>
+        <input type="password" id="password" required placeholder="••••••••" class="w-full rounded-lg p-2.5 text-sm" style="background:var(--bg); border:1px solid var(--border); color:var(--text);">
+      </div>
+      <button type="submit" id="submitBtn" class="w-full py-2.5 rounded-lg text-white text-sm font-semibold mt-2" style="background:var(--primary);">Log In</button>
+    </form>
+
+    <div id="authMessage" class="text-xs text-center mt-3"></div>
+
+    <div class="text-center text-xs mt-4" style="color:var(--muted);">
+      <span id="toggleQuestion">Don't have an account?</span> 
+      <a id="toggleAuthMode" class="lnk cursor-pointer ml-1">Sign Up</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// --- Auth & Demo Timer Logic ---
+let isRegistering = false;
+let timerInterval = null;
+let duration = 120; // 2 minutes demo session
+
+const authModal = document.getElementById('authModal');
+const openAuthBtn = document.getElementById('openAuthBtn');
+const authForm = document.getElementById('authForm');
+const modalTitle = document.getElementById('modalTitle');
+const submitBtn = document.getElementById('submitBtn');
+const toggleAuthMode = document.getElementById('toggleAuthMode');
+const toggleQuestion = document.getElementById('toggleQuestion');
+const authMessage = document.getElementById('authMessage');
+const timerDisplay = document.getElementById('timerDisplay');
+const statusText = document.getElementById('statusText');
+
+openAuthBtn.addEventListener('click', () => { authModal.classList.add('active'); });
+function closeAuthModal() { authModal.classList.remove('active'); }
+
+toggleAuthMode.addEventListener('click', () => {
+  isRegistering = !isRegistering;
+  authMessage.textContent = '';
+  if (isRegistering) {
+    modalTitle.textContent = "Create an Account";
+    submitBtn.textContent = "Sign Up";
+    toggleQuestion.textContent = "Already have an account?";
+    toggleAuthMode.textContent = "Log In";
+  } else {
+    modalTitle.textContent = "Welcome Back";
+    submitBtn.textContent = "Log In";
+    toggleQuestion.textContent = "Don't have an account?";
+    toggleAuthMode.textContent = "Sign Up";
+  }
+});
+
+authForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  authMessage.textContent = '';
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const action = isRegistering ? 'register' : 'login';
+
+  try {
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Connecting...";
+
+    const response = await fetch('/.netlify/functions/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, email, password })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      authMessage.style.color = '#4ade80';
+      authMessage.textContent = data.message || "Success!";
+      if (data.token) {
+        localStorage.setItem('funjp_token', data.token);
+      }
+      setTimeout(() => {
+        authModal.classList.remove('active');
+        location.reload();
+      }, 1200);
+    } else {
+      authMessage.style.color = '#f87171';
+      authMessage.textContent = data.error || "Authentication failed.";
+    }
+  } catch (err) {
+    authMessage.style.color = '#f87171';
+    authMessage.textContent = "Failed to connect to server.";
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = isRegistering ? "Sign Up" : "Log In";
+  }
+});
+
+function startDemoTimer() {
+  let timeRemaining = duration;
+  timerInterval = setInterval(() => {
+    const minutes = Math.floor(timeRemaining / 60);
+    const seconds = timeRemaining % 60;
+    timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+    if (timeRemaining <= 0) {
+      clearInterval(timerInterval);
+      statusText.textContent = "Demo session expired.";
+      modalTitle.textContent = "Demo Expired - Please Log In";
       authModal.classList.add('active');
-    });
+    }
+    timeRemaining--;
+  }, 1000);
+}
 
-    // Close Modal
-    closeModalBtn.addEventListener('click', () => {
-      authModal.classList.remove('active');
-    });
+window.addEventListener('DOMContentLoaded', () => {
+  startDemoTimer();
+});
 
-    // Toggle between Login and Signup modes
-    toggleAuthMode.addEventListener('click', () => {
-      isRegistering = !isRegistering;
-      authMessage.textContent = '';
-      
-      if (isRegistering) {
-        modalTitle.textContent = "Create an Account";
-        submitBtn.textContent = "Sign Up";
-        toggleQuestion.textContent = "Already have an account?";
-        toggleAuthMode.textContent = "Log In";
-      } else {
-        modalTitle.textContent = "Welcome Back";
-        submitBtn.textContent = "Log In";
-        toggleQuestion.textContent = "Don't have an account?";
-        toggleAuthMode.textContent = "Sign Up";
+// --- Original Kanji Highlighter & Dictionary Logic[cite: 2] ---
+const N2_RAW_SET = new Set("腕湾和論録老労路連練恋列歴齢零礼冷例令類輪緑領量良療涼両了粒留流略率律陸裏利卵乱落絡頼翌浴欲陽踊要葉溶様容幼預与余予郵遊由勇優輸油約役戻毛面綿鳴迷命娘無夢務眠未満末枚埋磨防貿棒望暴忙忘帽坊亡豊訪法放抱宝報包暮募補捕保返辺編片変壁米閉並平兵粉沸払複腹幅復副封部舞武負膚符浮普怖府布富婦夫付貧秒評表氷標筆必匹鼻美備飛非費被皮疲比批悲彼否番晩販般犯版板反判抜髪畑肌箱麦爆薄泊倍配背杯敗拝馬破波農脳能濃悩燃念熱猫認乳難軟内鈍曇届突独毒得銅童導逃到筒等当灯湯盗投島塔凍党倒怒努途登渡徒塗殿伝点展鉄適的滴泥程庭底定停痛追賃珍沈直頂超調張庁兆貯著駐虫柱宙仲竹畜築遅置恥値談段暖断団炭担単谷達濯宅第退袋替帯対打他損尊孫存卒続速束息則側造贈蔵臓憎増像装総窓相争燥操掃捜想層双組祖全然善選船線浅泉戦専占絶雪節設折接責績積石昔席税静製精清晴星整政成性姓勢制数吹震針辛身臣神申深寝信伸触職植蒸畳状条情常城賞象紹笑章省照焼消昇招承床将商召勝除助諸署緒初処順純準述術祝宿柔舟拾修州周収授受酒種守取若捨実湿失識式辞示治次児似歯資誌詞脂糸枝支指志師史司刺伺残賛算散参皿雑殺札察刷冊昨咲坂財罪材在際細祭済歳採才妻最再座砂査差混根婚困込骨腰告刻号香降鉱郊講荒航肯耕紅硬港構更康幸向厚効公候交誤御互雇湖枯故戸庫固呼個限現減原険軒賢肩権検券健件血結決欠劇迎芸警経景敬恵形型傾係軍群訓君靴掘隅偶具苦禁均勤玉極曲局胸狭況橋挟恐境叫協共競供漁許巨居旧給級球泣求救吸久逆客詰喫議疑技記規季祈機期机希寄基器喜危願岩岸含丸関観簡管看甘環汗換慣感干官完巻刊乾活割額革較角覚格拡各害貝階絵皆灰械改快解介過貨課菓荷河果科可加価仮化温億黄王欧横押応奥央央汚塩煙演延園越液鋭泳永栄営雲羽宇因印育域違衣胃移異易委囲偉依位案圧愛");
+const N3_RAW_SET = new Set("与両乗予争互亡交他付件任伝似位余例供便係信倒候値偉側偶備働優光共具内最冷処列初判利到制刻割加助労務勝勤化単危原参反収取受号合向君否吸吹告呼命和商喜回因困園在報声変夢太夫失好妻娘婚婦存宅守完官定実客害容宿寄富寒寝察対局居差市師席常平幸幾座庭式引当形役彼徒得御必忘忙念怒怖性恐恥息悲情想愛感慣成戦戻所才打払投折抜抱押招指捕掛探支放政敗散数断易昔昨晩景晴暗暮曲更望期未末束杯果格構様権横機欠次欲歳残段殺民求決治法泳洗活流浮消深済渡港満演点然煙熱犯状猫王現球産由申留番疑痛登皆盗直相眠石破確示礼祖神福科程種積突窓笑等箱米精約組経給絵絶続緒罪置美老耳職育背能腹舞船良若苦草落葉薬術表要規覚観ശ記訪許認誤説談論識警議負財貧責費資越路辞込迎返迷追退逃途速連進遅遊過達違遠適選部都配酒閉関降限除険陽際雑難雪静非面靴頂頭頼顔願類飛首馬髪鳴");
+const N4_RAW_SET = new Set("不世主事京仕代以会住体作使借元兄公写冬切別力勉動医去口古台同味品員問図地堂場売夏夕多夜妹姉始字安室家少屋工帰広店度建弟強待心思急悪意手持教文料新方旅族早明映春昼曜有服朝業楽歌止正歩死注洋海漢牛物特犬理用田町画界病発目真着知研社私秋究空立答紙終習考者肉自色花英茶親言計試買貸質赤走起足転近送通週運道重野銀開院集青音題風飯飲館駅験魚鳥黒");
+const N5_SET = new Set("一七万三上下中九二五人今休何先入八六円出前北十千午半南友右名四国土外大天女子学小山川左年後日時書月木本来東校母毎気水火父生男白百聞行西見話語読車金長間雨電食高");
+const N4_SET = new Set([...N4_RAW_SET].filter(c => !N5_SET.has(c)));
+const N3_SET = new Set([...N3_RAW_SET].filter(c => !N5_SET.has(c) && !N4_SET.has(c)));
+const N2_SET = new Set([...N2_RAW_SET].filter(c => !N5_SET.has(c) && !N4_SET.has(c) && !N3_SET.has(c)));
+
+function isKanji(ch){ return ch >= '\u4e00' && ch <= '\u9fff'; }
+
+function extractYoutubeId(url){
+  if (!url) return null;
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtube\.com\/embed\/|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{11})/);
+  return match ? match[1] : null;
+}
+
+let ytPlayer = null;
+let _ytApiRequested = false;
+let _pendingVideoId = null;
+let syncInterval = null;
+let _lastActiveLine = -1;
+let _userScrollUntil = 0;
+
+function ensureYouTubeApi(onReady){
+  if (window.YT && window.YT.Player){ onReady(); return; }
+  const prevCb = window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady = () => { if (typeof prevCb === 'function') prevCb(); onReady(); };
+  if (!_ytApiRequested){
+    _ytApiRequested = true;
+    const s = document.createElement('script');
+    s.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(s);
+  }
+}
+
+function loadYoutube(){
+  const url = document.getElementById('ytUrl').value.trim();
+  const id = extractYoutubeId(url);
+  if (!id){ toast('Could not find a valid YouTube video ID.'); return; }
+  document.getElementById('ytWrap').classList.remove('hidden');
+  document.getElementById('mainGrid').classList.remove('no-video');
+  _pendingVideoId = id;
+
+  ensureYouTubeApi(() => {
+    if (ytPlayer && typeof ytPlayer.loadVideoById === 'function'){
+      ytPlayer.loadVideoById(_pendingVideoId);
+      return;
+    }
+    ytPlayer = new YT.Player('ytPlayerDiv', {
+      videoId: _pendingVideoId,
+      playerVars: { rel: 0 },
+      events: {
+        onReady: () => { startSyncLoop(); },
+        onError: () => { toast('Video could not be loaded (embedding disabled).'); }
       }
     });
+  });
+}
 
-    // Handle Form Submission -> Netlify Function
-    authForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      authMessage.textContent = '';
-      
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const action = isRegistering ? 'register' : 'login';
+function seekTo(seconds){
+  _userScrollUntil = 0;
+  if (ytPlayer && typeof ytPlayer.seekTo === 'function'){
+    ytPlayer.seekTo(seconds, true);
+    if (typeof ytPlayer.playVideo === 'function') ytPlayer.playVideo();
+  }
+}
 
-      try {
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Connecting...";
-
-        const response = await fetch('/.netlify/functions/auth', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action, email, password })
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          authMessage.className = "message success";
-          authMessage.textContent = data.message || "Success!";
-          
-          if (data.token) {
-            localStorage.setItem('funjp_token', data.token);
-          }
-
-          setTimeout(() => {
-            authModal.classList.remove('active');
-            location.reload();
-          }, 1500);
-        } else {
-          authMessage.className = "message error";
-          authMessage.textContent = data.error || "Authentication failed.";
+function startSyncLoop(){
+  if (syncInterval) clearInterval(syncInterval);
+  syncInterval = setInterval(() => {
+    if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
+    const entries = window._transcriptEntries;
+    if (!entries || !entries.length) return;
+    const t = ytPlayer.getCurrentTime();
+    let idx = -1;
+    for (let i = 0; i < entries.length; i++){
+      if (entries[i].time <= t) idx = i; else break;
+    }
+    if (idx !== _lastActiveLine && idx >= 0){
+      const prev = document.querySelector('.t-line.active');
+      if (prev) prev.classList.remove('active');
+      const cur = document.querySelector(`.t-line[data-idx="${idx}"]`);
+      if (cur){
+        cur.classList.add('active');
+        if (Date.now() >= _userScrollUntil){
+          const box = document.getElementById('output');
+          const top = cur.offsetTop - (box.clientHeight / 2) + (cur.offsetHeight / 2);
+          box.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
         }
-      } catch (err) {
-        authMessage.className = "message error";
-        authMessage.textContent = "Failed to connect to server.";
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = isRegistering ? "Sign Up" : "Log In";
       }
+      _lastActiveLine = idx;
+    }
+  }, 300);
+}
+
+function formatTime(sec){
+  sec = Math.floor(sec);
+  const h = Math.floor(sec / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  const s = sec % 60;
+  const mm = h > 0 ? String(m).padStart(2,'0') : m;
+  const ss = String(s).padStart(2,'0');
+  return h > 0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
+}
+
+function parseTimeToSeconds(str){
+  const parts = str.split(':').map(Number);
+  if (parts.some(isNaN)) return null;
+  if (parts.length === 2) return parts[0]*60 + parts[1];
+  if (parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
+  return null;
+}
+
+function parseTranscript(raw){
+  const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  const bracketRe = /^\[((?:\d{1,2}:)?\d{1,2}:\d{2})\]\s*(.*)$/;
+  const bracketCount = lines.filter(l => bracketRe.test(l)).length;
+  if (bracketCount >= 2){
+    const entries = [];
+    let current = null;
+    for (const line of lines){
+      const m = line.match(bracketRe);
+      if (m){
+        if (current) entries.push(current);
+        current = { time: parseTimeToSeconds(m[1]), text: m[2] || '' };
+      } else if (current){
+        current.text += line;
+      }
+    }
+    if (current) entries.push(current);
+    const cleaned = entries.filter(e => e.text && e.text.trim().length > 0);
+    if (cleaned.length) return cleaned;
+  }
+  return null;
+}
+
+// Basic Dictionary & Coverage Data structures from user script
+const MEANINGS = {"腕": "arm", "和": "harmony", "論": "theory"};
+const HAS_SEGMENTER = typeof Intl !== 'undefined' && typeof Intl.Segmenter === 'function';
+const segmenter = HAS_SEGMENTER ? new Intl.Segmenter('ja', { granularity: 'word' }) : null;
+const N2_LIST = [...N2_SET];
+const N3_LIST = [...N3_SET];
+const N4_LIST = [...N4_SET];
+const N5_LIST = [...N5_SET];
+const LVL_OF = new Map();
+[['n5', N5_SET], ['n4', N4_SET], ['n3', N3_SET], ['n2', N2_SET]].forEach(([lv, set]) => set.forEach(c => LVL_OF.set(c, lv)));
+const LV_FIELDS = {
+  n2: { total: 'total',  uniq: 'uniq',  cls: 'kj'  },
+  n3: { total: 'total3', uniq: 'uniq3', cls: 'kj3' },
+  n4: { total: 'total4', uniq: 'uniq4', cls: 'kj4' },
+  n5: { total: 'total5', uniq: 'uniq5', cls: 'kj5' }
+};
+const lvlClass = k => { const lv = LVL_OF.get(k); return lv ? ' ' + lv : ''; };
+
+async function dictLookup(word){ return null; }
+async function translateAny(text){ return null; }
+async function kanjiInfo(ch){ return null; }
+async function kanjiSvg(ch){ return null; }
+
+function segsOf(lineId){ return (window._lineSegs && window._lineSegs[lineId]) || []; }
+function isJpSeg(s){ return !!s && /[\u4e00-\u9fffぁ-んァ-ヶー]/.test(s.text); }
+function selText(sel){ return segsOf(sel.lineId).slice(sel.start, sel.end + 1).map(s => s.text).join(''); }
+function sentenceOf(lineId, idx){ return ""; }
+
+function showMeaning(evt, el){
+  if (evt && evt.stopPropagation) evt.stopPropagation();
+  const word = el.textContent;
+  toast(`Selected: ${word}`);
+}
+
+const COV = {
+  n2: { name: 'N2', key: 'n2_kanji_cov', list: N2_LIST, set: new Set(), bar: 'covBar', text: 'covText', grid: 'masterGrid', btn: 'resetBtn', cls: 'kj', color: 'var(--n2)' },
+  n3: { name: 'N3', key: 'n3_kanji_cov', list: N3_LIST, set: new Set(), bar: 'covBar3', text: 'covText3', grid: 'masterGrid3', btn: 'resetBtn3', cls: 'kj3', color: 'var(--n3)' },
+  n4: { name: 'N4', key: 'n4_kanji_cov', list: N4_LIST, set: new Set(), bar: 'covBar4', text: 'covText4', grid: 'masterGrid4', btn: 'resetBtn4', cls: 'kj4', color: 'var(--n4)' },
+  n5: { name: 'N5', key: 'n5_kanji_cov', list: N5_LIST, set: new Set(), bar: 'covBar5', text: 'covText5', grid: 'masterGrid5', btn: 'resetBtn5', cls: 'kj5', color: 'var(--n5)' }
+};
+
+function loadCoverage(){
+  for (const lvl of Object.keys(COV)){
+    try{
+      const raw = localStorage.getItem(COV[lvl].key);
+      if (raw) COV[lvl].set = new Set(JSON.parse(raw));
+    }catch(e){ COV[lvl].set = new Set(); }
+  }
+}
+function saveCoverage(lvl){
+  try{ localStorage.setItem(COV[lvl].key, JSON.stringify([...COV[lvl].set])); }catch(e){}
+}
+function toggleCovered(ch, lvl){
+  const set = COV[lvl].set;
+  if (set.has(ch)) set.delete(ch); else set.add(ch);
+  saveCoverage(lvl);
+  renderMasterGrid(lvl);
+  updateCoverageBar(lvl);
+}
+function updateCoverageBar(lvl){
+  const c = COV[lvl];
+  let n = 0;
+  for (const ch of c.list) if (c.set.has(ch)) n++;
+  const pct = c.list.length ? Math.round((n / c.list.length) * 100) : 0;
+  document.getElementById(c.bar).style.width = pct + '%';
+  document.getElementById(c.text).textContent = `${n} / ${c.list.length}`;
+}
+function renderMasterGrid(lvl){
+  const c = COV[lvl];
+  const grid = document.getElementById(c.grid);
+  grid.innerHTML = c.list.map(ch => {
+    const on = c.set.has(ch);
+    const style = on ? `background:${c.color}; color:#0f172a;` : 'background:transparent; color:var(--muted); box-shadow:0 0 0 1px var(--border) inset;';
+    return `<span class="${c.cls}" style="padding:2px 7px; cursor:pointer; ${style}" onclick="toggleCovered('${ch}','${lvl}')">${ch}</span>`;
+  }).join('');
+}
+function initCoverage(){
+  loadCoverage();
+  for (const lvl of Object.keys(COV)){ renderMasterGrid(lvl); updateCoverageBar(lvl); }
+}
+
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+function buildHighlightedHtml(str, counter, lineId){
+  lineId = lineId || 'p';
+  for (const f of Object.values(LV_FIELDS)){ counter[f.total] = counter[f.total] || 0; counter[f.uniq] = counter[f.uniq] || new Set(); }
+  const segsList = [];
+  let html = '';
+  for (const ch of str){
+    const idx = segsList.length;
+    segsList.push({ text: ch });
+    if (ch === '\n'){ html += '<br>'; continue; }
+    if (/[\u4e00-\u9fffぁ-んァ-ヶー]/.test(ch)){
+      const lv = isKanji(ch) ? LVL_OF.get(ch) : null;
+      if (lv){ const f = LV_FIELDS[lv]; counter[f.total]++; counter[f.uniq].add(ch); }
+      html += `<span class="${lv ? LV_FIELDS[lv].cls + ' word' : 'word'}" data-line="${lineId}" data-i="${idx}" onclick="showMeaning(event, this)">${esc(ch)}</span>`;
+    } else {
+      html += esc(ch);
+    }
+  }
+  window._lineSegs = window._lineSegs || {};
+  window._lineSegs[lineId] = segsList;
+  return html;
+}
+
+function analyze(){
+  const raw = document.getElementById('input').value;
+  const out = document.getElementById('output');
+  if (!raw.trim()){ out.textContent = 'Paste a transcript above and click Load Transcript.'; return; }
+
+  const counter = { total: 0, uniq: new Set(), total3: 0, uniq3: new Set(), total4: 0, uniq4: new Set(), total5: 0, uniq5: new Set() };
+  window._lineSegs = {};
+  const parsed = parseTranscript(raw);
+
+  if (parsed){
+    window._transcriptEntries = parsed;
+    out.innerHTML = '';
+    parsed.forEach((entry, idx) => {
+      const div = document.createElement('div');
+      div.className = 't-line';
+      div.dataset.idx = idx;
+      div.innerHTML = `<span class="t-time" onclick="seekTo(${entry.time})">${formatTime(entry.time)}</span><span class="t-text">${buildHighlightedHtml(entry.text, counter, 'L' + idx)}</span>`;
+      out.appendChild(div);
     });
-  </script>
+  } else {
+    out.innerHTML = buildHighlightedHtml(raw, counter, 'p');
+  }
+
+  for (const lvl of ['n2', 'n3', 'n4', 'n5']){
+    const f = LV_FIELDS[lvl], sfx = lvl === 'n2' ? '' : lvl.slice(1);
+    const uniq = [...counter[f.uniq]];
+    document.getElementById('countTotal' + sfx).textContent = counter[f.total];
+    document.getElementById('countUnique' + sfx).textContent = uniq.length;
+  }
+  document.getElementById('summaryWrap').classList.remove('hidden');
+}
+
+function clearAll(){
+  document.getElementById('input').value = '';
+  document.getElementById('output').textContent = 'Paste a transcript above and click Load Transcript.';
+  document.getElementById('summaryWrap').classList.add('hidden');
+}
+
+async function copyList(lvl){
+  lvl = lvl || 'n2';
+  const list = ((window._lvlLists || {})[lvl] || []).join('');
+  try{ await navigator.clipboard.writeText(list); toast(`Copied ${lvl.toUpperCase()} list`); }catch(e){}
+}
+
+function toast(msg){
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:16px;right:16px;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:10px;font-size:12px;z-index:50;box-shadow:0 4px 12px rgba(0,0,0,.3)';
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 2200);
+}
+
+document.getElementById('themeBtn').addEventListener('click', ()=>{
+  const r = document.documentElement;
+  r.setAttribute('data-theme', r.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+});
+
+initCoverage();
+</script>
 </body>
 </html>
