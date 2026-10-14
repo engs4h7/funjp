@@ -49,8 +49,8 @@ function createHandler(deps) {
     const token = A.parseCookies(header(event, 'cookie'))[A.COOKIE_NAME];
     const payload = A.verify(token, env.JWT_SECRET, nowSec());
     if (!payload || !/^\d{1,18}$/.test(String(payload.sub))) return null;
-    const rows = await sql`select id, username from users where id = ${String(payload.sub)}`;
-    return rows[0] ? { id: String(rows[0].id), username: rows[0].username } : null;
+    const rows = await sql`select id, username, email from users where id = ${String(payload.sub)}`;
+    return rows[0] ? { id: String(rows[0].id), username: rows[0].username, email: rows[0].email } : null;
   }
 
   function loginCookie(user, env) {
@@ -75,18 +75,25 @@ function createHandler(deps) {
     if (env.SIGNUP_CODE && !A.safeEqual(body.code || '', env.SIGNUP_CODE)) return fail(403, 'bad_code', 'That invite code is not valid.');
     const u = V.username(body.username);
     if (!u.ok) return fail(400, 'bad_username', u.message);
+    const e = V.email(body.email);
+    if (!e.ok) return fail(400, 'bad_email', e.message);
     const p = V.password(body.password, u.value);
     if (!p.ok) return fail(400, 'bad_password', p.message);
 
     const hash = await A.hashPassword(body.password);
     let rows;
     try {
-      rows = await sql`insert into users (username, username_lc, password_hash) values (${u.value}, ${u.lc}, ${hash}) returning id, username`;
+      rows = await sql`insert into users (username, username_lc, email, password_hash) values (${u.value}, ${u.lc}, ${e.value}, ${hash}) returning id, username, email`;
     } catch (e) {
-      if (e && (e.code === '23505' || /unique|duplicate/i.test(e.message || ''))) return fail(409, 'username_taken', 'That username is already taken.');
+      if (e && (e.code === '23505' || /unique|duplicate/i.test(e.message || ''))) {
+        const emailConflict = /email/i.test(String(e.constraint || '') + ' ' + String(e.message || ''));
+        return emailConflict
+          ? fail(409, 'email_taken', 'That email address is already registered.')
+          : fail(409, 'username_taken', 'That username is already taken.');
+      }
       throw e;
     }
-    const user = { id: String(rows[0].id), username: rows[0].username };
+    const user = { id: String(rows[0].id), username: rows[0].username, email: rows[0].email };
     return respond(201, { user }, loginCookie(user, env));
   }
 

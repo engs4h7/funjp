@@ -31,6 +31,8 @@ test('frontend offers sign-in and a timed registration prompt', () => {
   assert.match(html, /id="authBar"/);
   assert.match(html, /id="authBtn"/);
   assert.match(html, /id="authForm"/);
+  assert.match(html, /id="authEmail"[^>]*type="email"/);
+  assert.match(html, /payload\.email = \$\('authEmail'\)\.value\.trim\(\)/);
   assert.match(html, /120000/);
   assert.match(html, /showAuthDialog\('register', true\)/);
   assert.match(html, /fetch\('\/api\/progress'/);

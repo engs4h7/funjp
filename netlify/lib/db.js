@@ -33,6 +33,12 @@ function ensureSchema(sql) {
           locked_until timestamptz,
           created_at timestamptz not null default now()
         )`;
+      try {
+        await sql`alter table users add column email text`;
+      } catch (e) {
+        if (!/already exists|duplicate column/i.test(String(e && e.message || ''))) throw e;
+      }
+      await sql`create unique index if not exists users_email_unique on users (lower(email)) where email is not null`;
       await sql`
         create table if not exists user_progress (
           user_id bigint not null references users(id) on delete cascade,

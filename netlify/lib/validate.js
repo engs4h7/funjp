@@ -15,6 +15,14 @@ function username(raw) {
   return { ok: true, value: v, lc: v.toLowerCase() };
 }
 
+function email(raw) {
+  const value = typeof raw === 'string' ? raw.trim() : '';
+  if (value.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+    return { ok: false, message: 'Enter a valid email address.' };
+  }
+  return { ok: true, value: value.toLowerCase() };
+}
+
 function password(raw, uname) {
   if (typeof raw !== 'string' || raw.length < 8) return { ok: false, message: 'Password must be at least 8 characters.' };
   if (raw.length > 200) return { ok: false, message: 'Password is too long (200 characters max).' };
@@ -56,4 +64,4 @@ function progress(app, data) {
   return clean ? { ok: true, value: clean } : { ok: false, message: 'Invalid progress data.' };
 }
 
-module.exports = { username, password, appId, progress, MAX_BODY_BYTES };
+module.exports = { username, email, password, appId, progress, MAX_BODY_BYTES };

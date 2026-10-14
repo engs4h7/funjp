@@ -60,7 +60,7 @@ function ev(method, path, o) {
 const cookieOf = (res) => (res.headers['Set-Cookie'] || '').split(';')[0];
 const bodyOf = (res) => JSON.parse(res.body);
 async function signup(h, username, password, extra) {
-  return h(ev('POST', '/api/signup', { body: Object.assign({ username, password }, extra || {}) }));
+  return h(ev('POST', '/api/signup', { body: Object.assign({ username, password, email: `${username}@example.test` }, extra || {}) }));
 }
 
 // ---------------------------------------------------------------- helpers
@@ -95,6 +95,9 @@ test('validation: usernames, passwords, progress payloads', () => {
   assert.equal(V.username('has space').ok, false);
   assert.equal(V.username('<script>').ok, false);
   assert.equal(V.username('  Good_Name-1.x ').value, 'Good_Name-1.x');
+  assert.equal(V.email('bad-address').ok, false);
+  assert.equal(V.email('a'.repeat(250) + '@example.test').ok, false);
+  assert.equal(V.email(' Person@Example.test ').value, 'person@example.test');
   assert.equal(V.password('short', 'bob').ok, false);
   assert.equal(V.password('Bobbobbob', 'bobbobbob').ok, false);
   assert.equal(V.password('a'.repeat(201), 'bob').ok, false);
@@ -117,22 +120,47 @@ test('signup: creates the account, stores only a hash, sets a secure session coo
   const res = await signup(handler, 'Alice', 'a-good-password');
   assert.equal(res.statusCode, 201);
   assert.equal(bodyOf(res).user.username, 'Alice');
+  assert.equal(bodyOf(res).user.email, 'alice@example.test');
   const c = res.headers['Set-Cookie'];
   assert.match(c, /^nk_session=/);
   for (const attr of ['HttpOnly', 'Secure', 'SameSite=Lax', 'Path=/', 'Max-Age=2592000']) assert.ok(c.includes(attr), attr);
-  const rows = await sql`select password_hash from users`;
+  const rows = await sql`select password_hash, email from users`;
   assert.equal(rows.length, 1);
+  assert.equal(rows[0].email, 'alice@example.test');
   assert.ok(!rows[0].password_hash.includes('a-good-password'));
   assert.match(rows[0].password_hash, /^scrypt\$/);
 });
 
-test('signup: duplicate usernames (any case), bad input', async () => {
+test('schema migration adds email without losing existing accounts', async () => {
+  const sql = makeSql();
+  await sql`create table users (
+    id bigint generated always as identity primary key,
+    username text not null,
+    username_lc text not null unique,
+    password_hash text not null,
+    failed_attempts integer not null default 0,
+    locked_until timestamptz,
+    created_at timestamptz not null default now()
+  )`;
+  await sql`insert into users (username, username_lc, password_hash) values (${'Legacy'}, ${'legacy'}, ${'old-hash'})`;
+  const handler = createHandler({ sql, env: { JWT_SECRET: SECRET } });
+  assert.equal((await handler(ev('GET', '/api/me'))).statusCode, 200);
+  const rows = await sql`select username, email from users`;
+  assert.deepEqual(rows, [{ username: 'Legacy', email: null }]);
+});
+
+test('signup: duplicate usernames and emails (any case), bad input', async () => {
   const { handler } = setup();
   assert.equal((await signup(handler, 'Alice', 'a-good-password')).statusCode, 201);
   assert.equal((await signup(handler, 'alice', 'another-password')).statusCode, 409);
   assert.equal((await signup(handler, 'ALICE', 'another-password')).statusCode, 409);
+  const duplicateEmail = await signup(handler, 'bobby', 'another-password', { email: 'ALICE@example.test' });
+  assert.equal(duplicateEmail.statusCode, 409);
+  assert.equal(bodyOf(duplicateEmail).error, 'email_taken');
   assert.equal((await signup(handler, 'x', 'a-good-password')).statusCode, 400);
   assert.equal((await signup(handler, 'bobby', 'short')).statusCode, 400);
+  assert.equal((await handler(ev('POST', '/api/signup', { body: { username: 'bobby', password: 'a-good-password' } }))).statusCode, 400);
+  assert.equal((await signup(handler, 'bobby', 'a-good-password', { email: 'not-an-email' })).statusCode, 400);
   assert.equal((await handler(ev('POST', '/api/signup', { body: 'not json' }))).statusCode, 400);
   assert.equal((await handler(ev('POST', '/api/signup', { body: { username: 'bobby', password: 'a-good-password' }, ct: 'text/plain' }))).statusCode, 415);
 });

@@ -72,8 +72,8 @@ Then **redeploy** (Deploys → Trigger deploy) so the function picks them up.
 
 ### 5. Check it works
 1. Open your site. A **Sign in** button appears in the header (if it doesn't, the API isn't reachable — see Troubleshooting).
-2. **Create account**, tick a few kanji, wait for "Saved ✓" in the header.
-3. In Neon's **SQL Editor**: `select id, username from users;` and `select * from user_progress;`
+2. **Create account** with a username, email address, and password; tick a few kanji and wait for "Saved ✓" in the header.
+3. In Neon's **SQL Editor**: `select id, username, email from users;` and `select * from user_progress;`
 4. Open the site in another browser, sign in — your progress appears.
 
 The tables are created automatically on the first request. `schema.sql` has the same statements if you

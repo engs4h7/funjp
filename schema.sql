@@ -6,11 +6,14 @@ create table if not exists users (
   id bigint generated always as identity primary key,
   username text not null,
   username_lc text not null unique,
+  email text,
   password_hash text not null,
   failed_attempts integer not null default 0,
   locked_until timestamptz,
   created_at timestamptz not null default now()
 );
+
+create unique index if not exists users_email_unique on users (lower(email)) where email is not null;
 
 create table if not exists user_progress (
   user_id bigint not null references users(id) on delete cascade,

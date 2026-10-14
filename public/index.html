@@ -305,6 +305,10 @@
     <form id="authForm" class="space-y-3 mt-5" onsubmit="submitAuth(event)">
       <label class="block text-xs font-semibold" for="authUsername" style="color:var(--muted);">USERNAME</label>
       <input id="authUsername" class="auth-field" name="username" autocomplete="username" minlength="3" maxlength="32" required>
+      <div id="authEmailWrap" class="hidden">
+        <label class="block text-xs font-semibold mb-1" for="authEmail" style="color:var(--muted);">EMAIL ADDRESS</label>
+        <input id="authEmail" class="auth-field" name="email" type="email" autocomplete="email" maxlength="254">
+      </div>
       <label class="block text-xs font-semibold" for="authPassword" style="color:var(--muted);">PASSWORD</label>
       <input id="authPassword" class="auth-field" name="password" type="password" autocomplete="current-password" minlength="8" maxlength="200" required>
       <div id="authCodeWrap" class="hidden">
@@ -1322,6 +1326,8 @@ function showAuthDialog(mode, fromDemo){
   $('authSubmit').textContent = authMode === 'register' ? 'Create account' : 'Sign in';
   $('authSwitch').textContent = authMode === 'register' ? 'Already have an account? Sign in' : 'Create account';
   $('authSwitch').classList.toggle('hidden', !signupOpen);
+  $('authEmailWrap').classList.toggle('hidden', authMode !== 'register');
+  $('authEmail').required = authMode === 'register';
   $('authCodeWrap').classList.toggle('hidden', authMode !== 'register' || !signupRequiresCode);
   $('authPassword').setAttribute('autocomplete', authMode === 'register' ? 'new-password' : 'current-password');
   $('authMessage').classList.add('hidden');
@@ -1348,6 +1354,7 @@ async function submitAuth(event){
   const username = $('authUsername').value.trim();
   const password = $('authPassword').value;
   const payload = { username, password };
+  if (authMode === 'register') payload.email = $('authEmail').value.trim();
   if (authMode === 'register' && signupRequiresCode) payload.code = $('authCode').value.trim();
   button.disabled = true;
   message.classList.add('hidden');
