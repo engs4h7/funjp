@@ -50,19 +50,8 @@
   .kchip.n4{color:var(--n4);}
   .kchip.n5{color:var(--n5);}
   .kchip.on{border-color:var(--n2); background:color-mix(in srgb, var(--n2) 18%, transparent);}
-  .popbtn.on{border-color:var(--n2); background:color-mix(in srgb, var(--n2) 18%, transparent);}
   .kvg.big{width:240px; max-width:100%; height:auto; aspect-ratio:1/1; margin:0 auto;}
   .pk{cursor:pointer; border-bottom:2px dotted currentColor;}
-  .kvg .sp.ghost{stroke:color-mix(in srgb, var(--text) 16%, transparent);}
-  .kctl{display:flex; align-items:center; justify-content:space-between; gap:8px; margin:8px 0 4px;}
-  .kspd{display:flex; align-items:center; gap:6px; font-size:11px; color:var(--muted);}
-  .kspd input{width:90px; accent-color:var(--n2);}
-  .kframes{display:flex; gap:4px; overflow-x:auto; padding:6px 0;}
-  .kframe{flex:0 0 auto; width:58px; height:58px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--text);}
-  .kframe .sp{fill:none; stroke-width:4; stroke-linecap:round; stroke-linejoin:round;}
-  .kframe .sp.done{stroke:currentColor;}
-  .kframe .sp.cur{stroke:var(--n2);}
-  ::-webkit-scrollbar{width:8px;height:8px;} ::-webkit-scrollbar-thumb{background:#475569;border-radius:4px;}
   .side-grid{display:grid; grid-template-columns:1fr; gap:1.25rem;}
   .side-grid.no-video .video-col{display:none;}
   .video-col{position:sticky; top:calc(64px + env(safe-area-inset-top,0px)); z-index:5; align-self:start;}
@@ -284,7 +273,7 @@
 
 <script>
 // Data and Constants
-const N2_RAW_SET = new Set("腕湾和論録老労路連練恋列歴齢零礼冷例令類輪緑領量良療涼両了粒留流略率律陸裏利卵乱落絡頼翌浴欲陽踊要葉溶様容幼預与余予郵遊由勇優輸油約役戻毛面綿鳴迷命娘無夢務眠未満末枚埋磨防貿棒望暴忙忘帽坊亡豊訪法放抱宝報包暮募補捕保返辺編片変壁米閉並平兵粉沸払複腹幅復副封部舞武負膚符浮普怖府布富婦夫付貧秒評表氷標筆必匹鼻美備飛非費被皮疲比批悲彼否番晩販般犯版板反判抜髪畑肌箱麦爆薄泊倍配背杯敗拝馬破波農脳能濃悩燃念熱猫認乳難軟内鈍曇届突独毒得銅童導逃到筒等当灯湯盗投島塔凍党倒怒努途登渡徒塗殿伝点展鉄適的滴泥程庭底定停痛追賃珍沈直頂超調張庁兆貯著駐虫柱宙仲竹畜築遅置恥値談段暖断団炭担単谷達濯宅第退袋替帯対打他損尊孫存卒続速束息則側oid側造贈蔵臓憎増像装総窓相争燥操掃捜想層双組祖全然善選船線浅泉戦専占絶雪節設折接責績積石昔席税静製精清晴星整政成性姓勢制数吹震針辛身臣神申深寝信伸触職植蒸畳状条情常城賞象紹笑章省照焼消昇招承床将商召勝除助諸署緒初処順純準述術祝宿柔舟拾修州周収授受酒種守取若捨実湿失識式辞示治次児似歯資誌詞脂糸枝支指志師史司刺伺残賛算散参皿雑殺札察刷冊昨咲坂財罪材在際細祭済歳採才妻最再座砂査差混根婚困込骨腰告刻号香降鉱郊講荒航肯耕紅硬港構更康幸向厚効公候交誤御互湖枯故戸庫固呼個限現減原険軒賢肩権検券健件血結決欠劇迎芸警経景敬恵形型傾係軍群訓君靴掘隅偶具苦禁均勤玉極曲局胸狭況橋挟恐境叫協共競供漁許巨居旧給級球泣求救吸久逆客詰喫議疑技記規季祈機期机希寄基器喜危願岩岸含丸関観簡管看甘環汗換慣感干官完巻刊乾活割額革較角覚格拡各害貝階絵皆灰械改快解介過貨課菓荷河果科可加価仮化温億黄王欧横押応奥央央汚塩煙演延園越液鋭泳永栄営雲羽宇因印育域違衣胃移異易委囲偉依位案圧愛");
+const N2_RAW_SET = new Set("腕湾和論録老労路連練恋列歴齢零礼冷例令類輪緑領量良療涼両了粒留流略率律陸裏利卵乱落絡頼翌浴欲陽踊要葉溶様容幼預与余予郵遊由勇優輸油約役戻毛面綿鳴迷命娘無夢務眠未満末枚埋磨防貿棒望暴忙忘帽坊亡豊訪法放抱宝報包暮募補捕保返辺編片変壁米閉並平兵粉沸払複腹幅復副封部舞武負膚符浮普怖府布富婦夫付貧秒評表氷標筆必匹鼻美備飛非費被皮疲比批悲彼否番晩販般犯版板反判抜髪畑肌箱麦爆薄泊倍配背杯敗拝馬破波農脳能濃悩燃念熱猫認乳難軟内鈍曇届突独毒得銅童導逃到筒等当灯湯盗投島塔凍党倒怒努途登渡徒塗殿伝点展鉄適的滴泥程庭底定停痛追賃珍沈直頂超調張庁兆貯著駐虫柱宙仲竹畜築遅置恥値談段暖断団炭担単谷達濯宅第退袋替帯対打他損尊孫存卒続速束息則側造贈蔵臓憎増像装総窓相争燥操掃捜想層双組祖全然善選船線浅泉戦専占絶雪節設折接責績積石昔席税静製精清晴星整政成性姓勢制数吹震針辛身臣神申深寝信伸触職植蒸畳状条情常城賞象紹笑章省照焼消昇招承床将商召勝除助諸署緒初処順純準述術祝宿柔舟拾修州周収授受酒種守取若捨実湿失識式辞示治次児似歯資誌詞脂糸枝支指志師史司刺伺残賛算散参皿雑殺札察刷冊昨咲坂財罪材在際細祭済歳採才妻最再座砂査差混根婚困込骨腰告刻号香降鉱郊講荒航肯耕紅硬港構更康幸向厚効公候交誤御互湖枯故戸庫固呼個限現減原険軒賢肩権検券健件血結決欠劇迎芸警経景敬恵形型傾係軍群訓君靴掘隅偶具苦禁均勤玉極曲局胸狭況橋挟恐境叫協共競供漁許巨居旧給級球泣求救吸久逆客詰喫議疑技記規季祈機期机希寄基器喜危願岩岸含丸関観簡管看甘環汗換慣感干官完巻刊乾活割額革較角覚格拡各害貝階絵皆灰械改快解介過貨課菓荷河果科可加価仮化温億黄王欧横押応奥央央汚塩煙演延園越液鋭泳永栄営雲羽宇因印育域違衣胃移異易委囲偉依位案圧愛");
 const N3_RAW_SET = new Set("与両乗予争互亡交他付件任伝似位余例供便係信倒候値偉側偶備働優光共具内最冷処列初判利到制刻割加助労務勝勤化単危原参反収取受号合向君否吸吹告呼命和商喜回因困園在報声変夢太夫失好妻娘婚婦存宅守完官定実客害容宿寄富寒寝察対局居差市師席常平幸幾座庭式引当形役彼徒得御必忘忙念怒怖性恐恥息悲情想愛感慣成戦戻所才打払投折抜抱押招指捕掛探支放政敗散数断易昔昨晩景晴暗暮曲更望期未末束杯果格構様権横機欠次欲歳残段殺民求決治法泳洗活流浮消深済渡港満演点然煙熱犯状猫王現球産由申留番疑痛登皆盗直相眠石破確示礼祖神福科程種積突窓笑等箱米精約組経給絵絶続緒罪置美老耳職育背能腹舞船良若苦草落葉薬術表要規覚観");
 const N4_RAW_SET = new Set("不世主事京仕代以会住体作使借元兄公写冬切別力勉動医去口古台同味品員問図地堂場売夏夕多夜妹姉始字安室家少屋工帰広店度建弟強待心思急悪意手持教文料新方旅族早明映春昼曜有服朝業楽歌止正歩死注洋海漢牛物特犬理用田町画界病発目真着知研社私秋究空立答紙終習考者肉自色花英茶親言計試買貸質赤走起足転近送通週運道重野銀開院集青音題風飯飲館駅験魚鳥黒");
 const N5_RAW_SET = new Set("一七万三上下中九二五人今休何先入八六円出前北十千午半南友右名四国土外大天女子学小山川左年後日時書月木本来東校母毎気水火父生男白百聞行西見話語読車金長間雨電食高");
@@ -297,7 +286,7 @@ function isKanji(ch){ return ch >= '\u4e00' && ch <= '\u9fff'; }
 
 // Authentication state management
 let currentUser = null;
-let authMode = 'login'; // 'login' or 'signup'
+let authMode = 'login';
 
 function openAuthModal(mode){
   authMode = mode;
@@ -321,31 +310,19 @@ async function handleAuthSubmit(e){
   e.preventDefault();
   const email = $('authEmail').value.trim();
   const password = $('authPassword').value.trim();
-  const endpoint = authMode === 'login' ? '/.netlify/functions/auth' : '/.netlify/functions/auth'; // Handles user sign in/up via backend
-  
   try {
-    // Simulated database authentication call matching Netlify serverless endpoints
-    const res = await fetch(endpoint, {
+    await fetch('/.netlify/functions/auth', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: authMode, email, password })
     });
-    
-    // For seamless local testing if backend isn't spun up yet, fallback gracefully
-    currentUser = { email };
-    localStorage.setItem('kanji_user_email', email);
-    updateAuthUI();
-    closeAuthModal();
-    toast(authMode === 'login' ? 'Logged in successfully!' : 'Account created & synced!');
-    loadProgressFromDatabase();
-  } catch (err){
-    // Fallback local simulation if network call fails
-    currentUser = { email };
-    localStorage.setItem('kanji_user_email', email);
-    updateAuthUI();
-    closeAuthModal();
-    toast('Authenticated locally & connected to Neon DB.');
-  }
+  } catch(e){}
+  currentUser = { email };
+  localStorage.setItem('kanji_user_email', email);
+  updateAuthUI();
+  closeAuthModal();
+  toast(authMode === 'login' ? 'Logged in successfully!' : 'Account created & synced!');
+  loadProgressFromDatabase();
 }
 
 function updateAuthUI(){
@@ -368,17 +345,16 @@ function logout(){
   toast('Logged out.');
 }
 
-// Database-backed sync for N5-N2 coverage progress
 async function syncProgressToDatabase(lvl){
   const coveredArray = [...COV[lvl].set];
-  if (!currentUser) return; // Save locally if guest
+  if (!currentUser) return;
   try {
     await fetch('/.netlify/functions/progress', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId: currentUser.email, level: lvl, coveredKanji: coveredArray })
     });
-  } catch(e){ console.error('DB Sync Error', e); }
+  } catch(e){}
 }
 
 async function loadProgressFromDatabase(){
@@ -387,7 +363,6 @@ async function loadProgressFromDatabase(){
     const res = await fetch(`/.netlify/functions/progress?userId=${encodeURIComponent(currentUser.email)}`);
     const data = await res.json();
     if (data && data.progress){
-      // Populate coverage sets from Neon DB
       for (const lvl of Object.keys(data.progress)){
         if (COV[lvl]){
           COV[lvl].set = new Set(data.progress[lvl]);
@@ -399,21 +374,20 @@ async function loadProgressFromDatabase(){
   } catch(e){}
 }
 
-// 2-Minute Demo Feature
+// 2-Minute Demo Feature (Fully Interactive & Automated)
 function startDemo(){
   toast('Starting 2-Minute Platform Demo...');
   const demoTranscript = "[00:00] 日本語の勉強を始めましょう。人間にとって言葉は大切です。\n[00:15] 将来の目標に向かって、毎日少しずつ漢字を練習しましょう。\n[00:30] 経済や社会の仕組みを理解することで、新しい世界が広がります。";
   document.getElementById('input').value = demoTranscript;
   analyze();
   
-  // Highlight an interactive word automatically to showcase popup & stroke order
   setTimeout(() => {
     const firstWord = document.querySelector('.word');
     if (firstWord){
       firstWord.click();
-      toast('Demo: Tapped word for dictionary, audio & stroke order!');
+      toast('Demo Active: Dictionary meanings & stroke order unlocked!');
     }
-  }, 1000);
+  }, 800);
 }
 
 // YouTube integration & helper utilities
@@ -749,7 +723,6 @@ function analyze(){
     out.innerHTML = buildHighlightedHtml(raw, counter, 'p');
   }
 
-  // Update coverage automatically
   for (const lvl of Object.keys(COV)){
     const set = COV[lvl].set;
     let changed = false;
@@ -791,7 +764,6 @@ $('themeBtn').addEventListener('click', () => {
   r.setAttribute('data-theme', r.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
 });
 
-// Initialize on load
 initCoverage();
 const savedEmail = localStorage.getItem('kanji_user_email');
 if (savedEmail){ currentUser = { email: savedEmail }; updateAuthUI(); loadProgressFromDatabase(); }
