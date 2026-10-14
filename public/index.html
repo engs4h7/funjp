@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-﻿<!DOCTYPE html>
-=======
 <!DOCTYPE html>
->>>>>>> f0b4326ec0090f2c68f706bc805adbbc3fa52886
 <html lang="en" class="dark">
 <head>
 <meta charset="UTF-8">
@@ -66,11 +62,6 @@
   .kframe .sp{fill:none; stroke-width:4; stroke-linecap:round; stroke-linejoin:round;}
   .kframe .sp.done{stroke:currentColor;}
   .kframe .sp.cur{stroke:var(--n2);}
-<<<<<<< HEAD
-  ::-webkit-scrollbar{width:8px;height:8px;} ::-webkit-scrollbar-thumb{background:#475569;border-radius:4px;}
-  .side-grid{display:grid; grid-template-columns:1fr; gap:1.25rem;}
-  .side-grid.no-video .video-col{display:none;}
-=======
   .authmodal{position:fixed; inset:0; z-index:90; background:rgba(0,0,0,.55); display:flex; align-items:center; justify-content:center; padding:12px;}
   .authmodal.hidden{display:none !important;}
   .authcard{width:min(380px, 100%); background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; display:flex; flex-direction:column; gap:10px; box-shadow:0 20px 50px rgba(0,0,0,.55);}
@@ -85,7 +76,6 @@
   /* No video loaded: hide the video column so the transcript gets the whole screen */
   .side-grid.no-video .video-col{display:none;}
   /* Video stays pinned under the header; only the transcript box scrolls */
->>>>>>> f0b4326ec0090f2c68f706bc805adbbc3fa52886
   .video-col{position:sticky; top:calc(64px + env(safe-area-inset-top,0px)); z-index:5; align-self:start;}
   @media (min-width:900px){
     .side-grid{grid-template-columns:2fr 1fr; align-items:start;}
@@ -95,15 +85,10 @@
   #ytWrap iframe{position:absolute; inset:0; width:100%!important; height:100%!important; border-radius:0.5rem; border:0;}
   .transcript-box{position:relative; overflow-y:auto; overscroll-behavior:contain; padding-right:4px;
     max-height:calc(100vh - 190px); max-height:calc(100dvh - 190px); min-height:220px;}
-<<<<<<< HEAD
-  .side-grid:not(.no-video) .transcript-box{
-    max-height:calc(100vh - 190px - ((100vw - 56px) * .5625)); max-height:calc(100dvh - 190px - ((100vw - 56px) * .5625)); min-height:140px;}
-=======
   /* Phone + video: video pinned on top, transcript fills the rest of the screen */
   .side-grid:not(.no-video) .transcript-box{
     max-height:calc(100vh - 190px - ((100vw - 56px) * .5625)); max-height:calc(100dvh - 190px - ((100vw - 56px) * .5625)); min-height:140px;}
   /* Desktop + video: transcript is as tall as the screen, next to the pinned video */
->>>>>>> f0b4326ec0090f2c68f706bc805adbbc3fa52886
   @media (min-width:900px){ .side-grid:not(.no-video) .transcript-box{max-height:calc(100vh - 150px); max-height:calc(100dvh - 150px); min-height:360px;} }
   .t-line{display:flex; gap:10px; padding:8px 6px; border-radius:8px; align-items:flex-start; font-size:1.05rem; line-height:1.9;}
   .t-time{flex:0 0 auto; font-size:11px; color:var(--muted); font-weight:700; cursor:pointer; padding-top:3px; user-select:none;}
@@ -123,9 +108,6 @@
         <p class="text-xs" style="color:var(--muted);">Tap any word for its meaning + audio</p>
       </div>
     </div>
-<<<<<<< HEAD
-    <button id="themeBtn" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">🌓 Theme</button>
-=======
     <div class="flex items-center gap-2">
       <div id="authBar" class="hidden items-center gap-2">
         <span id="authStatus" class="text-[11px] hidden sm:inline" style="color:var(--muted);"></span>
@@ -134,43 +116,29 @@
       </div>
       <button id="themeBtn" class="text-xs px-3 py-1.5 rounded-lg border" style="border-color:var(--border);">🌓 Theme</button>
     </div>
->>>>>>> f0b4326ec0090f2c68f706bc805adbbc3fa52886
   </div>
 </header>
 
 <main class="w-full px-4 py-6 space-y-5">
-<<<<<<< HEAD
-=======
 
->>>>>>> f0b4326ec0090f2c68f706bc805adbbc3fa52886
   <div class="card p-4 space-y-3">
     <label class="text-xs font-semibold" style="color:var(--muted);">YOUTUBE VIDEO (OPTIONAL)</label>
     <div class="flex gap-2">
       <input id="ytUrl" type="text" placeholder="Paste a YouTube video URL…" class="flex-1 rounded-lg p-2 text-sm" style="background:var(--bg); border:1px solid var(--border); color:var(--text);">
       <button onclick="loadYoutube()" class="px-4 py-2 rounded-lg text-sm font-semibold border" style="border-color:var(--border);">Load</button>
     </div>
-<<<<<<< HEAD
-    <textarea id="input" rows="4" class="w-full rounded-lg p-3 text-sm font-mono" placeholder="Paste the transcript here — with YouTube timestamps or plain text works too…"></textarea>
-=======
     <textarea id="input" rows="4" class="w-full rounded-lg p-3 text-sm font-mono" placeholder="Paste the transcript here — with YouTube timestamps (e.g. copied straight from 'Show transcript') or plain text works too…"></textarea>
->>>>>>> f0b4326ec0090f2c68f706bc805adbbc3fa52886
     <div class="flex flex-wrap gap-2 items-center justify-between">
       <div class="flex gap-2">
         <button onclick="analyze()" class="px-4 py-2 rounded-lg text-white text-sm font-semibold" style="background:#e63946;">Load Transcript</button>
         <button onclick="clearAll()" class="px-4 py-2 rounded-lg text-sm font-semibold border" style="border-color:var(--border);">Clear</button>
       </div>
-<<<<<<< HEAD
-=======
       <p class="text-[11px]" style="color:var(--muted);">N5: 79 · N4: 166 · N3: 367 · N2: 399 kanji loaded — with timestamps, the text auto-scrolls and highlights as the video plays</p>
->>>>>>> f0b4326ec0090f2c68f706bc805adbbc3fa52886
     </div>
   </div>
 
   <div class="side-grid no-video" id="mainGrid">
-<<<<<<< HEAD
-=======
     <!-- LEFT: video (2/3 width on desktop). Hidden until a video is loaded; stays pinned while the transcript scrolls. -->
->>>>>>> f0b4326ec0090f2c68f706bc805adbbc3fa52886
     <div class="video-col">
       <div class="card p-3">
         <div id="ytWrap" class="hidden">
@@ -180,29 +148,6 @@
         </div>
       </div>
     </div>
-<<<<<<< HEAD
-    <div class="card p-4 space-y-2">
-      <div class="text-xs font-semibold" style="color:var(--muted);">TRANSCRIPT — TAP ANY WORD</div>
-      <div id="output" class="out transcript-box">Paste a transcript above and click Load Transcript.</div>
-    </div>
-  </div>
-</main>
-
-<!-- Authentication Modal -->
-<div id="authModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 hidden">
-  <div class="card p-6 w-full max-w-md space-y-4 bg-slate-900 border border-slate-700 rounded-xl">
-    <h2 class="text-lg font-bold text-white">Unlock Full Access</h2>
-    <p class="text-xs text-slate-400">Your 2-minute free demo has expired. Please sign in or register to continue using all features.</p>
-    <div class="space-y-3">
-      <input id="authEmail" type="email" placeholder="Email address..." class="w-full p-2.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm">
-      <input id="authPassword" type="password" placeholder="Password..." class="w-full p-2.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm">
-      <div id="authError" class="text-xs text-red-400"></div>
-      <div class="flex gap-2 pt-2">
-        <button onclick="handleAuth('login')" class="flex-1 py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold text-sm">Sign In</button>
-        <button onclick="handleAuth('signup')" class="flex-1 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-semibold text-sm">Register</button>
-      </div>
-    </div>
-=======
 
     <!-- RIGHT: transcript (1/3 width next to a video, the whole screen without one) -->
     <div class="card p-4 space-y-2">
@@ -400,65 +345,10 @@
       <button type="submit" id="authSubmit" class="px-4 py-2 rounded-lg text-white text-sm font-semibold" style="background:#e63946;">Sign in</button>
     </form>
     <p id="authNote" class="text-[11px]" style="color:var(--muted);"></p>
->>>>>>> f0b4326ec0090f2c68f706bc805adbbc3fa52886
   </div>
 </div>
 
 <script>
-<<<<<<< HEAD
-  let isAuthenticated = localStorage.getItem('kanji_user_id') ? true : false;
-
-  function checkDemoTimer() {
-    if (isAuthenticated) return;
-    let startTime = localStorage.getItem('demo_start_time');
-    if (!startTime) {
-      startTime = Date.now();
-      localStorage.setItem('demo_start_time', startTime);
-    }
-    if (Date.now() - parseInt(startTime, 10) >= 2 * 60 * 1000) {
-      document.getElementById('authModal').classList.remove('hidden');
-    } else {
-      setTimeout(checkDemoTimer, 2000);
-    }
-  }
-
-  async function handleAuth(action) {
-    const email = document.getElementById('authEmail').value.trim();
-    const password = document.getElementById('authPassword').value.trim();
-    const errDiv = document.getElementById('authError');
-    errDiv.textContent = '';
-
-    if (!email || !password) {
-      errDiv.textContent = 'Please enter both email and password.';
-      return;
-    }
-
-    try {
-      const res = await fetch('/.netlify/functions/auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action, email, password })
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        errDiv.textContent = data.error || 'Authentication failed.';
-        return;
-      }
-      localStorage.setItem('kanji_user_id', data.user.id);
-      isAuthenticated = true;
-      document.getElementById('authModal').classList.add('hidden');
-    } catch (err) {
-      errDiv.textContent = 'Connection error. Please try again.';
-    }
-  }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    if (!isAuthenticated) checkDemoTimer();
-  });
-</script>
-</body>
-</html>
-=======
 const N2_RAW_SET = new Set("腕湾和論録老労路連練恋列歴齢零礼冷例令類涙輪緑領量良療涼両了粒留流略率律陸裏利卵乱落絡頼翌浴欲陽踊要葉溶様容幼預与余予郵遊由勇優輸油約役戻毛面綿鳴迷命娘無夢務眠未満末枚埋磨防貿棒望暴忙忘帽坊亡豊訪法放抱宝報包暮募補捕保返辺編片変壁米閉並平兵粉仏沸払複腹福幅復副封部舞武負膚符浮普怖府布富婦夫付貧秒評表氷標筆必匹鼻美備飛非費被皮疲比批悲彼否番晩販般犯版板反判抜髪畑肌箱麦爆薄泊倍配背杯敗拝馬破波農脳能濃悩燃念熱猫認任乳難軟内鈍曇届突独毒得銅童導逃到筒等当灯湯盗投島塔凍党倒怒努途登渡徒塗殿伝点展鉄適的滴泥程庭底定停痛追賃珍沈直頂超調張庁兆貯著駐虫柱宙仲竹畜築遅置恥値談段暖断団炭探担単谷達濯宅第退袋替帯対打他損尊孫存卒続速測束息則側造贈蔵臓憎増像装草総窓相争燥操掃捜想層双組祖全然善選船線浅泉戦専占絶雪節設折接責績積石昔席税静製精清晴星整政成性姓勢制数吹震針辛身臣神申深寝信伸触職植蒸畳状条情常城賞象紹笑章省照焼消昇招承床将商召勝除助諸署緒初処順純準述術祝宿柔舟拾修州周収授受酒種守取若捨実湿失識式辞示治次寺児似歯資誌詞脂糸枝支指志師史司刺伺残賛算散参皿雑殺札察刷冊昨咲坂財罪材在際細祭済歳採才妻最再座砂査差混根婚困込骨腰告刻号香降鉱郊講荒航肯耕紅硬港構更康幸向厚効公候交誤御互雇湖枯故戸庫固呼個限現減原険軒賢肩権検券健件血結決欠劇迎芸警経景敬恵形型傾係軍群訓君靴掘隅偶具苦禁均勤玉極曲局胸狭況橋挟恐境叫協共競供漁許巨居旧給級球泣求救吸久逆客詰喫議疑技記規季祈機期机希寄基器喜危願岩岸含丸関観簡管看甘環汗換慣感干官完巻刊乾活割額革較角覚確格拡各害貝階絵皆灰械改快解介過貨課菓荷河果科可加価仮化温億黄王欧横押応奥央汚塩煙演延園越液鋭泳永栄営雲羽宇因印育域違衣胃移異易委囲偉依位案圧愛");   // the 739-kanji list as pasted earlier
 const N3_RAW_SET = new Set("与両乗予争互亡交他付件任伝似位余例供便係信倒候値偉側偶備働優光全共具内最冷処列初判利到制刻割加助努労務勝勤化単危原参反収取受号合向君否吸吹告呼命和商喜回因困園在報増声変夢太夫失好妻娘婚婦存宅守完官定実客害容宿寄富寒寝察対局居差市師席常平幸幾座庭式引当形役彼徒得御必忘忙念怒怖性恐恥息悲情想愛感慣成戦戻所才打払投折抜抱押招指捕掛探支放政敗散数断易昔昨晩景晴暗暮曲更望期未末束杯果格構様権横機欠次欲歯歳残段殺民求決治法泳洗活流浮消深済渡港満演点然煙熱犯状猫王現球産由申留番疑疲痛登皆盗直相眠石破確示礼祖神福科程種積突窓笑等箱米精約組経給絵絶続緒罪置美老耳職育背能腹舞船良若苦草落葉薬術表要規覚観解記訪許認誤説調談論識警議負財貧責費資賛越路辞込迎返迷追退逃途速連進遅遊過達違遠適選部都配酒閉関降限除険陽際雑難雪静非面靴頂頭頼顔願類飛首馬髪鳴");   // the 367 N3 kanji
 const N4_RAW_SET = new Set("不世主事京仕代以会住体作使借元兄公写冬切別力勉動医去口古台同味品員問図地堂場売夏夕多夜妹姉始字安室家少屋工帰広店度建弟強待心思急悪意手持教文料新方旅族早明映春昼曜有服朝業楽歌止正歩死注洋海漢牛物特犬理用田町画界病発目真着知研社私秋究空立答紙終習考者肉自色花英茶親言計試買貸質赤走起足転近送通週運道重野銀開院集青音題風飯飲館駅験魚鳥黒");   // the 166 N4 kanji
@@ -1663,4 +1553,3 @@ initAuth();
 </script>
 </body>
 </html>
->>>>>>> f0b4326ec0090f2c68f706bc805adbbc3fa52886
